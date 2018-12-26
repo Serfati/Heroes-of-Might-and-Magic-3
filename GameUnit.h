@@ -27,10 +27,17 @@ using namespace std;
 
 class GameUnit {
 public:
-	GameUnit();
-	void load();
+	GameUnit(const std::string);
+	GameUnit newGame  (const int,const int,const int );
+	GameUnit loadGame();
+	bool load(std::string);
+	GameUnit openHeroMenu(Hero);
+	void save();
 	virtual bool die(int);
 	bool isCreature(string name);
+	int ChooseHeroes();
+
+
 	virtual ~GameUnit();
 };
 

@@ -29,4 +29,4 @@ add_executable(src
         Wizard.cpp
         Wizard.h
         Zombie.cpp
-        Zombie.h)
+        Zombie.h GameUnit.cpp)

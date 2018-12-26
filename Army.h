@@ -9,11 +9,6 @@
 #include<string>
 #include<vector>
 #include "Creature.h"
-#include "Zombie.h"
-#include "Archer.h"
-#include "Vampire.h"
-#include "Wizard.h"
-#include "BlackDragon.h"
 
 using namespace std;
 
@@ -23,13 +18,13 @@ public:
 	Army(vector <int>);
 	bool isDestroyed();
 	bool addUnit(int , int );
-	int getSize();
 	int getArmySize();
 	void eraseKilled();
 	string showArmy();
 	~Army();
 
-private:
+
+public:
 	vector <int> army;
 };
 

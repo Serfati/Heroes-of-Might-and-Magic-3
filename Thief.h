@@ -14,7 +14,7 @@ using namespace std;
 
 class Thief: public Hero {
 public:
-	Thief(Type type , string name , Army army ,bool live, int gold);
+	Thief( string name );
 	Thief(Thief& another);
 	virtual bool specialAbility();
 	virtual ~Thief();

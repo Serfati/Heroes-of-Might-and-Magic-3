@@ -8,7 +8,7 @@
 #include "Warrior.h"
 
 
-Warrior::Warrior(Type type , string name , Army army ,bool live, int gold) : Hero(warrior, name ,army ,live, gold){}
+Warrior::Warrior( string name ) : Hero(warrior, name ,army){}
 Warrior::Warrior(Warrior &another) :Hero(another)
 {}
 

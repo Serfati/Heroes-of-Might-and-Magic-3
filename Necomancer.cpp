@@ -8,8 +8,8 @@
 #include "Necomancer.h"
 
 
-Necomancer::Necomancer(Type type , string name , Army army ,bool live, int gold) : Hero(necomancer, name ,army ,live, gold)
-{}
+Necomancer::Necomancer(string name) : Hero(necomancer, name ,army ){}
+
 Necomancer::Necomancer(Necomancer &another) :Hero(another){}
 
 bool Necomancer::specialAbility(){

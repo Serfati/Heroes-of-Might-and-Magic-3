@@ -14,6 +14,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "Army.h"
 
 #include "Creature.h"
 #include "Vampire.h"
@@ -37,48 +38,49 @@ using namespace std;
 
 int main(int argc , char* argv[]){
 
-	int choice;
+    int choice;
 
-	//arguments
-	string playOrLoad = argv[1];
-	int warriors = atoi(argv[2]);
-	int thieves = atoi(argv[3]);
-	int Necromancers = atoi(argv[4]);
+    //arguments
+    string playOrLoad = argv[1];
+    int warriors = atoi(argv[2]);
+    int thieves = atoi(argv[3]);
+    int Necromancers = atoi(argv[4]);
 
-	//GameUnit gamePlay = GameUnit(warriors, thieves, Necromancers);
-	bool isRun = true;
 
-	//   ******** MENU *********  //
-	while ( isRun ) {
-		cout<<"What is your next step in the path to victory?"<<endl;
-		cout<<"‫‪1. Attack‬‬"<<endl;
-		cout<<"2. Get daily gold"<<endl;
-		cout<<"‫‪3.‬‬ Buy creatures‬‬"<<endl;
-		cout<<"4. Show details"<<endl;
-		cout<<"‫‪5‬‬.‬‬ Special skill‬‬‬‬"<<endl;
-		cout<<"6. End of my turn"<<endl;
-		cout<<"7.‬ Exit‬‬‬‬"<<endl;
-		cin >> choice;
-		switch( choice  )
-		{
 
-		case 1:	/*	Attack‬‬	*/
 
-		case 2:	/*	Get daily gold	*/
+    //GameUnit gamePlay = GameUnit(warriors, thieves, Necromancers);
+//    bool isRun = true;
+//    Hero *a = new Warrior( "Avi" );
+//    Hero *g = new Thief( "Guy" );
+//    Hero *s = new Necomancer("Samu");
+//    Hero *l= new Hero();
+//
+//    a->specialAbility();
+//    g->specialAbility();
+//    s->specialAbility();
+//    l->specialAbility();
+//
+//    a->buyCreature(s->getGold(), 2 , 2 );
+//    cout<< a->armySize() ;
+//    cout<< a->showArmy() << endl;
+//
+//    g->buyCreature(s->getGold(), 2 , 2 );
+//    cout<< g->armySize() ;
+//    cout<< g->showArmy() << endl;
+//
+//    s->buyCreature(s->getGold(), 2 , 2 );
+//    cout<< s->armySize() ;
+//    cout<< s->showArmy() << endl;
+//
+//    a->showHero();
+//    g->showHero();
+//    s->showHero();
 
-		case 3: /*	Buy creatures	*/
 
-		case 4:	/*	Show details	*/
 
-		case 5:	/*	Special skill‬‬‬‬	*/
 
-		case 6:	/*	End of my turn	*/
+    cout<<"***END OF MAIN***‬‬"<<endl;
 
-		case 7: /* 	‫‪Exit‬‬‬‬  */
-			exit(1);
 
-		default:
-			cout<<"please choose a valid number"<<endl;
-		}
-	}
-}
+

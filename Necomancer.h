@@ -16,10 +16,10 @@ using namespace std;
 
 class Necomancer: public Hero {
 public:
-	Necomancer(Type type , string name , Army army ,bool live, int gold);
+	Necomancer( string name );
 	Necomancer(Necomancer& another);
 	virtual bool specialAbility();
-	virtual ~Necomancer();
+	~Necomancer();
 };
 
 

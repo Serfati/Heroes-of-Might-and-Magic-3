@@ -44,7 +44,6 @@ public:
 	string creaType(int type);
 	int getPrice(int type);
 
-
 protected:
 	int attackPoints;
 	int defendPoints;

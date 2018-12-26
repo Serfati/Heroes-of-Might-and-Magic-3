@@ -18,31 +18,26 @@ Hero::Hero(Hero& another)
 	this->army=another.army;
 	isAlive = another.isAlive;;
 }
-Hero::Hero(Type type , string name , Army army ,bool live, int gold){
+Hero::Hero( Type type, string name , Army ,bool live , int gold ){
 	setName(name);
-	name = "Heroes\\" + name;
 	name += ".txt";
 	ofstream file;
-	this->isAlive =true;
-
 	file.open(name);
-	if(army.getSize()>0)
-		setARMY(army);
-	else	army = Army();
+
 	setType(type);
 	setGold(gold);
-	string showArmy =  Hero::showArmy();
-
-	cout << endl << "Hero has been successfully created!" << endl;
+	this->army =  Army();
+	this->isAlive = live;
+	cout << "Hero has been successfully created!" << endl;
 
 	//SAVE
-	file <<  "isAlive *****ARMY***** type gold;"<<endl;
-	file << isAlive  << " " << showArmy << " " << type << " " << gold;
+	file <<  "isAlive *********ARMY********* type gold;";
+	file << endl << isAlive  << " " << showArmy() <<" " << type << " " << gold;
 	file.close();
 }
 Hero::~Hero() {}
 //^^^^^^^^^^^^^^^^^^ GAME LOGIC ^^^^^^^^^^^^^^^^^^//
-bool Hero::buyCreature(int &budget, int creatureType, int quantity){
+bool Hero::buyCreature(int budget, int creatureType, int quantity){
 	Creature c;
 	if(quantity<=0 || budget<=0 || creatureType<0)
 		return false;
@@ -55,27 +50,30 @@ string Hero::showArmy(){
 	return army.showArmy();
 }
 void Hero::showHero(){
-	cout << "Hero Name: " << getName() <<  endl;
-	cout << "Type: " << displayType() <<  endl;
-	cout << "Gold: " << getGold() <<  endl;
-	cout << "Army: "; showArmy(); cout <<endl;
+	cout << getName() << " ";
+	cout << displayType() << ":"<< endl;
+	cout << getGold() <<  endl;
+	cout << showArmy() <<endl;
 }
 void Hero::die(){
 	isAlive = false;
 	cout << getName() << " has died!" << endl;
+
+	delete this;
 }
 bool Hero::specialAbility(){
 	cout << "just inheirit already"<<endl;
+	return true;
 };
 //^^^^^^^^^^^^^^^^ LOAD and SAVE ^^^^^^^^^^^^^^^^^//
-bool Hero::load(string name)
+bool Hero::load(string newName)
 {
-	setName(name);
-	name = "Heroes\\" + name;
-	name += ".txt";
+	setName(newName);
+	string path = getName();
+	path += ".txt";
 
 	ifstream in;
-	in.open(name);
+	in.open(path);
 
 	if (!in)
 	{
@@ -85,12 +83,13 @@ bool Hero::load(string name)
 
 	string cleanHeader;
 	getline(in, cleanHeader, ';');
-	int gold;
+	bool isA;
+	int _gold;
 	int type;
-	string st;
-	in  >> gold ;
-	in  >> type;
-	setGold(gold);
+	string armyToadd;
+	in  >> isA >> armyToadd >> type >> _gold;
+	this->isAlive = isA;
+	setGold(_gold);
 	setType(type);
 	in.close();
 	cout << "Hero loaded successfully!" << endl;
@@ -99,10 +98,9 @@ bool Hero::load(string name)
 void Hero::save()
 {
 	ofstream out;
-	out.open("Heroes\\" + getName() + ".txt");
-	out << "isAlive *****ARMY***** type gold;"<<endl;
-	string showArmy =  Hero::showArmy();
-	out << isAlive  << " " << showArmy << " " << getType() << " "<< getGold();
+	out.open(getName() + ".txt");
+	out << "isAlive *********ARMY********* type gold;"<<endl;
+	out << isAlive  << " " << showArmy() << " " << getType() << " "<< gold;
 }
 //^^^^^^^^^^^^^^Getters and Setters^^^^^^^^^^^^^^//
 void Hero::setARMY(Army newArmy)
@@ -141,8 +139,10 @@ bool Hero::getDailyGold()
 			this->gold+=100;
 		else
 			gold = 2500;
+		cout<<"**Gold Added***‬‬"<<endl;
 		return true;
 	}
+	cout<<"***You are not alive***‬‬"<<endl;
 	return false;
 }
 Type Hero::getType()
@@ -150,8 +150,8 @@ Type Hero::getType()
 	return type;
 }
 string Hero::getName()
-{return getName();}
-int Hero::getGold()
+{return this->name;}
+int Hero::getGold() const
 {return gold;}
 string Hero::displayType()
 {
@@ -169,4 +169,14 @@ string Hero::displayType()
 	default:
 		return "UnknownType";
 	}
+}
+int Hero::armySize(){
+	return this->army.getArmySize();
+}
+
+Hero::Hero() {
+		setName("NoNameHero");
+		gold=0;
+		type = UnknownType;
+		army = Army();
 }

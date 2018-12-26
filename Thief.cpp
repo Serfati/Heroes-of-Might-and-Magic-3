@@ -8,19 +8,22 @@
 #include "Thief.h"
 
 using namespace std;
-Thief::Thief(Type type , string name , Army army ,bool live, int gold) : Hero(thief, name ,army ,live, gold){}
+
+Thief::Thief( string name ) : Hero(thief, name ,army ){}
 
 Thief::Thief(Thief &another) :Hero(another){}
 
 //TODO need to thief from another user/
 bool Thief::specialAbility()
 {
+	if(isAlive){
 	string toRob;
-	//cout<<"Please insert hero name:"<<endl;‬‬
-	 if(isAlive){
-		 gold+= 50 ;
+	std::cout<<"Please insert hero name:"<<endl;
+	getline(cin, toRob);
+		std::cout<<"TODO"<<endl;
 		 return 1;
 	 }
+	std::cout<<"You died!"<<endl;
 	 return 0;
  }
 

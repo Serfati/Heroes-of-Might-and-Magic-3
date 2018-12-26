@@ -28,9 +28,9 @@ enum Type
 class Hero{
 
 public:
-
+    Hero();
 	Hero(Hero&);
-	Hero(Type _type , string name , Army army,bool live = true, int gold = 750);
+	Hero(Type , string , Army ,bool live = true, int gold = 750);
 	virtual ~Hero();
 
 	//Load and Save
@@ -39,9 +39,10 @@ public:
 
 	//GameLogic
 	bool attackEnemy(Hero &enemy);
-	bool buyCreature(int &budget, int creatureType, int quantity);
+	bool buyCreature(int budget, int creatureType, int quantity);
 	void showHero();
 	string showArmy();
+
 
 	void die();
 
@@ -55,10 +56,12 @@ public:
 	void setGold(int);
 	void setName(string);
 
-	int getGold();
+	int armySize();
+	int getGold() const;
 	Type getType();
 	string displayType();
 	string getName();
+
 
 protected:
 	string  name;
@@ -66,6 +69,7 @@ protected:
 	int gold;
 	bool isAlive;
 	Army  army;
+
 };
 
 #endif /* SOURCE_HERO_H_ */

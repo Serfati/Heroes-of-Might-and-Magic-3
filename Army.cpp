@@ -6,14 +6,15 @@
  */
 
 #include "Army.h"
-
+#include "string.h"
+#include <iostream>
+#include <string>
 using namespace std;
 
-
-
 Army::Army() {
-	vector<int> vect( 6 , 0 ); // emty army
-	army = vect;
+	vector<int> vect( 7 ); // emty army
+	army =vect ;
+	vect.clear();
 }
 
 Army::Army(vector <int> army){
@@ -22,10 +23,7 @@ Army::Army(vector <int> army){
 
 bool Army::isDestroyed()
 {
-	int size = army.size();
-	for (int i = 0; i < size; i++)
-		if (army[i] > 0) return 0;
-	return 1;
+	return getArmySize()>0;
 }
 
 bool Army::addUnit(int creatureType, int quantity)
@@ -43,21 +41,30 @@ void Army::eraseKilled()
 	}
 }
 
-int Army::getSize(){return army.size();}
+int Army::getArmySize(){
+	int size = 0;
+	for (int i = 0; i < army.size(); i++)
+		size += army[i];
+	return size;
+
+}
 
 string Army::showArmy(){
-	string showArmy = "";
+	string showArmy = "" ;
 	Creature c ;
-	int size = army.size();
-	for (int i = size; i > 0 ; i++)
+	for (int i = 5; i >= 0 ; i--)
 	{
-
-		if(army[i]>0){
-			showArmy += c.creaType(i);
-			showArmy+=" "+army[i];
-		}
+	if( army[i] != 0) {
+		showArmy += std::to_string(army[i]);
+		showArmy += " " + c.creaType(i) ;
+		if(i!=0 )
+			showArmy += " ";
+		else
+			showArmy += ".";
+	}
 	}
 	c.~Creature();
+
 	return showArmy;
 }
 
