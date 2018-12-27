@@ -8,9 +8,6 @@
 #define SOURCE_HERO_H_
 
 #include <iostream>
-#include <stdio.h>
-#include <string.h>
-#include <vector>
 #include<fstream>
 
 #include "Creature.h"
@@ -39,13 +36,13 @@ public:
 	bool load(string name);
 	void save();
 	bool mkdir();
+	void rmdir();
 
 	//^^^^^^^^^^^^^^^^^^ GAME LOGIC ^^^^^^^^^^^^^^^^^^//
 	bool attackEnemy(Hero &enemy);
 	bool buyCreature(int budget, int creatureType, int quantity);
 	void showHero();
 	string showArmy();
-
 	void die();
 
 	//Virtuals
@@ -58,15 +55,12 @@ public:
 	void setGold(int);
 	bool setName(const string);
 
-	int armySize();
 	int getGold() const;
 	Type getType();
 	string displayType();
 	string getName();
-	bool inLife() const
-	{
-		return isAlive;
-	};
+	bool inLife() const{ return isAlive; };
+
 protected:
 	string  name;
 	Type type;

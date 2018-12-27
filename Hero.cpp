@@ -77,7 +77,7 @@ void Hero::die()
 {
 	isAlive = false;
 	cout << getName() << " has died!" << endl;
-
+	rmdir();
 	delete this;
 }
 bool Hero::specialAbility()
@@ -164,6 +164,18 @@ bool Hero::mkdir()
 	}
 	return 1;
 }
+void Hero::rmdir()
+{
+	try {
+		string comand = "rm -rf "+getName();
+		const char *runComand = comand.c_str();
+		system(runComand);
+	}
+	catch (std::exception & e)
+	{
+		cout << "Error deleting directory!n" << endl;
+	}
+}
 //^^^^^^^^^^^^^^Getters and Setters^^^^^^^^^^^^^^//
 void Hero::setARMY(Army newArmy)
 {
@@ -171,8 +183,8 @@ void Hero::setARMY(Army newArmy)
 }
 bool Hero::setName(const string nName)
 {
-//    if (nName.size()>0)
-//        return 0;
+    if (nName.size() < 0)
+        return 0;
 	this->name = nName;
 	return 1;
 }
@@ -239,9 +251,5 @@ string Hero::displayType()
 		default:
 			return "UnknownType";
 	}
-}
-int Hero::armySize()
-{
-	return this->army.getArmySize();
 }
 

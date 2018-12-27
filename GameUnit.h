@@ -35,6 +35,7 @@ class GameUnit {
 	//^^^^^^^^^^ STATIC VARs ^^^^^^^^^^//
 	static int numberOfPlayers;
 	static int roundNumber;
+
 public:
 	//^^^^^^^^^^ Constructors and Destructor ^^^^^^^^^^//
 	GameUnit (); // Load Last Game
@@ -47,20 +48,22 @@ public:
 	int storeMenu();
 	void nextTurn();
 
-	//^^^^^^^^^^^^^^^^ LOAD and SAVE ^^^^^^^^^^^^^^^^^/
+	//^^^^^^^^^^^^^^^^ MAINTENACE ^^^^^^^^^^^^^^^^^/
 	void save();
 	bool mkdir();
 	void shuffle();
+    void rmdir();
 
-	//^^^^^^^^^^^^^^Getters and Setters^^^^^^^^^^^^^^//
+	//^^^^^^^^^^^^^^ Getters and Setters ^^^^^^^^^^^^^^//
 	Hero* getHeroByName( string );
-	string getCurrentTurnName(){ return players[currentTurn]->getName(); }
+	string getCurrentTurnName(){ return realOrder[currentTurn]->getName(); }
 	string getTurnOrder() ;
+	void showHeroes();
 
 private:
-	vector<Hero*> players;
-	vector<std::string> turnOrder;
-	int currentTurn;
+	vector<Hero*> realOrder;
+	vector<Hero*> turnOrder; //just a pointer to a shuffled realOrder
+	int currentTurn; // index in turnOrder
 };
 
 #endif /* HEROS_GAMEUNIT_H_ */
