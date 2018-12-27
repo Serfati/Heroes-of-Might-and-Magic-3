@@ -8,7 +8,9 @@
 #include "Creature.h"
 
 Creature::Creature():attackPoints(1), defendPoints(1), cost(50), cType(Unknown)
-{}
+{
+
+}
 Creature::Creature( Creature& another )
 {
 	if(another.attackPoints >1 && another.defendPoints >1 &&another.cost >50 && another.cType != Unknown &&
@@ -21,20 +23,21 @@ Creature::Creature( Creature& another )
 }
 Creature::Creature(int _ap  , int _dp, int _c ,CreatureType ct ):
 attackPoints(_ap), defendPoints(_dp), cost(_c), cType(ct)
-{}
+{
 
-
-void Creature::showCreature(){
+}
+void Creature::showCreature()
+{
 	cout<< "Attack level:"<< attackPoints <<",Defense level:"<<defendPoints<<endl;
 }
-
-void Creature::specialAbility(Creature &c){
+void Creature::specialAbility(Creature &c)
+{
 	cout << "Just inherit me already" << endl;
 }
-void Creature::attackAnother(Creature &c){
+void Creature::attackAnother(Creature &c)
+{
 	 cout << "Just inherit me already" << endl;
 }
-
 void Creature::setType(int type)
 {
 	switch (type)
@@ -58,7 +61,6 @@ void Creature::setType(int type)
 		this->cType = Unknown;
 	}
 }
-
 string Creature::creaType(int vtype)
 {
 	switch (vtype)
@@ -77,8 +79,8 @@ string Creature::creaType(int vtype)
 		return "Unknown";
 	}
 }
-
-int Creature::getPrice(int vtype){
+int Creature::getPrice(int vtype)
+{
 	switch (vtype)
 	{
 	case 0:
@@ -95,5 +97,7 @@ int Creature::getPrice(int vtype){
 		return -1;
 	}
 }
+Creature::~Creature()
+{
 
-Creature::~Creature(){}
+}

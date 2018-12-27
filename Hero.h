@@ -63,9 +63,10 @@ public:
 	Type getType();
 	string displayType();
 	string getName();
-	bool inLife() const{return isAlive;};
-
-
+	bool inLife() const
+	{
+		return isAlive;
+	};
 protected:
 	string  name;
 	Type type;

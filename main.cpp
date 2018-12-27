@@ -10,7 +10,7 @@
  ============================================================================
  */
 
-#include "GameUnit.h"
+
 //#include <iostream>
 //#include <string>
 //#include <vector>
@@ -27,9 +27,10 @@
 //#include "Thief.h"
 //#include "Warrior.h"
 //#include "Necomancer.h"
-#include <iostream>
-#include <stdio.h>
-#include <sys/stat.h>
+//#include <iostream>
+//#include <stdio.h>
+//#include <sys/stat.h>
+#include "GameUnit.h"
 
 using namespace std;
 
@@ -41,20 +42,17 @@ using namespace std;
 
 int main(int argc , char* argv[]){
 
-    int choice;
-
-    //arguments
-    /* int argv[0] its name of the program; */
-
-    const string playOrLoad = argv[1];
-    const int warriors = atoi(argv[2]);
-    const int thieves = atoi(argv[3]);
-    const int Necromancers = atoi(argv[4]);
-    if(playOrLoad == "Play")
+    if( argv[2] ) { /*    New Game   */
+        /* - [ Arguments ] -    argv[0] is the name of the program; Heroes  */
+        const string playOrLoad = argv[1];
+        const int warriors = atoi(argv[2]);
+        const int thieves = atoi(argv[3]);
+        const int Necromancers = atoi(argv[4]);
         GameUnit gamePlay = GameUnit(warriors, thieves, Necromancers);
+    }
+    else        /*  Load last Game  */
+        GameUnit gamePlay;
 
-
-
-   cout<<"***END OF MAIN***‬‬"<<endl;
+    cout<<"***END OF MAIN***‬‬"<<endl;
 
 }

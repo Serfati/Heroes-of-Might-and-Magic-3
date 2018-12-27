@@ -11,6 +11,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
+#include <random>
 
 #include "Army.h"
 
@@ -35,27 +37,30 @@ class GameUnit {
 	static int roundNumber;
 public:
 	//^^^^^^^^^^ Constructors and Destructor ^^^^^^^^^^//
-	GameUnit(string);
-	GameUnit(const int,const int,const int );
-	~GameUnit();
+	GameUnit (); // Load Last Game
+	GameUnit( const int , const int , const int );
+	virtual ~GameUnit();
 
 	//^^^^^^^^^^^^^^^^^^ GAME LOGIC ^^^^^^^^^^^^^^^^^^//
-	GameUnit openHeroMenu(Hero*);
-	bool attackMenu();
+	GameUnit openHeroMenu( Hero* );
+	bool attackMenu( Hero* );
 	int storeMenu();
-	int ChooseHeroes();
-	virtual bool die(int);
-	bool isCreature(string name);
+	void nextTurn();
 
-	// save and load
-	GameUnit loadGame();
+	//^^^^^^^^^^^^^^^^ LOAD and SAVE ^^^^^^^^^^^^^^^^^/
 	void save();
 	bool mkdir();
+	void shuffle();
+
+	//^^^^^^^^^^^^^^Getters and Setters^^^^^^^^^^^^^^//
+	Hero* getHeroByName( string );
+	string getCurrentTurnName(){ return players[currentTurn]->getName(); }
+	string getTurnOrder() ;
 
 private:
 	vector<Hero*> players;
-	std::string heroesNames;
-
+	vector<std::string> turnOrder;
+	int currentTurn;
 };
 
 #endif /* HEROS_GAMEUNIT_H_ */

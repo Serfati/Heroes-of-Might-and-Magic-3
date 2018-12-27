@@ -20,7 +20,8 @@ Hero::Hero(Hero& another)
 	this->army=another.army;
 	isAlive = another.isAlive;;
 }
-Hero::Hero( Type type, string name , Army ,bool live , int gold ){
+Hero::Hero( Type type, string name , Army ,bool live , int gold )
+{
 	if(name.length() > 31 || gold < 0 || gold > 2500 || name.length() < 0 )
 		throw std::invalid_argument( "received invalid values" );
 
@@ -42,9 +43,17 @@ Hero::Hero( Type type, string name , Army ,bool live , int gold ){
 	file << endl << isAlive  << " " << showArmy() <<" " << type << " " << gold;
 	file.close();
 }
-Hero::~Hero() {}
+Hero::Hero(): name("NoNameHero"), type(UnknownType), gold(750), isAlive(1)
+{
+	army = Army();
+}
+Hero::~Hero()
+{
+
+}
 //^^^^^^^^^^^^^^^^^^ GAME LOGIC ^^^^^^^^^^^^^^^^^^//
-bool Hero::buyCreature(int budget, int creatureType, int quantity){
+bool Hero::buyCreature(int budget, int creatureType, int quantity)
+{
 	Creature c;
 	if(quantity<=0 || budget<=0 || creatureType<0)
 		return false;
@@ -53,30 +62,62 @@ bool Hero::buyCreature(int budget, int creatureType, int quantity){
 	c.~Creature();
 	return true;
 }
-string Hero::showArmy(){
+string Hero::showArmy()
+{
 	return army.showArmy();
 }
-void Hero::showHero(){
+void Hero::showHero()
+{
 	cout << getName() << " ";
 	cout << displayType() << ":"<< endl;
 	cout << getGold() <<  endl;
 	cout << showArmy() <<endl;
 }
-void Hero::die(){
+void Hero::die()
+{
 	isAlive = false;
 	cout << getName() << " has died!" << endl;
 
 	delete this;
 }
-bool Hero::specialAbility(){
+bool Hero::specialAbility()
+{
 	cout << "just inheirit already"<<endl;
 	return true;
 };
+bool Hero::attackEnemy(Hero &enemy)
+{
+	//TODO
+	if(enemy.army.isDestroyed()) {
+		cout << "victorious" << endl;
+		enemy.die();
+		return 1;
+	}
+	if(army.isDestroyed()) {
+		cout << "You have been perished" << endl;
+		this->die();
+		return 0;
+	}
+	string attack, toAttack;
+	cout << "enemy creature to attack" << endl;
+	getline(cin, toAttack);
+	cout << "choose the creature to attack with" << endl;
+	getline(cin, attack);
+
+
+
+
+
+
+
+	return attackEnemy (enemy);
+}
 //^^^^^^^^^^^^^^^^ LOAD and SAVE ^^^^^^^^^^^^^^^^^//
 bool Hero::load(string newName)
 {
 	setName(newName);
-	string path = getName();
+
+	string path = getName()+"/Hero_Deatils";
 	path += ".txt";
 
 	ifstream in;
@@ -105,15 +146,16 @@ bool Hero::load(string newName)
 void Hero::save()
 {
 	ofstream out;
-	out.open(getName() + ".txt");
+	out.open(getName()+"/Hero_Deatils.txt");
 	out << "isAlive | =-==-==-=[ ARMY ]=-==-==-= | type | gold;"<<endl;
 	out << isAlive  << " " << showArmy() << " " << getType() << " "<< gold;
 }
-bool Hero::mkdir(){
+bool Hero::mkdir()
+{
 	try {
 		string comand = "mkdir " + getName();
 		const char *runComand = comand.c_str();
-		const int dir_err = system(runComand);
+		system(runComand);
 	}
 	catch (std::exception & e)
 	{
@@ -124,8 +166,11 @@ bool Hero::mkdir(){
 }
 //^^^^^^^^^^^^^^Getters and Setters^^^^^^^^^^^^^^//
 void Hero::setARMY(Army newArmy)
-{this->army = newArmy;}
-bool Hero::setName(const string nName){
+{
+	this->army = newArmy;
+}
+bool Hero::setName(const string nName)
+{
 //    if (nName.size()>0)
 //        return 0;
 	this->name = nName;
@@ -168,12 +213,16 @@ bool Hero::getDailyGold()
 }
 Type Hero::getType()
 {
-	return type;
+	return this->type;
 }
 string Hero::getName()
-{return this->name;}
+{
+	return this->name;
+}
 int Hero::getGold() const
-{return gold;}
+{
+	return gold;
+}
 string Hero::displayType()
 {
 	switch (type)
@@ -191,8 +240,8 @@ string Hero::displayType()
 			return "UnknownType";
 	}
 }
-int Hero::armySize(){
+int Hero::armySize()
+{
 	return this->army.getArmySize();
 }
 
-Hero::Hero(): name("NoNameHero"), type(UnknownType), gold(750), isAlive(1){ army = Army();}
