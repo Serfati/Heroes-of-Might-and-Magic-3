@@ -16,6 +16,7 @@ using namespace std;
 
 class Necomancer: public Hero {
 public:
+	Necomancer(){setType(necomancer);}
 	Necomancer( string name );
 	Necomancer(Necomancer& another);
 	virtual bool specialAbility();

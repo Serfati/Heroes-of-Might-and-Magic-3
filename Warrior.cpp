@@ -7,7 +7,7 @@
 
 #include "Warrior.h"
 
-
+Warrior::Warrior(){setType(warrior);}
 Warrior::Warrior( string name ) : Hero(warrior, name ,army){}
 Warrior::Warrior(Warrior &another) :Hero(another)
 {}

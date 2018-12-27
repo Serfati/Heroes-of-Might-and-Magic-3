@@ -15,6 +15,7 @@ using namespace std;
 class Warrior: public Hero
 {
 public:
+	Warrior();
 	Warrior( string name );
 	Warrior(Warrior& another);
 	virtual bool specialAbility();

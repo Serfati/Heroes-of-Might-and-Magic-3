@@ -5,7 +5,9 @@
  *      Author: serfati
  */
 
+
 #include "Hero.h"
+#include <exception>
 
 using namespace std;
 
@@ -19,7 +21,12 @@ Hero::Hero(Hero& another)
 	isAlive = another.isAlive;;
 }
 Hero::Hero( Type type, string name , Army ,bool live , int gold ){
+	if(name.length() > 31 || gold < 0 || gold > 2500 || name.length() < 0 )
+		throw std::invalid_argument( "received invalid values" );
+
 	setName(name);
+	mkdir();
+	name = getName()+"/Hero_Deatils";
 	name += ".txt";
 	ofstream file;
 	file.open(name);
@@ -31,7 +38,7 @@ Hero::Hero( Type type, string name , Army ,bool live , int gold ){
 	cout << "Hero has been successfully created!" << endl;
 
 	//SAVE
-	file <<  "isAlive *********ARMY********* type gold;";
+	file << "isAlive | =-==-==-=[ ARMY ]=-==-==-= | type | gold;";
 	file << endl << isAlive  << " " << showArmy() <<" " << type << " " << gold;
 	file.close();
 }
@@ -99,16 +106,30 @@ void Hero::save()
 {
 	ofstream out;
 	out.open(getName() + ".txt");
-	out << "isAlive *********ARMY********* type gold;"<<endl;
+	out << "isAlive | =-==-==-=[ ARMY ]=-==-==-= | type | gold;"<<endl;
 	out << isAlive  << " " << showArmy() << " " << getType() << " "<< gold;
+}
+bool Hero::mkdir(){
+	try {
+		string comand = "mkdir " + getName();
+		const char *runComand = comand.c_str();
+		const int dir_err = system(runComand);
+	}
+	catch (std::exception & e)
+	{
+		cout << "Error creating directory!n" << endl;
+		return 0;
+	}
+	return 1;
 }
 //^^^^^^^^^^^^^^Getters and Setters^^^^^^^^^^^^^^//
 void Hero::setARMY(Army newArmy)
 {this->army = newArmy;}
-void Hero::setName(string name)
-{
-	if(name.length() < 31)
-		this->name = name;
+bool Hero::setName(const string nName){
+//    if (nName.size()>0)
+//        return 0;
+	this->name = nName;
+	return 1;
 }
 void Hero::setGold(int newBudget)
 {
@@ -119,17 +140,17 @@ void Hero::setType(int type)
 {
 	switch (type)
 	{
-	case 0:
-		this->type = warrior;
-		break;
-	case 1:
-		this->type = thief;
-		break;
-	case 2:
-		this->type =necomancer;
-		break;
-	default:
-		this->type = UnknownType;
+		case 0:
+			this->type = warrior;
+			break;
+		case 1:
+			this->type = thief;
+			break;
+		case 2:
+			this->type =necomancer;
+			break;
+		default:
+			this->type = UnknownType;
 	}
 }
 bool Hero::getDailyGold()
@@ -157,26 +178,21 @@ string Hero::displayType()
 {
 	switch (type)
 	{
-	case 0:
-		return "Warrior";
+		case 0:
+			return "Warrior";
 
-	case 1:
-		return "Thief";
+		case 1:
+			return "Thief";
 
-	case 2:
-		return "Necomancer";
+		case 2:
+			return "Necomancer";
 
-	default:
-		return "UnknownType";
+		default:
+			return "UnknownType";
 	}
 }
 int Hero::armySize(){
 	return this->army.getArmySize();
 }
 
-Hero::Hero() {
-		setName("NoNameHero");
-		gold=0;
-		type = UnknownType;
-		army = Army();
-}
+Hero::Hero(): name("NoNameHero"), type(UnknownType), gold(750), isAlive(1){ army = Army();}

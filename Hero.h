@@ -8,7 +8,8 @@
 #define SOURCE_HERO_H_
 
 #include <iostream>
-#include <string>
+#include <stdio.h>
+#include <string.h>
 #include <vector>
 #include<fstream>
 
@@ -28,6 +29,7 @@ enum Type
 class Hero{
 
 public:
+	//^^^^^^^^^^ Constructors and Destructor ^^^^^^^^^^//
     Hero();
 	Hero(Hero&);
 	Hero(Type , string , Army ,bool live = true, int gold = 750);
@@ -36,13 +38,13 @@ public:
 	//Load and Save
 	bool load(string name);
 	void save();
+	bool mkdir();
 
-	//GameLogic
+	//^^^^^^^^^^^^^^^^^^ GAME LOGIC ^^^^^^^^^^^^^^^^^^//
 	bool attackEnemy(Hero &enemy);
 	bool buyCreature(int budget, int creatureType, int quantity);
 	void showHero();
 	string showArmy();
-
 
 	void die();
 
@@ -54,13 +56,14 @@ public:
 	void setARMY(Army newArmy);
 	void setType(int);
 	void setGold(int);
-	void setName(string);
+	bool setName(const string);
 
 	int armySize();
 	int getGold() const;
 	Type getType();
 	string displayType();
 	string getName();
+	bool inLife() const{return isAlive;};
 
 
 protected:

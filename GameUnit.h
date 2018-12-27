@@ -7,9 +7,12 @@
 #ifndef HEROS_GAMEUNIT_H_
 #define HEROS_GAMEUNIT_H_
 
+
 #include <iostream>
 #include <string>
 #include <vector>
+
+#include "Army.h"
 
 #include "Creature.h"
 #include "Vampire.h"
@@ -26,19 +29,33 @@
 using namespace std;
 
 class GameUnit {
+
+	//^^^^^^^^^^ STATIC VARs ^^^^^^^^^^//
+	static int numberOfPlayers;
+	static int roundNumber;
 public:
-	GameUnit(const std::string);
-	GameUnit newGame  (const int,const int,const int );
-	GameUnit loadGame();
-	bool load(std::string);
-	GameUnit openHeroMenu(Hero);
-	void save();
+	//^^^^^^^^^^ Constructors and Destructor ^^^^^^^^^^//
+	GameUnit(string);
+	GameUnit(const int,const int,const int );
+	~GameUnit();
+
+	//^^^^^^^^^^^^^^^^^^ GAME LOGIC ^^^^^^^^^^^^^^^^^^//
+	GameUnit openHeroMenu(Hero*);
+	bool attackMenu();
+	int storeMenu();
+	int ChooseHeroes();
 	virtual bool die(int);
 	bool isCreature(string name);
-	int ChooseHeroes();
 
+	// save and load
+	GameUnit loadGame();
+	void save();
+	bool mkdir();
 
-	virtual ~GameUnit();
+private:
+	vector<Hero*> players;
+	std::string heroesNames;
+
 };
 
 #endif /* HEROS_GAMEUNIT_H_ */

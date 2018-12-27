@@ -18,15 +18,13 @@ bool Thief::specialAbility()
 {
 	if(isAlive){
 	string toRob;
-	std::cout<<"Please insert hero name:"<<endl;
-	getline(cin, toRob);
+	std::cout<<"Please insert hero name:"<<endl; getline(cin, toRob);
 		std::cout<<"TODO"<<endl;
 		 return 1;
 	 }
 	std::cout<<"You died!"<<endl;
 	 return 0;
  }
-
 Thief::~Thief() {}
 
 
