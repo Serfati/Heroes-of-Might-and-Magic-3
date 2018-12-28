@@ -35,6 +35,7 @@ public:
 	//Load and Save
 	bool load(string name);
 	void save();
+    string saveArmy();
 	bool mkdir();
 	void rmdir();
 

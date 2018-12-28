@@ -21,6 +21,8 @@ public:
 	int getArmySize();
 	void eraseKilled();
 	string showArmy();
+	string saveArmy();
+	void buildArmy(int,int,int,int,int);
 	~Army();
 
 

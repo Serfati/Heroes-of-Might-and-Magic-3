@@ -24,7 +24,9 @@ int main(int argc , char* argv[]){
         GameUnit gamePlay = GameUnit(warriors, thieves, Necromancers);
     }
     else        /*  Load last Game  */
-        GameUnit gamePlay;
+            GameUnit gamePlay;
 
-    cout<<"...main.cpp END...‬‬"<<endl;
+
+            Hero s ;
+    cout<<"\t...main.cpp END...‬‬"<<endl;
 }

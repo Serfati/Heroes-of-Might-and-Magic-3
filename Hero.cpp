@@ -39,8 +39,8 @@ Hero::Hero( Type type, string name , Army ,bool live , int gold )
 	cout << "Hero has been successfully created!" << endl;
 
 	//SAVE
-	file << "isAlive | =-==-==-=[ ARMY ]=-==-==-= | type | gold;";
-	file << endl << isAlive  << " " << showArmy() <<" " << type << " " << gold;
+	file << "isAlive|BD=WZ=ARC=[ ARMY ]=VMP=ZMB=|type|gold;";
+	file << endl << inLife()  << " " << showArmy() <<" " << type << " " << gold;
 	file.close();
 }
 Hero::Hero(): name("NoNameHero"), type(UnknownType), gold(750), isAlive(1)
@@ -90,14 +90,18 @@ bool Hero::attackEnemy(Hero &enemy)
 	//TODO
 	if(enemy.army.isDestroyed()) {
 		cout << "victorious" << endl;
+		army.eraseKilled();
 		enemy.die();
 		return 1;
 	}
 	if(army.isDestroyed()) {
 		cout << "You have been perished" << endl;
+		enemy.army.eraseKilled();
 		this->die();
 		return 0;
 	}
+
+
 	string attack, toAttack;
 	cout << "enemy creature to attack" << endl;
 	getline(cin, toAttack);
@@ -117,8 +121,7 @@ bool Hero::load(string newName)
 {
 	setName(newName);
 
-	string path = getName()+"/Hero_Deatils";
-	path += ".txt";
+	string path = newName+"/Hero_Deatils.txt";
 
 	ifstream in;
 	in.open(path);
@@ -131,14 +134,22 @@ bool Hero::load(string newName)
 
 	string cleanHeader;
 	getline(in, cleanHeader, ';');
-	bool isA;
+	bool _isA;
 	int _gold;
-	int type;
-	string armyToadd;
-	in  >> isA >> armyToadd >> type >> _gold;
-	this->isAlive = isA;
+	int _type;
+//todo load army
+    int BD;
+    int WZ;
+    int ARC;
+    int VMP;
+    int ZMB;
+
+	in  >> _isA  >> BD  >> WZ  >> ARC  >> VMP  >> ZMB  >> _type >> _gold;
+
+	army.buildArmy(BD,WZ,ARC,VMP,ZMB);
+	this->isAlive = _isA;
 	setGold(_gold);
-	setType(type);
+	setType(_type);
 	in.close();
 	cout << "Hero loaded successfully!" << endl;
 	return 1;
@@ -147,8 +158,12 @@ void Hero::save()
 {
 	ofstream out;
 	out.open(getName()+"/Hero_Deatils.txt");
-	out << "isAlive | =-==-==-=[ ARMY ]=-==-==-= | type | gold;"<<endl;
-	out << isAlive  << " " << showArmy() << " " << getType() << " "<< gold;
+	out << "isAlive|BD=WZ=ARC=[ ARMY ]=VMP=ZMB=|type|gold;"<<endl;
+	out << isAlive  << " " << saveArmy() << " " << getType() << " "<< gold;
+}
+string Hero::saveArmy()
+{
+    return army.saveArmy();
 }
 bool Hero::mkdir()
 {

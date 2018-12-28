@@ -11,24 +11,44 @@ static int roundNumber = 0;
 //^^^^^^^^^^ Constructors and Destructor ^^^^^^^^^^//
 GameUnit::GameUnit()
 {
+
+    // First Level
     cout<<"Loading...‬‬"<<endl;
 
     //TODO load game;
+    // First Level
+    string path = "game/Game_Deatils";
+    path += ".txt";
+    ifstream in;
+    in.open(path);
+    if (!in)
+        cout << "Error reading from file..." << endl;
 
-//    string path = "game/Game_Deatils";
-//    path += ".txt";
-//
-//    ifstream in;
-//    in.open(path);
-//    if (!in)
-//        cout << "Error reading from file..." << endl;
-//
-//    string cleanHeader;
-//    getline(in, cleanHeader, ';');
-//    string HN;
-//    in  >> HN >> currentTurn >> ::roundNumber >> ::numberOfPlayers;
-//    in.close();
+    string cleanHeader;
+    getline(in, cleanHeader, ';');
 
+    string HN;
+    in  >> HN >> currentTurn >> ::roundNumber >> ::numberOfPlayers;
+
+
+    // Second Level
+    vector<string> HeroesNames;
+    path = "game/Real_Order.txt";
+    in.open(path);
+    if (!in)
+        cout << "Error reading from file..." << endl;
+    getline( in, cleanHeader, ';');
+    string word;
+    while( in >> word )
+        HeroesNames.push_back(word);
+    in.close();
+
+
+    for (std::string i : HeroesNames) {
+        Hero *s = new Hero(); //TODO
+        s->load(i);
+        realOrder.push_back(s);
+    }
 }
 GameUnit::GameUnit (const int w,const int t,const int n)
 {
@@ -55,7 +75,8 @@ GameUnit::GameUnit (const int w,const int t,const int n)
     ::roundNumber ++;
     turnOrder = realOrder; /*  just a pointer to a shuffled realOrder    */
     std::cout<<" ^=^=^=^= [ Enjoy your game ] ^=^=^=^= "<<endl;
-    mkdir();    shuffle();      save();     this->currentTurn = 0;
+    mkdir();    shuffle();      save();
+    this->currentTurn = 0;
     openHeroMenu(turnOrder[currentTurn]);
 }
 GameUnit::~GameUnit()
@@ -114,6 +135,7 @@ GameUnit GameUnit::openHeroMenu(Hero* turn)
                     break;
 
                 case 7: /* 	‫‪Exit‬‬‬‬  */
+                    save();
                     this->~GameUnit();
                     return *this;
 
@@ -144,11 +166,12 @@ bool GameUnit::attackMenu(Hero* me)
                 case 2:	/*  Attack Hero by name	   */
                     cout<<"Please insert your opponent name:"<<endl;
                     cin >> heroToAttack;
-                    //TODO check if exsist
                     ptr = getHeroByName(heroToAttack);
                     if(ptr == NULL) return 0; //not exsist
                     ptr->showHero();
                     me->attackEnemy(*ptr);
+                    if(::numberOfPlayers < 2) // last player
+                        cout<<me->getName()+" is the winner!"<<endl; //TODO
                     return 1;
                 default:
                     return 0;
