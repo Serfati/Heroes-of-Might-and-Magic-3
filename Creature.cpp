@@ -79,6 +79,16 @@ string Creature::creaType(int vtype)
 		return "Unknown";
 	}
 }
+int Creature::creaTypeByName(string creaName)
+{
+	if (creaName == "Zombie") return 0;
+	if (creaName == "Archer") return 1;
+	if (creaName == "Vampire") return 2;
+	if (creaName == "Wizard") return 3;
+	if (creaName == "Black_Dragon") return 4;
+
+	return 5;
+}
 int Creature::getPrice(int vtype)
 {
 	switch (vtype)

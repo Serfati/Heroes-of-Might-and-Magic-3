@@ -43,16 +43,18 @@ public:
 	virtual ~GameUnit();
 
 	//^^^^^^^^^^^^^^^^^^ GAME LOGIC ^^^^^^^^^^^^^^^^^^//
-	GameUnit openHeroMenu( Hero* );
+	GameUnit mainMenu(Hero *);
 	bool attackMenu( Hero* );
 	int storeMenu();
 	void nextTurn();
+    void kill(Hero*) ;
 
 	//^^^^^^^^^^^^^^^^ MAINTENACE ^^^^^^^^^^^^^^^^^/
 	void save();
 	bool mkdir();
 	void shuffle();
     void rmdir();
+	void close();
 
 	//^^^^^^^^^^^^^^ Getters and Setters ^^^^^^^^^^^^^^//
 	Hero* getHeroByName( string );

@@ -42,6 +42,7 @@ public:
 	virtual string displayType(){return "Unknown";}
 	void setType(int type);
 	string creaType(int type);
+	int creaTypeByName(string vtype);
 	int getPrice(int type);
 
 protected:

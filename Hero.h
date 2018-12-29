@@ -9,9 +9,11 @@
 
 #include <iostream>
 #include<fstream>
+#include <sstream>
 
 #include "Creature.h"
 #include "Army.h"
+
 
 using namespace std;
 
@@ -43,11 +45,13 @@ public:
 	bool attackEnemy(Hero &enemy);
 	bool buyCreature(int budget, int creatureType, int quantity);
 	void showHero();
+    void showHeroFight();
 	string showArmy();
-	void die();
+    bool addGold(int );
+
 
 	//Virtuals
-	virtual bool getDailyGold();
+	void getDailyGold(){ addGold(100); };
 	virtual bool specialAbility();
 
 	//Getters and Setters
