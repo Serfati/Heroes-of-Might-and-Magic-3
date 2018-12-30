@@ -8,11 +8,19 @@
 #define SOURCE_HERO_H_
 
 #include <iostream>
+#include <iostream>
 #include<fstream>
 #include <sstream>
+#include <vector>
+#include <algorithm>
 
 #include "Creature.h"
 #include "Army.h"
+#include "Vampire.h"
+#include "Archer.h"
+#include "BlackDragon.h"
+#include "Zombie.h"
+#include "Wizard.h"
 
 using namespace std;
 

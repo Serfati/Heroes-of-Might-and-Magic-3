@@ -143,32 +143,23 @@ bool Hero::addGold(int amount)
 bool Hero::load(string newName)
 {
 	string path = newName + "/Details.txt";
-
 	ifstream in;
 	in.open(path);
-
-	if (!in)
-	{
-		cout << "HERO: Error reading from file..." << endl;
-		return 0;
-	}
-
+    if (!in) {
+        cout << "HERO: Error reading from file..." << endl;
+        return 0;
+    }
 	string cleanHeader;
 	getline(in, cleanHeader, ';');
-	bool _isA;
-	int _gold;
-	int _type;
-	//Army @param
-	int BD;
-	int WZ;
-	int ARC;
-	int VMP;
-	int ZMB;
 
-	in  >> _isA  >> BD  >> WZ  >> ARC  >> VMP  >> ZMB  >> _type >> _gold;
+    //Hero @param
+    int bd, wz, arc, vmp, zmb, _type, _gold;
+    bool _is;
+    in >> _is >> bd >> wz >> arc >> vmp >> zmb >> _type >> _gold;
+
 	//TODO - Hero Type!
-	army->buildArmy(BD,WZ,ARC,VMP,ZMB);
-	this->isAlive = _isA;
+    army->buildArmy(bd, wz, arc, vmp, zmb);
+    this->isAlive = _is;
 	setGold(_gold);
 	setType(_type);
 	in.close();
