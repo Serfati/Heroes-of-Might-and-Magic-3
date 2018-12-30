@@ -15,9 +15,12 @@ void Zombie::specialAbility(Creature &c){
 	if(1 == c.getType())
 		this->attackPoints+=attackPoints;}
 
-void Zombie::attackAnother(Creature &c){
+int Zombie::attackAnother(Creature &c) {
 	cout<<"zombie go for attack"<<endl;
+	int ratio;
+	this->specialAbility(c);
+	ratio = getAttackPoints() / c.getDefendPoints();
+	return ratio;
 }
 CreatureType Zombie::getType(){return zombie;}
-
 Zombie::~Zombie() {}

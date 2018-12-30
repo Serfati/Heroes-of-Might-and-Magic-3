@@ -22,32 +22,30 @@ Hero::Hero(Hero& another)
 Hero::Hero( Type type, string name , Army* army ,bool live , int gold )
 {
 	if (name.length() > 31 || gold < 0 || gold > 2500 || name.length() < 0)
-		throw std::invalid_argument("received invalid user values! try again.");
+		throw std::invalid_argument("received invalid user arguments! try again.");
 
 	setName(name);
 	mkdir();
-	name = getName()+"/Hero_Deatils";
-	name += ".txt";
+	name = getName() + "/Details.txt";
 	ofstream file;
 	file.open(name);
 
 	setType(type);
 	setGold(gold);
-	this->army = new Army();
+	this->army = new (nothrow) Army();
+	if (nullptr == this->army) cout << "Error: memory could not be allocated" << endl;
 	this->isAlive = live;
-	cout << "Hero has been successfully created!" << endl;
 
 	//SAVE
-	file << "isAlive|BD=WZ=ARC=[ ARMY ]=VMP=ZMB=|type|gold;";
+	file << "live|B:W:A:V:Z|type|gold;";
 	file << endl << inLife()  << " " << showArmy() <<" " << type << " " << gold;
 	file.close();
 }
 Hero::Hero(): name("NoNameHero"), type(UnknownType), gold(750), isAlive(1)
 {
-	army = new Army();
+	this->army = new(nothrow) Army();
+	if (nullptr == this->army) cout << "Error: memory could not be allocated" << endl;
 }
-Hero::~Hero()
-{ army->~Army();}
 //^^^^^^^^^^^^^^^^^^ GAME LOGIC ^^^^^^^^^^^^^^^^^^//
 bool Hero::buyCreature(int budget, int creatureType, int quantity)
 {
@@ -144,7 +142,7 @@ bool Hero::addGold(int amount)
 //^^^^^^^^^^^^^^^^ LOAD and SAVE ^^^^^^^^^^^^^^^^^//
 bool Hero::load(string newName)
 {
-	string path = newName+"/Hero_Deatils.txt";
+	string path = newName + "/Details.txt";
 
 	ifstream in;
 	in.open(path);
@@ -180,8 +178,8 @@ bool Hero::load(string newName)
 void Hero::save()
 {
 	ofstream out;
-	out.open(getName()+"/Hero_Deatils.txt");
-	out << "isAlive|BD=WZ=ARC=[ ARMY ]=VMP=ZMB=|type|gold;"<<endl;
+	out.open(getName() + "/Details.txt");
+	out << "live|B:W:A:V:Z|type|gold;" << endl;
 	out << isAlive  << " " << saveArmy() << " " << getType() << " "<< gold;
 }
 string Hero::saveArmy()

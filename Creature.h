@@ -32,7 +32,7 @@ public:
 	virtual ~Creature();
 
 	//^^^^^^^^^^^^^^^^^^ GAME LOGIC ^^^^^^^^^^^^^^^^^^//
-	virtual void attackAnother(Creature &c); //todo
+	virtual int attackAnother(Creature &);
 	virtual void specialAbility(Creature &c);
 	void showCreature();
 
@@ -43,6 +43,14 @@ public:
 	string creaType(int type);
 	int creaTypeByName(string vtype);
 	int getPrice(int type);
+
+	int getAttackPoints() const { return attackPoints; }
+
+	void setAttackPoints(int attackPoints) { Creature::attackPoints = attackPoints; }
+
+	int getDefendPoints() const { return defendPoints; }
+
+	void setDefendPoints(int defendPoints) { Creature::defendPoints = defendPoints; }
 
 protected:
 	int attackPoints;

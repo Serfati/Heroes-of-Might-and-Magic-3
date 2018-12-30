@@ -6,22 +6,28 @@
  */
 
 #include "Army.h"
-#include "string.h"
-#include <iostream>
-#include <string>
+
 using namespace std;
 
 Army::Army()
 {
-	realArmy = {new Zombie(), new Vampire(), new Archer(), new Wizard(), new BlackDragon()};
-	vector<int> vect( 6 ); // emty armyList
-	armyList = vect ;
-	vect.clear();
+	try {
+		realArmy = {new Zombie(), new Vampire(), new Archer(),
+			  		new Wizard(), new BlackDragon()};
+		vector<int> vect(6); // emty armyList
+		armyList = vect;
+		vect.clear();
+	}
+	catch(std::bad_alloc& exc)
+	{
+		cout << exc.what() << endl;
+	}
 }
 bool Army::isDestroyed()
 {
 	return getArmySize()<1;
 }
+
 bool Army::addUnit(int creatureType, int quantity)
 {
 	armyList[creatureType] += quantity; return 1;
@@ -69,7 +75,10 @@ std::string Army::saveArmy()
 	}
 	return saveArmy;
 }
-void Army::buildArmy(int BD ,int WZ,int ARC,int VMP,int ZMB)
+
+void Army::buildArmy(int BD, int WZ, int ARC, int VMP, int ZMB)
 {
 	armyList[4]=BD; armyList[3]=WZ; armyList[2]=ARC; armyList[1]=VMP; armyList[0]=ZMB;
+    realArmy = {new Zombie(), new Vampire(), new Archer(),
+                new Wizard(), new BlackDragon()};
 }

@@ -10,9 +10,14 @@
 BlackDragon::BlackDragon():Creature(9,10,200,blackDragon){}
 //NO SPECIAL
 void BlackDragon::specialAbility(Creature &c){return;}
-void BlackDragon::attackAnother(Creature &c)
+
+int BlackDragon::attackAnother(Creature &c)
 {
     cout << "BlackDragon go for attack" << endl;
+    int ratio;
+    if (c.getType() == 3) c.specialAbility(*this);
+    ratio = getAttackPoints() / c.getDefendPoints();
+    return ratio;
 
 }
 CreatureType BlackDragon::getType(){return blackDragon;}

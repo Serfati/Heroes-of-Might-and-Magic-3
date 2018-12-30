@@ -18,7 +18,8 @@ public:
 	Zombie();
 
 	virtual ~Zombie();
-	void attackAnother(Creature &c);
+
+	int attackAnother(Creature &c);
 	void specialAbility(Creature &c);
 	int getCost(){return 50;}
 	string displayType(){return "Zombie";}

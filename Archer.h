@@ -17,7 +17,8 @@ class Archer: public Creature{
 public:
 	Archer();
 	virtual ~Archer();
-	void attackAnother(Creature &c);
+
+	int attackAnother(Creature &c);
 	void specialAbility(Creature &c);
 	int getCost(){return 80;}
 	string displayType(){return "Archer";}

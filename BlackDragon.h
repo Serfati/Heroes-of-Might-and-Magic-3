@@ -18,7 +18,8 @@ public:
 	BlackDragon();
 
 	virtual ~BlackDragon();
-	void attackAnother(Creature &c);
+
+    int attackAnother(Creature &c);
 	void specialAbility(Creature &c);
 	int getCost(){return 200;}
 	string displayType(){return "Black_Dragon";}

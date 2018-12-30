@@ -16,7 +16,8 @@ class Wizard: public Creature {
 public:
 	Wizard();
 	virtual ~Wizard();
-	void attackAnother(Creature &c);
+
+    int attackAnother(Creature &c);
 	void specialAbility(Creature &c);
 	int getCost(){return 150;}
 	string displayType(){return "Wizard";}

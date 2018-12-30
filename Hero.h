@@ -29,34 +29,39 @@ class Hero{
 public:
 	//^^^^^^^^^^ Constructors and Destructor ^^^^^^^^^^//
     Hero();
-	Hero(Hero&);
-	Hero(Type , string , Army* a = NULL  ,bool live = true, int gold = 750);
-	virtual ~Hero();
+
+    Hero(Hero &);
+
+    Hero(Type, string, Army *a = nullptr, bool live = true, int gold = 750);
+	virtual ~Hero(){ army->~Army();}
 
 	//Load and Save
-	bool load(string name);
+    bool load(string);
 	void save();
     string saveArmy();
 	bool mkdir();
 	void rmdir();
 
 	//^^^^^^^^^^^^^^^^^^ GAME LOGIC ^^^^^^^^^^^^^^^^^^//
-	bool attackEnemy(Hero &enemy);
-	bool buyCreature(int budget, int creatureType, int quantity);
+    bool attackEnemy(Hero &enemy);
+
+    bool buyCreature(int budget, int creatureType, int quantity);
 	void showHero();
     void showHeroFight();
 	string showArmy();
-    bool addGold(int );
 
+    bool addGold(int);
 
 	//Virtuals
 	void getDailyGold(){ addGold (100);}
 	virtual bool specialAbility(Hero& );
 
 	//Getters and Setters
-	void setType(int);
-	void setGold(int);
-	bool setName(const string);
+    void setType(int);
+
+    void setGold(int);
+
+    bool setName(const string);
 
 	int getGold() const;
 	Type getType();
@@ -65,11 +70,10 @@ public:
 	bool inLife() const{ return isAlive; };
 
 protected:
-	string  name;
+    string name;
 	Type type;
 	int gold;
 	bool isAlive;
 	Army*  army;
-
 };
 #endif /* SOURCE_HERO_H_ */

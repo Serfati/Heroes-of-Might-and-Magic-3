@@ -34,9 +34,11 @@ void Creature::specialAbility(Creature &c)
 {
 	cout << "Just inherit me already" << endl;
 }
-void Creature::attackAnother(Creature &c)
+
+int Creature::attackAnother(Creature &c)
 {
 	 cout << "Just inherit me already" << endl;
+	return -1;
 }
 string Creature::creaType(int vtype)
 {
