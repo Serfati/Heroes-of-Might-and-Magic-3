@@ -21,14 +21,10 @@ int main(int argc , char* argv[]){
         const int warriors = atoi(argv[2]);
         const int thieves = atoi(argv[3]);
         const int Necromancers = atoi(argv[4]);
-        //GameUnit gamePlay = GameUnit(warriors, thieves, Necromancers);
+        GameUnit gamePlay = GameUnit(warriors, thieves, Necromancers);
     }
-    else        /*  Load last Game  */
+    else     /*  Load last Game  */
         GameUnit gamePlay;
-
-    Army a;
-    Hero* s = new Hero (warrior, "Avi", a);
-    s->~Hero();
 
     cout<<"\t...main.cpp END...‬‬"<<endl;
 }

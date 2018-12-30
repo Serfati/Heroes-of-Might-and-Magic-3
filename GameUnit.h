@@ -14,6 +14,7 @@
 #include <algorithm>
 #include <random>
 
+
 #include "Army.h"
 
 #include "Creature.h"
@@ -26,7 +27,7 @@
 #include "Hero.h"
 #include "Thief.h"
 #include "Warrior.h"
-#include "Necomancer.h"
+#include "Necromancer.h"
 
 using namespace std;
 
@@ -43,11 +44,11 @@ public:
 	virtual ~GameUnit();
 
 	//^^^^^^^^^^^^^^^^^^ GAME LOGIC ^^^^^^^^^^^^^^^^^^//
-	GameUnit mainMenu(Hero *);
+	GameUnit mainMenu( Hero *);
 	bool attackMenu( Hero* );
 	int storeMenu();
 	void nextTurn();
-    void kill(Hero*) ;
+    void eraseKilled();
 
 	//^^^^^^^^^^^^^^^^ MAINTENACE ^^^^^^^^^^^^^^^^^/
 	void save();

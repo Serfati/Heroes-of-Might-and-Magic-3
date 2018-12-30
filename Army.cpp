@@ -12,36 +12,28 @@
 using namespace std;
 
 Army::Army() {
-	vector<int> vect( 6 ); // emty army
-	army = vect ;
+	Zombie* zmb = new Zombie();
+	Vampire* vmp = new Vampire();
+	Archer* arc = new Archer();
+	Wizard* wz = new Wizard();
+	BlackDragon* bd = new BlackDragon();
+	realArmy = {zmb, vmp, arc, wz, bd};
+	vector<int> vect( 6 ); // emty armyList
+	armyList = vect ;
 	vect.clear();
-}
-Army::Army(vector <int> army)
-{
-	this->army = army;
 }
 bool Army::isDestroyed()
 {
-	return getArmySize()>0;
+	return getArmySize()<1;
 }
 bool Army::addUnit(int creatureType, int quantity)
 {
-	army[creatureType] += quantity; return 1;
-}
-void Army::eraseKilled()
-{
-	unsigned long size = army.size();
-
-	for (int i = 0; i < size; i++)
-	{
-		if (army[i] <= 0)
-			army.erase(army.begin() + i);
-	}
+	armyList[creatureType] += quantity; return 1;
 }
 int Army::getArmySize(){
 	int size = 0;
-	for (int i = 0; i < army.size(); i++)
-		size += army[i];
+	for(int i : armyList)
+		size += i ;
 	return size;
 }
 string Army::showArmy()
@@ -50,8 +42,8 @@ string Army::showArmy()
 	Creature c ;
 	for (int i = 5; i >= 0 ; i--)
 	{
-		if( army[i] != 0) {
-			showArmy += std::to_string(army[i]);
+		if( armyList[i] != 0) {
+			showArmy += std::to_string(armyList[i]);
 			showArmy += " " + c.creaType(i) ;
 			if(i!=0 )
 				showArmy += " ";
@@ -63,11 +55,15 @@ string Army::showArmy()
 
 	return showArmy;
 }
-Army::~Army() {army.clear();}
+Army::~Army() {
+	for(Creature* i : realArmy)
+		i->~Creature();
+	armyList.clear();
+}
 std::string Army::saveArmy() {
 	std::string saveArmy = "";
 	for (int i = 4; i >= 0; i--) {
-		saveArmy += std::to_string(army[i]);
+		saveArmy += std::to_string(armyList[i]);
 		if (i != 0)
 			saveArmy += " ";
 		else
@@ -76,7 +72,13 @@ std::string Army::saveArmy() {
 	return saveArmy;
 }
 void Army::buildArmy(int BD ,int WZ,int ARC,int VMP,int ZMB){
-	army[4]=BD; army[3]=WZ; army[2]=ARC; army[1]=VMP; army[0]=ZMB;
+	armyList[4]=BD; armyList[3]=WZ; armyList[2]=ARC; armyList[1]=VMP; armyList[0]=ZMB;
+	Zombie* zmb = new Zombie();
+	Vampire* vmp = new Vampire();
+	Archer* arc = new Archer();
+	Wizard* wz = new Wizard();
+	BlackDragon* bd = new BlackDragon();
+	realArmy = {zmb, vmp, arc, wz, bd};
 }
 
 

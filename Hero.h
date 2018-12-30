@@ -14,7 +14,6 @@
 #include "Creature.h"
 #include "Army.h"
 
-
 using namespace std;
 
 enum Type
@@ -51,11 +50,10 @@ public:
 
 
 	//Virtuals
-	void getDailyGold(){ addGold(100); };
-	virtual bool specialAbility();
+	void getDailyGold(){ addGold (100); cout<<"**DayilyGold Added***‬‬"<<endl;} //TODO delete before assaign };
+	virtual bool specialAbility(Hero &);
 
 	//Getters and Setters
-	void setARMY(Army newArmy);
 	void setType(int);
 	void setGold(int);
 	bool setName(const string);
@@ -75,4 +73,9 @@ protected:
 
 };
 
+
+
+
 #endif /* SOURCE_HERO_H_ */
+
+

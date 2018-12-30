@@ -18,8 +18,8 @@ add_executable(src
         Hero.cpp
         Hero.h
         main.cpp
-        Necomancer.cpp
-        Necomancer.h
+        Necromancer.cpp
+        Necromancer.h
         Thief.cpp
         Thief.h
         Vampire.cpp

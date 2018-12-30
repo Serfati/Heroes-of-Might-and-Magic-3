@@ -7,7 +7,6 @@
 
 
 #include "Hero.h"
-#include <exception>
 
 using namespace std;
 
@@ -20,10 +19,10 @@ Hero::Hero(Hero& another)
 	this->army=another.army;
 	isAlive = another.isAlive;;
 }
-Hero::Hero( Type type, string name , Army ,bool live , int gold )
+Hero::Hero( Type type, string name , Army army ,bool live , int gold )
 {
-	if(name.length() > 31 || gold < 0 || gold > 2500 || name.length() < 0 )
-		throw std::invalid_argument( "received invalid values" );
+	if (name.length() > 31 || gold < 0 || gold > 2500 || name.length() < 0)
+		throw std::invalid_argument("received invalid user values! try again.");
 
 	setName(name);
 	mkdir();
@@ -79,7 +78,7 @@ void Hero::showHeroFight()
 	if(showArmy() != "")
 		cout << showArmy() <<endl;
 }
-bool Hero::specialAbility()
+bool Hero::specialAbility(Hero &s)
 {
 	cout << "just inheirit already"<<endl;
 	return true;
@@ -91,19 +90,23 @@ bool Hero::attackEnemy(Hero &enemy)
 	{
 		cout << this->getName() << "'s turn:" << endl;
 		Creature c;
-		getline(cin, line);
-		stringstream ss( line );
-		ss >> attack >> toAttack;
-		if(enemy.army.army[c.creaTypeByName(attack)] < 1
-		|| this->army.army[c.creaTypeByName(toAttack)] < 1) {
-			cout << "throw exception" << endl; //TODO
+		try {
+			getline(cin, line);
+			stringstream ss(line);
+			ss >> attack >> toAttack;
+			if (enemy.army.armyList[c.creaTypeByName(toAttack)] < 1
+				|| this->army.armyList[c.creaTypeByName(attack)] < 1)
+				throw std::invalid_argument("Creature to attack not found!");
+		}
+		catch (std::invalid_argument &e ){
+			cout<< e.what() <<endl;
 			return this->attackEnemy(enemy);
 		}
 
 		//BATTEL+UPADTE
-
-
-
+		//attack!
+		army.realArmy[c.creaTypeByName(attack)]->attackAnother(*(enemy.army.realArmy[c.creaTypeByName(toAttack)]));
+		enemy.save();
 		//SHOW
 		enemy.showHeroFight();
 		this->showHeroFight();
@@ -114,14 +117,14 @@ bool Hero::attackEnemy(Hero &enemy)
 	if(enemy.army.isDestroyed())
 	{
 		cout << "victorious" << endl;
-		army.eraseKilled();
+		this->addGold(enemy.getGold());
 		enemy.rmdir();
 		return 1;
 	}
 	if(army.isDestroyed())
 	{
 		cout << "You have been perished" << endl;
-		enemy.army.eraseKilled();
+		enemy.addGold(this->getGold());
 		this->rmdir();
 		return 0;
 	}
@@ -131,10 +134,9 @@ bool Hero::addGold(int amount)
 {
 	if(isAlive){
 		if(gold + amount < 2500)
-			this->gold+=100;
+			this->gold += amount;
 		else
 			gold = 2500;
-		cout<<"**Gold Added***‬‬"<<endl; //TODO delete before assaign
 		return true;
 	}
 	return false;
@@ -142,8 +144,6 @@ bool Hero::addGold(int amount)
 //^^^^^^^^^^^^^^^^ LOAD and SAVE ^^^^^^^^^^^^^^^^^//
 bool Hero::load(string newName)
 {
-	setName(newName);
-
 	string path = newName+"/Hero_Deatils.txt";
 
 	ifstream in;
@@ -151,7 +151,7 @@ bool Hero::load(string newName)
 
 	if (!in)
 	{
-		cout << "Error reading from file..." << endl;
+		cout << "HERO: Error reading from file..." << endl;
 		return 0;
 	}
 
@@ -168,7 +168,7 @@ bool Hero::load(string newName)
 	int ZMB;
 
 	in  >> _isA  >> BD  >> WZ  >> ARC  >> VMP  >> ZMB  >> _type >> _gold;
-
+	//TODOTODO - Hero Type!
 	army.buildArmy(BD,WZ,ARC,VMP,ZMB);
 	this->isAlive = _isA;
 	setGold(_gold);
@@ -190,10 +190,13 @@ string Hero::saveArmy()
 }
 bool Hero::mkdir()
 {
+	errno = 0;
 	try {
 		string comand = "mkdir " + getName();
 		const char *runComand = comand.c_str();
-		system(runComand);
+		int dir_result = system(runComand);
+		if(dir_result != 0 && errno != EEXIST)
+			return 0;
 	}
 	catch (std::exception & e)
 	{
@@ -225,7 +228,7 @@ bool Hero::setName(const string nName)
 }
 void Hero::setGold(int newBudget)
 {
-	if(newBudget>0 && newBudget<2500)
+	if(newBudget > 0 && newBudget < 2500)
 		this->gold = newBudget;
 }
 void Hero::setType(int type)
@@ -268,7 +271,7 @@ string Hero::displayType()
 			return "Thief";
 
 		case 2:
-			return "Necomancer";
+			return "Necromancer";
 
 		default:
 			return "UnknownType";

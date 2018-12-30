@@ -9,6 +9,11 @@
 #include<string>
 #include<vector>
 #include "Creature.h"
+#include "Vampire.h"
+#include "Archer.h"
+#include "BlackDragon.h"
+#include "Zombie.h"
+#include "Wizard.h"
 
 using namespace std;
 
@@ -25,9 +30,9 @@ public:
 	void buildArmy(int,int,int,int,int);
 	~Army();
 
-
 public:
-	vector <int> army;
+	vector <int> armyList;
+	vector <Creature*> realArmy;
 };
 
 

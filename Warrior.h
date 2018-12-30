@@ -18,7 +18,7 @@ public:
 	Warrior();
 	Warrior( string name );
 	Warrior(Warrior& another);
-	virtual bool specialAbility();
+	virtual bool specialAbility(Hero &);
 	virtual ~Warrior();
 };
 

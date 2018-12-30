@@ -1,5 +1,5 @@
 /*
- * Necomancer.h
+ * Necromancer.h
  *
  *  Created on: Dec 24, 2018
  *      Author: serfati
@@ -14,13 +14,13 @@
 
 using namespace std;
 
-class Necomancer: public Hero {
+class Necromancer: public Hero {
 public:
-	Necomancer(){setType(necomancer);}
-	Necomancer( string name );
-	Necomancer(Necomancer& another);
-	virtual bool specialAbility();
-	~Necomancer();
+	Necromancer(){setType(necomancer);}
+	Necromancer( string name );
+	Necromancer(Necromancer& another);
+	virtual bool specialAbility(Hero &);
+	~Necromancer();
 };
 
 

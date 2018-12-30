@@ -40,7 +40,6 @@ public:
 	virtual CreatureType getType(){return cType;}
 	virtual int getCost(){return -1;}
 	virtual string displayType(){return "Unknown";}
-	void setType(int type);
 	string creaType(int type);
 	int creaTypeByName(string vtype);
 	int getPrice(int type);

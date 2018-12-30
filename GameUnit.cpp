@@ -11,77 +11,71 @@ static int roundNumber = 0;
 //^^^^^^^^^^ Constructors and Destructor ^^^^^^^^^^//
 GameUnit::GameUnit()
 {
-
-    // First Level
     cout<<"Loading...‬‬"<<endl;
 
     //TODO load game;
-    // First Level
-    string path = "game/Game_Deatils";
-    path += ".txt";
+    string path = "game/Game_Deatils.txt";
     ifstream in;
     in.open(path);
     if (!in)
-        cout << "Error reading from file..." << endl;
-
+        cout << "GD: Error reading from file..." << endl;
     string cleanHeader;
     getline(in, cleanHeader, ';');
-
-    string HN;
-    in  >> HN >> currentTurn >> ::roundNumber >> ::numberOfPlayers;
-
-
-    // Second Level
-    vector<string> HeroesNames;
-    path = "game/Real_Order.txt";
-    in.open(path);
-    if (!in)
-        cout << "Error reading from file..." << endl;
-    getline( in, cleanHeader, ';');
-    string word;
-    while( in >> word )
-        HeroesNames.push_back(word);
+    in  >> currentTurn >> ::roundNumber >> ::numberOfPlayers;
     in.close();
 
+    // Second Level
+    path = "game/Real_Order.txt";
+    ifstream ina;
+    vector<string> HeroesNames;
+    ina.open(path);
+    if (!ina)
+        cout << "RO: Error reading from file..." << endl;
+    getline( ina, cleanHeader, ';');
+    string word;
+    while( ina >> word )
+        HeroesNames.push_back(word);
+    ina.close();
 
     for (std::string i : HeroesNames) {
-        Hero *s = new Hero(); //TODO
+        Hero *s = nullptr;
         s->load(i);
         realOrder.push_back(s);
     }
+    turnOrder = realOrder;
+    shuffle();
+    mainMenu(turnOrder[currentTurn]);
 }
 GameUnit::GameUnit (const int w,const int t,const int n)
 {
     std::cout<<"/* 	welcome to  Heroes of Might and Magic® 3  */"<<endl;
-
     rmdir(); //TODO delete all hero folders
     string _name;
-    for (int i = 0; i < w; ++i) {
-        std::cout<<"Please insert warrior number "<< i+1 << " name:"<<endl;
-        getline(cin, _name);
-        realOrder.push_back(new Warrior(_name));
+    try{
+        for (int i = 0; i < w; ++i) {
+            std::cout<<"Please insert warrior number "<< i+1 << " name:"<<endl;
+            getline(cin, _name);
+            realOrder.push_back(new Warrior(_name));
+        }
+        for (int i = 0; i < t; ++i) {
+            std::cout<<"Please insert thief name number "<< i+1 << " name:"<<endl;
+            getline(cin, _name);
+            realOrder.push_back(new Thief(_name));
+        }
+        for (int i = 0; i < n; ++i) {
+            std::cout<<"Please insert necomancer number "<< i+1 << " name:"<<endl;
+            getline(cin, _name);
+            realOrder.push_back(new Necromancer(_name));
+        }
     }
-    for (int i = 0; i < t; ++i) {
-        std::cout<<"Please insert thief name number "<< i+1 << " name:"<<endl;
-        getline(cin, _name);
-        realOrder.push_back(new Thief(_name));
-    }
-    for (int i = 0; i < n; ++i) {
-        std::cout<<"Please insert necomancer number "<< i+1 << " name:"<<endl;
-        getline(cin, _name);
-        realOrder.push_back(new Necomancer(_name));
+    catch (std::invalid_argument &e ) {
+        cout << e.what() << endl;
     }
     ::numberOfPlayers = w+t+n;
     ::roundNumber ++;
     turnOrder = realOrder; /*  just a pointer to a shuffled realOrder    */
     std::cout<<" ^=^=^=^= [ Enjoy your game ] ^=^=^=^= "<<endl;
-    try {
-        mkdir();    shuffle();      save();
-    }
-    catch (__exception_ptr::exception_ptr) {
-        cout << " ^=^=^=^= CATCH ^=^=^=^= " << endl;
-    }
-
+    mkdir();    shuffle();      save();
     this->currentTurn = 0;
     mainMenu(turnOrder[currentTurn]);
 }
@@ -94,10 +88,10 @@ GameUnit::~GameUnit()
 GameUnit GameUnit::mainMenu(Hero *turn)
 {
     if(turn->inLife()){
-        bool isTurnRun = true, got = 0;
-        string  index;
+        bool isTurnRun = 1, got = 0;
+        string  index;string toRob;
         int choosenType;
-        Creature c;
+        Creature c; Hero *ptr = nullptr;
         while ( isTurnRun  ) {
             cout << "What is your next step in the path to victory?" << endl;
             cout << "‫‪1. Attack‬‬" << endl;
@@ -122,18 +116,22 @@ GameUnit GameUnit::mainMenu(Hero *turn)
                     break;
 
                 case 2:    /*	Get daily gold	*/
-                    if(!got)
-                        turn->getDailyGold();
-                    got= 1;
+                    if(!got) turn->getDailyGold();  got= 1;
                     break;
 
                 case 3: /*	Buy creatures	*/
-                    choosenType = storeMenu();
-                    int count; cout << "How many please?" << endl;
-                    cin >> count;
-                    if(c.getPrice(choosenType)*count > turn->getGold())
-                        cout << "throw std::invalid_argument(Invalid syntax)‬‬" << endl;
-                    turn->buyCreature(turn->getGold(), choosenType, count);
+                    try {
+                        choosenType = storeMenu();
+                        int count;
+                        cout << "How many please?" << endl;
+                        cin >> count;
+                        if (c.getPrice(choosenType) * count > turn->getGold())
+                            throw std::invalid_argument("Not enough gold!");
+                        turn->buyCreature(turn->getGold(), choosenType, count);
+                    }
+                    catch (std::invalid_argument &e ){
+                        cout<< e.what() <<endl;
+                    }
                     break;
 
                 case 4:    /*	Show details	*/
@@ -141,7 +139,23 @@ GameUnit GameUnit::mainMenu(Hero *turn)
                     break;
 
                 case 5:    /*	Special skill‬‬‬‬	*/
-                    turn->specialAbility();
+
+                    try {
+                        if(turn->getType() == thief) {
+                            std::cout << "Please insert hero name:" << endl;
+                            cin >> toRob;
+                            ptr = getHeroByName(toRob);
+                            if (ptr == NULL)
+                                throw std::invalid_argument("Hero to rob not found! try again.");
+                            turn->specialAbility(*ptr); //TODO exception handle
+                            break;
+                        }
+
+                    }
+                    catch (std::invalid_argument &e ){
+                        cout<< e.what() <<endl;
+                    }
+                    turn->specialAbility(*ptr);
                     break;
 
                 case 6:    /*	End of my turn	*/
@@ -152,7 +166,7 @@ GameUnit GameUnit::mainMenu(Hero *turn)
 
                 case 7: /* 	‫‪Exit‬‬‬‬  */
                     save();
-                    this->~GameUnit();
+                    close();
                     return *this;
 
                 default:
@@ -165,34 +179,37 @@ GameUnit GameUnit::mainMenu(Hero *turn)
 }
 bool GameUnit::attackMenu(Hero* me)
 {
-    Hero *ptr;
-    string heroToAttack = "" , index = "";
+    Hero *ptr = nullptr;
+    string heroToAttack = "" ,index;
 
     while ( 1 > 0 ) {
         cout<<"‫‪1. Show me my opponents"<<endl;
         cout<<"2. Attack Hero"<<endl;
-        if(getline ( cin, index ) && index.empty() && cin.get() == '\n') //pressed Enter
-            return 0;
+        cin>>index;
         int choice = atoi(index.c_str());
-        if (index.empty())
-            return 0;
         switch( choice )
         {
             case 1:	/*	Show me my opponents	*/
                 showHeroes();
                 break;
             case 2:	/*  Attack Hero by name	   */
-                cout<<"Please insert your opponent name:"<<endl;
-                cin >> heroToAttack;
-                ptr = getHeroByName(heroToAttack);
-                if(ptr == NULL) {
-                    cout << "throw std::invalid_argument(Invalid syntax)‬‬" << endl;
-                    return 0; //TODO
+                try {
+                    cout << "Please insert your opponent name:" << endl;
+                    cin >> heroToAttack;
+                    ptr = getHeroByName(heroToAttack);
+                    if (ptr == NULL)
+                        throw std::invalid_argument("Hero not found! try again.");
+                }
+                catch (std::invalid_argument &e ){
+                    cout<< e.what() <<endl;
+                    return 0;
                 }
                 me->showHeroFight();
                 ptr->showHeroFight(); //TODO
                 me->attackEnemy(*ptr);
                 ::numberOfPlayers--;
+                eraseKilled();
+                delete ptr;
                 return 1;
             default:
                 return 0;
@@ -202,6 +219,7 @@ bool GameUnit::attackMenu(Hero* me)
 }
 int GameUnit::storeMenu()
 {
+    Creature c;
     string  index;
     while ( 1 > 0 ) {
         cout<<"‫‪1. Buy Zombies."<<endl;
@@ -228,12 +246,6 @@ int GameUnit::storeMenu()
         }
     }
 }
-void GameUnit::kill(Hero* toKill)
-{
-    toKill->kill();
-    //delete from real and turn orders//
-    ::numberOfPlayers--;
-}
 void GameUnit::nextTurn()
 {
     int check = currentTurn;
@@ -247,6 +259,20 @@ void GameUnit::nextTurn()
         mainMenu(turnOrder[currentTurn]);
     }
 }
+void  GameUnit::eraseKilled()
+{
+    unsigned long size = realOrder.size();
+
+    for (int i = 0; i < size; i++)
+    {
+        if (realOrder[i]->inLife() == 0 || realOrder[i]->showArmy() == "") {
+            realOrder[i]->rmdir();
+            realOrder.erase(realOrder.begin() + i);
+            turnOrder.erase(realOrder.begin() + i);
+        }
+    }
+    turnOrder.shrink_to_fit();
+}
 //^^^^^^^^^^^^^^^^ MAINTENACE ^^^^^^^^^^^^^^^^^//
 void  GameUnit::save()
 {
@@ -256,15 +282,17 @@ void  GameUnit::save()
     ofstream out;
     out.open("game/Game_Deatils.txt");
     out << "=[ Heroes Names ]= | TURN | Round# | #OP;"<<endl;
-    out << getTurnOrder()  << " " << currentTurn << " " << ::roundNumber << " " <<::numberOfPlayers;
+    out << currentTurn << " " << ::roundNumber << " " <<::numberOfPlayers << endl;
+    out << getTurnOrder() ;
 
     for (int i = 0; i < ::numberOfPlayers; ++i)
-        HeroesNames += realOrder[i]->getName()+",";
+        HeroesNames += realOrder[i]->getName()+" ";
+    ofstream out2;
+    out2.open("game/Real_Order.txt");
+    out2 << "=[ Heroes Names ]=;"<<endl;
+    out2 << HeroesNames;
 
-    out.open("game/Real_Order.txt");
-    out << "=[ Heroes Names ]=;"<<endl;
-    out << HeroesNames;
-
+    out2.close();
     out.close();
 }
 bool GameUnit::mkdir()
@@ -300,7 +328,8 @@ void GameUnit::rmdir()
     for (Hero* i : realOrder)
         i->~Hero();
 }
-void GameUnit::close(){
+void GameUnit::close()
+{
     for (Hero* i : realOrder) {
         i->rmdir();
         i->~Hero();
@@ -314,7 +343,7 @@ string GameUnit::getTurnOrder( )
 {
     string turnList = "";
     for (Hero* i : turnOrder )
-        turnList += i->getName() +",";
+        turnList += i->getName() +" ";
     return turnList;
 }
 Hero* GameUnit::getHeroByName( string heroName )
@@ -333,5 +362,3 @@ void GameUnit::showHeroes( )
         }
     }
 }
-
-

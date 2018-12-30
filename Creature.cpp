@@ -38,29 +38,6 @@ void Creature::attackAnother(Creature &c)
 {
 	 cout << "Just inherit me already" << endl;
 }
-void Creature::setType(int type)
-{
-	switch (type)
-	{
-	case 0:
-		this->cType = zombie;
-		break;
-	case 1:
-		this->cType = archer;
-		break;
-	case 2:
-		this->cType = vampire;
-		break;
-	case 3:
-		this->cType = wizard;
-		break;
-	case 4:
-		this->cType = blackDragon;
-		break;
-	default:
-		this->cType = Unknown;
-	}
-}
 string Creature::creaType(int vtype)
 {
 	switch (vtype)

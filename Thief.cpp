@@ -14,13 +14,19 @@ Thief::Thief( string name ) : Hero(thief, name ,army ){}
 Thief::Thief(Thief &another) :Hero(another){}
 
 //TODO need to thief from another user/
-bool Thief::specialAbility()
+bool Thief::specialAbility(Hero &toRob)
 {
 	if(isAlive){
-	string toRob;
-	std::cout<<"Please insert hero name:"<<endl; getline(cin, toRob);
-		std::cout<<"TODO"<<endl;
-		 return 1;
+		if(toRob.getGold() > 70) {
+			this->addGold(350);
+			toRob.setGold(toRob.getGold() - 70);
+			return 1;
+		}
+		else {
+			addGold(toRob.getGold());
+			toRob.setGold(0);
+			return 1;
+		}
 	 }
 	std::cout<<"You died!"<<endl;
 	 return 0;

@@ -17,7 +17,7 @@ public:
 	Thief(){setType(thief);}
 	Thief( string name );
 	Thief(Thief& another);
-	virtual bool specialAbility();
+	virtual bool specialAbility(Hero &toRob);
 	virtual ~Thief();
 };
 
