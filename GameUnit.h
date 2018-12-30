@@ -29,39 +29,50 @@ using namespace std;
 
 class GameUnit {
 
-	//^^^^^^^^^^ STATIC VARs ^^^^^^^^^^//
-	static int numberOfPlayers;
-	static int roundNumber;
+    //^^^^^^^^^^ STATIC VARs ^^^^^^^^^^//
+    static int numberOfPlayers;
+    static int roundNumber;
 
 public:
-	//^^^^^^^^^^ Constructors and Destructor ^^^^^^^^^^//
-	GameUnit (); // Load Last Game
-	GameUnit( const int , const int , const int );
-	virtual ~GameUnit();
+    //^^^^^^^^^^ Constructors and Destructor ^^^^^^^^^^//
+    GameUnit (); // Load Last Game
+    GameUnit (const int , const int , const int);
 
-	//^^^^^^^^^^^^^^^^^^ GAME LOGIC ^^^^^^^^^^^^^^^^^^//
-	GameUnit mainMenu( Hero *);
-	bool attackMenu( Hero* );
-	int storeMenu();
-	void nextTurn();
-    void eraseKilled();
+    virtual ~GameUnit ();
 
-	//^^^^^^^^^^^^^^^^ MAINTENACE ^^^^^^^^^^^^^^^^^/
-	void save();
-	bool mkdir();
-	void shuffle();
-    void rmdir();
-	void close();
+    //^^^^^^^^^^^^^^^^^^ GAME LOGIC ^^^^^^^^^^^^^^^^^^//
+    GameUnit mainMenu (Hero *);
 
-	//^^^^^^^^^^^^^^ Getters and Setters ^^^^^^^^^^^^^^//
-	Hero* getHeroByName( string );
-	string getTurnOrder() ;
-	void showHeroes();
+    bool attackMenu (Hero *);
+
+    int storeMenu ();
+
+    void nextTurn ();
+
+    void eraseKilled ();
+
+    //^^^^^^^^^^^^^^^^ MAINTENACE ^^^^^^^^^^^^^^^^^/
+    void save ();
+
+    bool mkdir ();
+
+    void shuffle ();
+
+    void rmdir ();
+
+    void close ();
+
+    //^^^^^^^^^^^^^^ Getters and Setters ^^^^^^^^^^^^^^//
+    Hero *getHeroByName (string);
+
+    string getTurnOrder ();
+
+    void showHeroes ();
 
 private:
-	vector<Hero*> realOrder;
-	vector<Hero*> turnOrder; //just a pointer to a shuffled realOrder
-	int currentTurn; // index in turnOrder
+    vector<Hero *> realOrder;
+    vector<Hero *> turnOrder; //just a pointer to a shuffled realOrder
+    int currentTurn; // index in turnOrder
 };
 
 #endif /* HEROS_GAMEUNIT_H_ */

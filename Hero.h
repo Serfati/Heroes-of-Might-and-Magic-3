@@ -8,80 +8,87 @@
 #define SOURCE_HERO_H_
 
 #include <iostream>
-#include <iostream>
 #include<fstream>
 #include <sstream>
-#include <vector>
-#include <algorithm>
 
 #include "Creature.h"
 #include "Army.h"
-#include "Vampire.h"
-#include "Archer.h"
-#include "BlackDragon.h"
-#include "Zombie.h"
-#include "Wizard.h"
 
 using namespace std;
 
-enum Type
-{
-	warrior,       // 0
-	thief,        // 1
-	necromancer, // 2
-	UnknownType // 3
+enum Type {
+    warrior ,       // 0
+    thief ,        // 1
+    necromancer , // 2
+    UnknownType // 3
 };
 
-class Hero{
+class Hero {
 
 public:
-	//^^^^^^^^^^ Constructors and Destructor ^^^^^^^^^^//
-    Hero();
+    //^^^^^^^^^^ Constructors and Destructor ^^^^^^^^^^//
+    Hero ();
 
-    Hero(Hero &);
+    Hero (Hero &);
 
-    Hero(Type, string, Army *a = nullptr, bool live = true, int gold = 750);
-	virtual ~Hero(){ army->~Army();}
+    Hero (Type , string , Army *a = NULL , bool live = true , int gold = 750);
 
-	//Load and Save
-    bool load(string);
-	void save();
-    string saveArmy();
-	bool mkdir();
-	void rmdir();
+    virtual ~Hero () { army->~Army (); }
 
-	//^^^^^^^^^^^^^^^^^^ GAME LOGIC ^^^^^^^^^^^^^^^^^^//
-    bool attackEnemy(Hero &enemy);
+    //Load and Save
+    bool load (string name);
 
-    bool buyCreature(int budget, int creatureType, int quantity);
-	void showHero();
-    void showHeroFight();
-	string showArmy();
+    void save ();
 
-    bool addGold(int);
+    string saveArmy ();
 
-	//Virtuals
-	void getDailyGold(){ addGold (100);}
-	virtual bool specialAbility(Hero& );
+    bool mkdir ();
 
-	//Getters and Setters
-    void setType(int);
+    void rmdir ();
 
-    void setGold(int);
+    //^^^^^^^^^^^^^^^^^^ GAME LOGIC ^^^^^^^^^^^^^^^^^^//
+    bool attackEnemy (Hero &enemy);
 
-    bool setName(const string);
+    bool buyCreature (int budget , int creatureType , int quantity);
 
-	int getGold() const;
-	Type getType();
-	string displayType();
-	string getName();
-	bool inLife() const{ return isAlive; };
+    void showHero ();
+
+    void showHeroFight ();
+
+    string showArmy ();
+
+    bool addGold (int);
+
+
+    //Virtuals
+    void getDailyGold () { addGold (100); }
+
+    virtual bool specialAbility (Hero &);
+
+    //Getters and Setters
+    void setType (int);
+
+    void setGold (int);
+
+    bool setName (const string);
+
+    int getGold () const;
+
+    Type getType ();
+
+    string displayType ();
+
+    string getName ();
+
+    bool inLife () const { return isAlive; };
 
 protected:
     string name;
-	Type type;
-	int gold;
-	bool isAlive;
-	Army*  army;
+    Type type;
+    int gold;
+    bool isAlive;
+    Army *army;
+
 };
+
 #endif /* SOURCE_HERO_H_ */
