@@ -9,7 +9,7 @@
 
 using namespace std;
 
-Thief::Thief( string name ) : Hero(thief, name ,army ){}
+Thief::Thief( string name ) : Hero(thief, name){}
 
 Thief::Thief(Thief &another) :Hero(another){}
 
@@ -32,5 +32,3 @@ bool Thief::specialAbility(Hero &toRob)
 	 return 0;
  }
 Thief::~Thief() {}
-
-

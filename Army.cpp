@@ -11,13 +11,9 @@
 #include <string>
 using namespace std;
 
-Army::Army() {
-	Zombie* zmb = new Zombie();
-	Vampire* vmp = new Vampire();
-	Archer* arc = new Archer();
-	Wizard* wz = new Wizard();
-	BlackDragon* bd = new BlackDragon();
-	realArmy = {zmb, vmp, arc, wz, bd};
+Army::Army()
+{
+	realArmy = {new Zombie(), new Vampire(), new Archer(), new Wizard(), new BlackDragon()};
 	vector<int> vect( 6 ); // emty armyList
 	armyList = vect ;
 	vect.clear();
@@ -30,7 +26,8 @@ bool Army::addUnit(int creatureType, int quantity)
 {
 	armyList[creatureType] += quantity; return 1;
 }
-int Army::getArmySize(){
+int Army::getArmySize()
+{
 	int size = 0;
 	for(int i : armyList)
 		size += i ;
@@ -55,12 +52,13 @@ string Army::showArmy()
 
 	return showArmy;
 }
-Army::~Army() {
-	for(Creature* i : realArmy)
-		i->~Creature();
+Army::~Army()
+{
+	realArmy.clear();
 	armyList.clear();
 }
-std::string Army::saveArmy() {
+std::string Army::saveArmy()
+{
 	std::string saveArmy = "";
 	for (int i = 4; i >= 0; i--) {
 		saveArmy += std::to_string(armyList[i]);
@@ -71,15 +69,7 @@ std::string Army::saveArmy() {
 	}
 	return saveArmy;
 }
-void Army::buildArmy(int BD ,int WZ,int ARC,int VMP,int ZMB){
+void Army::buildArmy(int BD ,int WZ,int ARC,int VMP,int ZMB)
+{
 	armyList[4]=BD; armyList[3]=WZ; armyList[2]=ARC; armyList[1]=VMP; armyList[0]=ZMB;
-	Zombie* zmb = new Zombie();
-	Vampire* vmp = new Vampire();
-	Archer* arc = new Archer();
-	Wizard* wz = new Wizard();
-	BlackDragon* bd = new BlackDragon();
-	realArmy = {zmb, vmp, arc, wz, bd};
 }
-
-
-

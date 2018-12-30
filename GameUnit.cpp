@@ -63,7 +63,7 @@ GameUnit::GameUnit (const int w,const int t,const int n)
             realOrder.push_back(new Thief(_name));
         }
         for (int i = 0; i < n; ++i) {
-            std::cout<<"Please insert necomancer number "<< i+1 << " name:"<<endl;
+            std::cout<<"Please insert necromancer number "<< i+1 << " name:"<<endl;
             getline(cin, _name);
             realOrder.push_back(new Necromancer(_name));
         }
@@ -75,8 +75,8 @@ GameUnit::GameUnit (const int w,const int t,const int n)
     ::roundNumber ++;
     turnOrder = realOrder; /*  just a pointer to a shuffled realOrder    */
     std::cout<<" ^=^=^=^= [ Enjoy your game ] ^=^=^=^= "<<endl;
-    mkdir();    shuffle();      save();
     this->currentTurn = 0;
+    mkdir();    shuffle();      save();
     mainMenu(turnOrder[currentTurn]);
 }
 GameUnit::~GameUnit()
@@ -324,16 +324,13 @@ void GameUnit::rmdir()
     {
         cout << "Error deleting directory!n" << endl;
     }
-
-    for (Hero* i : realOrder)
-        i->~Hero();
 }
 void GameUnit::close()
 {
-    for (Hero* i : realOrder) {
+    for (Hero* i : realOrder)
         i->rmdir();
-        i->~Hero();
-    }
+    realOrder.clear();
+    turnOrder.clear();
     rmdir();
     (*this).~GameUnit();
     exit(1);

@@ -4,7 +4,6 @@
  *  Created on: Dec 24, 2018
  *      Author: serfati
  */
-
 #include "Archer.h"
 
 Archer::Archer() : Creature(5,4,90,archer){}

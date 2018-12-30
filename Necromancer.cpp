@@ -8,13 +8,13 @@
 #include "Necromancer.h"
 
 
-Necromancer::Necromancer(string name) : Hero(necomancer, name ,army ){}
+Necromancer::Necromancer(string name) : Hero( necromancer, name ){}
 
 Necromancer::Necromancer(Necromancer &another) :Hero(another){}
 
 bool Necromancer::specialAbility(Hero &s){
 	if (isAlive){
-		 army.addUnit(0 , 1);
+		 army->addUnit(0 , 1);
 		 cout<< "Zombie added ‫‪successfully‬‬"<<endl;
 		 return 1;
 	}

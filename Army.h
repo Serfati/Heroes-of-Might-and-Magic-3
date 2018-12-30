@@ -20,11 +20,9 @@ using namespace std;
 class Army {
 public:
 	Army();
-	Army(vector <int>);
 	bool isDestroyed();
 	bool addUnit(int , int );
 	int getArmySize();
-	void eraseKilled();
 	string showArmy();
 	string saveArmy();
 	void buildArmy(int,int,int,int,int);
@@ -34,6 +32,5 @@ public:
 	vector <int> armyList;
 	vector <Creature*> realArmy;
 };
-
 
 #endif /* ARMY_H_ */

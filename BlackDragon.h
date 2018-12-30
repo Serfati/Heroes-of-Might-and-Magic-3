@@ -25,6 +25,4 @@ public:
 	CreatureType getType();
 
 };
-
-
 #endif /* BLACKDRAGON_H_ */

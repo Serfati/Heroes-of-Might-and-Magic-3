@@ -12,7 +12,7 @@
 
 using namespace std;
 
-class Archer: public Creature {
+class Archer: public Creature{
 
 public:
 	Archer();
@@ -23,6 +23,5 @@ public:
 	string displayType(){return "Archer";}
 	CreatureType getType();
 };
-
 
 #endif /* ARCHER_H_ */

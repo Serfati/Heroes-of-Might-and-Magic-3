@@ -7,13 +7,9 @@
 #ifndef HEROS_GAMEUNIT_H_
 #define HEROS_GAMEUNIT_H_
 
-
 #include <iostream>
-#include <string>
 #include <vector>
 #include <algorithm>
-#include <random>
-
 
 #include "Army.h"
 
@@ -59,7 +55,6 @@ public:
 
 	//^^^^^^^^^^^^^^ Getters and Setters ^^^^^^^^^^^^^^//
 	Hero* getHeroByName( string );
-	string getCurrentTurnName(){ return realOrder[currentTurn]->getName(); }
 	string getTurnOrder() ;
 	void showHeroes();
 

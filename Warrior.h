@@ -17,10 +17,8 @@ class Warrior: public Hero
 public:
 	Warrior();
 	Warrior( string name );
-	Warrior(Warrior& another);
-	virtual bool specialAbility(Hero &);
+	Warrior( Warrior& another );
+	virtual bool specialAbility( Hero& );
 	virtual ~Warrior();
 };
-
-
 #endif /* WARRIOR_H_ */

@@ -16,9 +16,9 @@ using namespace std;
 
 class Necromancer: public Hero {
 public:
-	Necromancer(){setType(necomancer);}
-	Necromancer( string name );
-	Necromancer(Necromancer& another);
+	Necromancer(){ setType(necromancer);}
+	Necromancer( string );
+	Necromancer(Necromancer& );
 	virtual bool specialAbility(Hero &);
 	~Necromancer();
 };

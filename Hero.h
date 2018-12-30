@@ -18,9 +18,9 @@ using namespace std;
 
 enum Type
 {
-	warrior,    // 0
-	thief,      // 1
-	necomancer, // 2
+	warrior,       // 0
+	thief,        // 1
+	necromancer, // 2
 	UnknownType // 3
 };
 
@@ -30,7 +30,7 @@ public:
 	//^^^^^^^^^^ Constructors and Destructor ^^^^^^^^^^//
     Hero();
 	Hero(Hero&);
-	Hero(Type , string , Army ,bool live = true, int gold = 750);
+	Hero(Type , string , Army* a = NULL  ,bool live = true, int gold = 750);
 	virtual ~Hero();
 
 	//Load and Save
@@ -50,8 +50,8 @@ public:
 
 
 	//Virtuals
-	void getDailyGold(){ addGold (100); cout<<"**DayilyGold Added***‬‬"<<endl;} //TODO delete before assaign };
-	virtual bool specialAbility(Hero &);
+	void getDailyGold(){ addGold (100);}
+	virtual bool specialAbility(Hero& );
 
 	//Getters and Setters
 	void setType(int);
@@ -69,13 +69,7 @@ protected:
 	Type type;
 	int gold;
 	bool isAlive;
-	Army  army;
+	Army*  army;
 
 };
-
-
-
-
 #endif /* SOURCE_HERO_H_ */
-
-

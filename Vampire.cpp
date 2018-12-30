@@ -16,4 +16,3 @@ void Vampire::attackAnother(Creature &c) {
 }
 CreatureType Vampire::getType(){return vampire;}
 Vampire::~Vampire(){}
-

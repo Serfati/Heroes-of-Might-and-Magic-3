@@ -13,10 +13,8 @@
 using namespace std;
 
 class Wizard: public Creature {
-
 public:
 	Wizard();
-
 	virtual ~Wizard();
 	void attackAnother(Creature &c);
 	void specialAbility(Creature &c);
@@ -24,6 +22,4 @@ public:
 	string displayType(){return "Wizard";}
 	CreatureType getType();
 };
-
-
 #endif /* WIZARD_H_ */

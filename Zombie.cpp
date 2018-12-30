@@ -18,8 +18,6 @@ void Zombie::specialAbility(Creature &c){
 void Zombie::attackAnother(Creature &c){
 	cout<<"zombie go for attack"<<endl;
 }
-
 CreatureType Zombie::getType(){return zombie;}
 
 Zombie::~Zombie() {}
-

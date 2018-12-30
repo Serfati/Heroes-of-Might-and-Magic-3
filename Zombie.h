@@ -24,6 +24,4 @@ public:
 	string displayType(){return "Zombie";}
 	CreatureType getType();
 };
-
-
 #endif /* ZOMBIE_H_ */

@@ -19,7 +19,7 @@ Hero::Hero(Hero& another)
 	this->army=another.army;
 	isAlive = another.isAlive;;
 }
-Hero::Hero( Type type, string name , Army army ,bool live , int gold )
+Hero::Hero( Type type, string name , Army* army ,bool live , int gold )
 {
 	if (name.length() > 31 || gold < 0 || gold > 2500 || name.length() < 0)
 		throw std::invalid_argument("received invalid user values! try again.");
@@ -33,7 +33,7 @@ Hero::Hero( Type type, string name , Army army ,bool live , int gold )
 
 	setType(type);
 	setGold(gold);
-	this->army =  Army();
+	this->army = new Army();
 	this->isAlive = live;
 	cout << "Hero has been successfully created!" << endl;
 
@@ -44,24 +44,24 @@ Hero::Hero( Type type, string name , Army army ,bool live , int gold )
 }
 Hero::Hero(): name("NoNameHero"), type(UnknownType), gold(750), isAlive(1)
 {
-	army = Army();
+	army = new Army();
 }
 Hero::~Hero()
-{}
+{ army->~Army();}
 //^^^^^^^^^^^^^^^^^^ GAME LOGIC ^^^^^^^^^^^^^^^^^^//
 bool Hero::buyCreature(int budget, int creatureType, int quantity)
 {
 	Creature c;
 	if(quantity<=0 || budget<=0 || creatureType<0)
 		return false;
-	army.addUnit(creatureType, quantity );
+	army->addUnit(creatureType, quantity );
 	this->gold -= c.getPrice(creatureType)*quantity;
 	c.~Creature();
 	return true;
 }
 string Hero::showArmy()
 {
-	return army.showArmy();
+	return army->showArmy();
 }
 void Hero::showHero()
 {
@@ -86,7 +86,7 @@ bool Hero::specialAbility(Hero &s)
 bool Hero::attackEnemy(Hero &enemy)
 {
 	string attack, toAttack , line;
-	if (!enemy.army.isDestroyed() && !army.isDestroyed())
+	if (!enemy.army->isDestroyed() && !army->isDestroyed())
 	{
 		cout << this->getName() << "'s turn:" << endl;
 		Creature c;
@@ -94,8 +94,8 @@ bool Hero::attackEnemy(Hero &enemy)
 			getline(cin, line);
 			stringstream ss(line);
 			ss >> attack >> toAttack;
-			if (enemy.army.armyList[c.creaTypeByName(toAttack)] < 1
-				|| this->army.armyList[c.creaTypeByName(attack)] < 1)
+			if (enemy.army->armyList[c.creaTypeByName(toAttack)] < 1
+				|| this->army->armyList[c.creaTypeByName(attack)] < 1)
 				throw std::invalid_argument("Creature to attack not found!");
 		}
 		catch (std::invalid_argument &e ){
@@ -105,7 +105,7 @@ bool Hero::attackEnemy(Hero &enemy)
 
 		//BATTEL+UPADTE
 		//attack!
-		army.realArmy[c.creaTypeByName(attack)]->attackAnother(*(enemy.army.realArmy[c.creaTypeByName(toAttack)]));
+		army->realArmy[c.creaTypeByName(attack)]->attackAnother(*(enemy.army->realArmy[c.creaTypeByName(toAttack)]));
 		enemy.save();
 		//SHOW
 		enemy.showHeroFight();
@@ -114,14 +114,14 @@ bool Hero::attackEnemy(Hero &enemy)
 	}
 
 	//TODO
-	if(enemy.army.isDestroyed())
+	if(enemy.army->isDestroyed())
 	{
 		cout << "victorious" << endl;
 		this->addGold(enemy.getGold());
 		enemy.rmdir();
 		return 1;
 	}
-	if(army.isDestroyed())
+	if(army->isDestroyed())
 	{
 		cout << "You have been perished" << endl;
 		enemy.addGold(this->getGold());
@@ -168,8 +168,8 @@ bool Hero::load(string newName)
 	int ZMB;
 
 	in  >> _isA  >> BD  >> WZ  >> ARC  >> VMP  >> ZMB  >> _type >> _gold;
-	//TODOTODO - Hero Type!
-	army.buildArmy(BD,WZ,ARC,VMP,ZMB);
+	//TODO - Hero Type!
+	army->buildArmy(BD,WZ,ARC,VMP,ZMB);
 	this->isAlive = _isA;
 	setGold(_gold);
 	setType(_type);
@@ -186,7 +186,7 @@ void Hero::save()
 }
 string Hero::saveArmy()
 {
-	return army.saveArmy();
+	return army->saveArmy();
 }
 bool Hero::mkdir()
 {
@@ -242,7 +242,7 @@ void Hero::setType(int type)
 			this->type = thief;
 			break;
 		case 2:
-			this->type =necomancer;
+			this->type =necromancer;
 			break;
 		default:
 			this->type = UnknownType;
@@ -277,4 +277,3 @@ string Hero::displayType()
 			return "UnknownType";
 	}
 }
-

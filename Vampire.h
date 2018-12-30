@@ -24,6 +24,4 @@ public:
 	string displayType(){return "Vampire";}
 	CreatureType getType();
 };
-
-
 #endif /* VAMPIRE_H_ */

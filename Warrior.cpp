@@ -8,7 +8,7 @@
 #include "Warrior.h"
 
 Warrior::Warrior(){setType(warrior);}
-Warrior::Warrior( string name ) : Hero(warrior, name ,army)
+Warrior::Warrior( string name ) : Hero(warrior, name)
 {}
 Warrior::Warrior(Warrior &another) :Hero(another)
 {}
@@ -23,5 +23,3 @@ bool Warrior::specialAbility(Hero &s)
 }
 Warrior::~Warrior()
 {}
-
-

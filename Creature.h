@@ -51,7 +51,4 @@ protected:
 	CreatureType cType;
 
 };
-
-
-
 #endif /* CREATURE_H_ */

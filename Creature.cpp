@@ -84,7 +84,4 @@ int Creature::getPrice(int vtype)
 		return -1;
 	}
 }
-Creature::~Creature()
-{
-
-}
+Creature::~Creature() {}
