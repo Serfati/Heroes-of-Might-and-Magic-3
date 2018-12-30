@@ -13,7 +13,6 @@ GameUnit::GameUnit()
 {
     cout<<"Loading...‬‬"<<endl;
 
-    //TODO load game;
     string path = "game/Game_Deatils.txt";
     ifstream in;
     in.open(path);
@@ -49,7 +48,7 @@ GameUnit::GameUnit()
 GameUnit::GameUnit (const int w,const int t,const int n)
 {
     std::cout<<"/* 	welcome to  Heroes of Might and Magic® 3  */"<<endl;
-    rmdir(); //TODO delete all hero folders
+    rmdir();
     string _name;
     try{
         for (int i = 0; i < w; ++i) {
@@ -68,13 +67,16 @@ GameUnit::GameUnit (const int w,const int t,const int n)
             realOrder.push_back(new Necromancer(_name));
         }
     }
-    catch (std::invalid_argument &e ) {
-        cout << e.what() << endl;
+    catch (std::invalid_argument &exc ) {
+        cout << exc.what() << endl;
+    }
+    catch(std::bad_alloc &exc)
+    {
+        cout << exc.what() << endl;
     }
     ::numberOfPlayers = w+t+n;
     ::roundNumber ++;
     turnOrder = realOrder; /*  just a pointer to a shuffled realOrder    */
-    std::cout<<" ^=^=^=^= [ Enjoy your game ] ^=^=^=^= "<<endl;
     this->currentTurn = 0;
     mkdir();    shuffle();      save();
     mainMenu(turnOrder[currentTurn]);
@@ -84,7 +86,7 @@ GameUnit::~GameUnit()
     realOrder.clear();
     turnOrder.clear();
 }
-//   ******** Hero Main Menu *********   //
+//   ******** Game Main Menu *********   //
 GameUnit GameUnit::mainMenu(Hero *turn)
 {
     if(turn->inLife()){
@@ -105,18 +107,21 @@ GameUnit GameUnit::mainMenu(Hero *turn)
             int choice = atoi(index.c_str());
             switch (choice) {
                 case 1:    /*	Attack‬‬	*/
-                    if(::roundNumber > -1)
+                    if(::roundNumber > 3)
                         attackMenu(turn);
                     else cout << "Can'nt attack before round 4, You're still on round "<< ::roundNumber << endl;
                     save();
                     if(::numberOfPlayers < 2) { // last player
-                        cout << realOrder[0]->getName() + " is the winner!" << endl; //TODO
+                        cout << realOrder[0]->getName() + " is the winner!" << endl;
                         close();
                     }
                     break;
 
                 case 2:    /*	Get daily gold	*/
-                    if(!got) turn->getDailyGold();  got= 1;
+                    if(!got) {
+                        turn->getDailyGold();
+                        got = 1;
+                    } else cout<< "You already got your daily gold!" << endl;
                     break;
 
                 case 3: /*	Buy creatures	*/
@@ -147,7 +152,7 @@ GameUnit GameUnit::mainMenu(Hero *turn)
                             ptr = getHeroByName(toRob);
                             if (ptr == NULL)
                                 throw std::invalid_argument("Hero to rob not found! try again.");
-                            turn->specialAbility(*ptr); //TODO exception handle
+                            turn->specialAbility(*ptr);
                             break;
                         }
 
@@ -166,7 +171,7 @@ GameUnit GameUnit::mainMenu(Hero *turn)
 
                 case 7: /* 	‫‪Exit‬‬‬‬  */
                     save();
-                    close();
+                    close(); //TODO remove before ass!
                     return *this;
 
                 default:
@@ -205,7 +210,7 @@ bool GameUnit::attackMenu(Hero* me)
                     return 0;
                 }
                 me->showHeroFight();
-                ptr->showHeroFight(); //TODO
+                ptr->showHeroFight();
                 me->attackEnemy(*ptr);
                 ::numberOfPlayers--;
                 eraseKilled();
@@ -268,9 +273,9 @@ void  GameUnit::eraseKilled()
         if (realOrder[i]->inLife() == 0 || realOrder[i]->showArmy() == "") {
             realOrder[i]->rmdir();
             realOrder.erase(realOrder.begin() + i);
-            turnOrder.erase(realOrder.begin() + i);
         }
     }
+    realOrder.shrink_to_fit();
     turnOrder.shrink_to_fit();
 }
 //^^^^^^^^^^^^^^^^ MAINTENACE ^^^^^^^^^^^^^^^^^//
@@ -316,7 +321,8 @@ void GameUnit::shuffle()
 void GameUnit::rmdir()
 {
     try {
-        string comand = "rm -rf game";
+        //string comand = "rm -rf game";
+        string comand ="find * -type d | grep -v \"^CMakeFiles\" | xargs rm -rf" ;
         const char *runComand = comand.c_str();
         system(runComand);
     }

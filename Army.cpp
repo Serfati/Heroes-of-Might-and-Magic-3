@@ -13,10 +13,17 @@ using namespace std;
 
 Army::Army()
 {
-	realArmy = {new Zombie(), new Vampire(), new Archer(), new Wizard(), new BlackDragon()};
-	vector<int> vect( 6 ); // emty armyList
-	armyList = vect ;
-	vect.clear();
+	try {
+		realArmy = {new Zombie(), new Vampire(), new Archer(),
+			  		new Wizard(), new BlackDragon()};
+		vector<int> vect(6); // emty armyList
+		armyList = vect;
+		vect.clear();
+	}
+	catch(std::bad_alloc& exc)
+	{
+		cout << exc.what() << endl;
+	}
 }
 bool Army::isDestroyed()
 {

@@ -31,7 +31,7 @@ public:
     Hero();
 	Hero(Hero&);
 	Hero(Type , string , Army* a = NULL  ,bool live = true, int gold = 750);
-	virtual ~Hero();
+	virtual ~Hero(){ army->~Army();}
 
 	//Load and Save
 	bool load(string name);
@@ -47,7 +47,6 @@ public:
     void showHeroFight();
 	string showArmy();
     bool addGold(int );
-
 
 	//Virtuals
 	void getDailyGold(){ addGold (100);}

@@ -33,9 +33,9 @@ Hero::Hero( Type type, string name , Army* army ,bool live , int gold )
 
 	setType(type);
 	setGold(gold);
-	this->army = new Army();
+	this->army = new (nothrow) Army();
+	if (nullptr == army) cout << "Error: memory could not be allocated";
 	this->isAlive = live;
-	cout << "Hero has been successfully created!" << endl;
 
 	//SAVE
 	file << "isAlive|BD=WZ=ARC=[ ARMY ]=VMP=ZMB=|type|gold;";
@@ -44,10 +44,9 @@ Hero::Hero( Type type, string name , Army* army ,bool live , int gold )
 }
 Hero::Hero(): name("NoNameHero"), type(UnknownType), gold(750), isAlive(1)
 {
-	army = new Army();
+	army = new (nothrow) Army();
+	if (nullptr == army) cout << "Error: memory could not be allocated";
 }
-Hero::~Hero()
-{ army->~Army();}
 //^^^^^^^^^^^^^^^^^^ GAME LOGIC ^^^^^^^^^^^^^^^^^^//
 bool Hero::buyCreature(int budget, int creatureType, int quantity)
 {
