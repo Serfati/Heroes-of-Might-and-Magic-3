@@ -17,7 +17,7 @@ public:
 	Wizard();
 	virtual ~Wizard();
 
-    int attackAnother(Creature &c);
+    double attackAnother(Creature &c);
 	void specialAbility(Creature &c);
 	int getCost(){return 150;}
 	string displayType(){return "Wizard";}

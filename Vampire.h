@@ -19,7 +19,7 @@ public:
 
 	virtual ~Vampire();
 
-    int attackAnother(Creature &c);
+    double attackAnother(Creature &c);
 	void specialAbility(Creature &c);
 	int getCost(){return 90;}
 	string displayType(){return "Vampire";}

@@ -29,10 +29,6 @@ using namespace std;
 
 class GameUnit {
 
-    //^^^^^^^^^^ STATIC VARs ^^^^^^^^^^//
-    static int numberOfPlayers;
-    static int roundNumber;
-
 public:
     //^^^^^^^^^^ Constructors and Destructor ^^^^^^^^^^//
     GameUnit (); // Load Last Game
@@ -53,6 +49,8 @@ public:
 
     //^^^^^^^^^^^^^^^^ MAINTENACE ^^^^^^^^^^^^^^^^^/
     void save ();
+
+    void load (  vector<std::string> );
 
     bool mkdir ();
 

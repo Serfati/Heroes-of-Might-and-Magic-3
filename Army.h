@@ -26,6 +26,7 @@ public:
 	string showArmy();
 	string saveArmy();
 	void buildArmy(int,int,int,int,int);
+	void reBuild();
 	~Army();
 
 public:

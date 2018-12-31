@@ -18,7 +18,7 @@ public:
 	Archer();
 	virtual ~Archer();
 
-	int attackAnother(Creature &c);
+	double attackAnother(Creature &c);
 	void specialAbility(Creature &c);
 	int getCost(){return 80;}
 	string displayType(){return "Archer";}

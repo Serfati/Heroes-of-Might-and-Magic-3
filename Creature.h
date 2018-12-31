@@ -35,7 +35,7 @@ public:
     virtual ~Creature ();
 
     //^^^^^^^^^^^^^^^^^^ GAME LOGIC ^^^^^^^^^^^^^^^^^^//
-    virtual int attackAnother (Creature &);
+    virtual double attackAnother(Creature &c);
 
     virtual void specialAbility (Creature &c);
 

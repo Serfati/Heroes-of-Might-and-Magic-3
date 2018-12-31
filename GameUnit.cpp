@@ -5,13 +5,14 @@
 
 using namespace std;
 
+//^^^^^^^^^^ STATIC VARs ^^^^^^^^^^//
 static int numberOfPlayers = 0;
 static int roundNumber = 0;
 
 //^^^^^^^^^^ Constructors and Destructor ^^^^^^^^^^//
 GameUnit::GameUnit() {
     cout << "Loading...‬‬" << endl;
-
+    // First Level
     string path = "game/Game_Details.txt";
     ifstream in;
     in.open(path);
@@ -19,7 +20,7 @@ GameUnit::GameUnit() {
         cout << "GD: Error reading from file..." << endl;
     string cleanHeader;
     getline(in,cleanHeader,';');
-    in >> currentTurn >> ::roundNumber >> ::numberOfPlayers;
+    in >> GameUnit::currentTurn >> ::roundNumber >> ::numberOfPlayers;
     in.close();
 
     // Second Level
@@ -46,7 +47,7 @@ GameUnit::GameUnit() {
 }
 
 GameUnit::GameUnit(const int w,const int t,const int n) {
-    std::cout << "/* 	welcome to  Heroes of Might and Magic® 3  */" << endl;
+    std::cout << "/*^& 	welcome to  Heroes of Might and Magic® 3  &^*/" << endl;
     rmdir();
     string _name;
     try {
@@ -90,10 +91,10 @@ GameUnit::~GameUnit() {
 //   ******** Game Main Menu *******    //
 GameUnit GameUnit::mainMenu(Hero *turn) {
     if ( turn->inLife()) {
-        bool isTurnRun = 1,got = 0;
+        bool isTurnRun = 1, got = 0, special = 0;
         string index;
         string toRob;
-        int choosenType;
+        int choosenType, count;;
         Creature c;
         Hero *ptr = nullptr;
         while ( isTurnRun ) {
@@ -109,7 +110,7 @@ GameUnit GameUnit::mainMenu(Hero *turn) {
             int choice = atoi(index.c_str());
             switch ( choice ) {
                 case 1:    /*	Attack‬‬	*/
-                    if ( ::roundNumber > 3 )
+                    if ( ::roundNumber > 1 )
                         attackMenu(turn);
                     else cout << "Can'nt attack before round 4, You're still on round " << ::roundNumber << endl;
                     save();
@@ -129,8 +130,7 @@ GameUnit GameUnit::mainMenu(Hero *turn) {
                 case 3: /*	Buy creatures	*/
                     try {
                         choosenType = storeMenu();
-                        int count;
-                        cout << "How many please?" << endl;
+                        //TODO showCreature()
                         cin >> count;
                         if ( c.getPrice(choosenType) * count > turn->getGold())
                             throw std::invalid_argument("Not enough gold!");
@@ -147,22 +147,26 @@ GameUnit GameUnit::mainMenu(Hero *turn) {
 
                 case 5:    /*	Special skill‬‬‬‬	*/
 
-                    try {
-                        if ( turn->getType() == thief ) {
-                            std::cout << "Please insert hero name:" << endl;
-                            cin >> toRob;
-                            ptr = getHeroByName(toRob);
-                            if ( ptr == NULL )
-                                throw std::invalid_argument("Hero to rob not found! try again.");
-                            turn->specialAbility(*ptr);
-                            break;
-                        }
+                    if ( ! special ) {
+                        try {
+                            if ( turn->getType() == thief ) {
+                                std::cout << "Please insert hero name:" << endl;
+                                cin >> toRob;
+                                ptr = getHeroByName(toRob);
+                                if ( NULL == ptr )
+                                    throw std::invalid_argument("Hero to rob not found! try again.");
+                                turn->specialAbility(*ptr);
+                                special = 1;
+                                break;
+                            }
 
-                    }
-                    catch ( std::invalid_argument &e ) {
-                        cout << e.what() << endl;
-                    }
-                    turn->specialAbility(*ptr);
+                        }
+                        catch( std::invalid_argument &e ) {
+                            cout << e.what() << endl;
+                        }
+                        turn->specialAbility(*ptr);
+                        special = 1;
+                    } else cout << "You already used your special ability! wait for next round." << endl;
                     break;
 
                 case 6:    /*	End of my turn	*/
@@ -187,9 +191,9 @@ GameUnit GameUnit::mainMenu(Hero *turn) {
 
 bool GameUnit::attackMenu(Hero *me) {
     Hero *ptr = nullptr;
-    string heroToAttack = "",index;
+    string heroToAttack = "", index;
 
-    while ( 1 > 0 ) {
+    while ( true ) {
         cout << "‫‪1. Show me my opponents" << endl;
         cout << "2. Attack Hero" << endl;
         cin >> index;
@@ -215,7 +219,6 @@ bool GameUnit::attackMenu(Hero *me) {
                 me->attackEnemy(*ptr);
                 ::numberOfPlayers --;
                 eraseKilled();
-                delete ptr;
                 return 1;
             default:
                 return 0;
@@ -283,7 +286,7 @@ void GameUnit::save() {
     for (int i = 0; i < ::numberOfPlayers; ++ i)
         realOrder[i]->save();
     ofstream out;
-    out.open("game/Game_Deatils.txt");
+    out.open("game/Game_Details.txt");
     out << "=[ Heroes Names ]= | TURN | Round# | #OP;" << endl;
     out << currentTurn << " " << ::roundNumber << " " << ::numberOfPlayers << endl;
     out << getTurnOrder();
@@ -297,6 +300,14 @@ void GameUnit::save() {
 
     out2.close();
     out.close();
+}
+
+void GameUnit::load( vector<std::string> _heroes) {
+    for (std::string i : _heroes) {
+        Hero *s = nullptr;
+        s->load(i); //TODO load hero type
+        realOrder.push_back(s);
+    }
 }
 
 bool GameUnit::mkdir() {

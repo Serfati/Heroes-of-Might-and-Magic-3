@@ -12,9 +12,9 @@ Vampire::Vampire() : Creature(4,4,80,vampire){}
 //NO SPECIAL SKILL
 void Vampire::specialAbility(Creature &c){return;}
 
-int Vampire::attackAnother(Creature &c) {
+double Vampire::attackAnother(Creature &c) {
     cout << "Vampire go for attack" << endl;
-    int ratio;
+    double ratio;
     ratio = getAttackPoints() / c.getDefendPoints();
     return ratio;
 }

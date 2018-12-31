@@ -10,6 +10,7 @@
 #include <iostream>
 #include<fstream>
 #include <sstream>
+#include <math.h>
 
 #include "Creature.h"
 #include "Army.h"
@@ -20,7 +21,7 @@ enum Type {
     warrior ,       // 0
     thief ,        // 1
     necromancer , // 2
-    UnknownType // 3
+    UnknownType  // 3
 };
 
 class Hero {
@@ -64,6 +65,7 @@ public:
     void getDailyGold () { addGold (100); }
 
     virtual bool specialAbility (Hero &);
+
 
     //Getters and Setters
     void setType (int);

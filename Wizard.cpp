@@ -14,12 +14,13 @@ void Wizard::specialAbility(Creature &c){
 	if(4 == c.getType())
 		this->defendPoints+=defendPoints;}
 
-int Wizard::attackAnother(Creature &c) {
+double Wizard::attackAnother(Creature &c) {
 	cout << "Wizard go for attack" << endl;
-	int ratio;
+	double ratio;
 	ratio = getAttackPoints() / c.getDefendPoints();
 	return ratio;
 }
+
 CreatureType Wizard::getType(){return wizard;}
 
 Wizard::~Wizard(){}
