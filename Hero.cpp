@@ -20,41 +20,41 @@ Hero::Hero(Hero &another) {
 }
 
 Hero::Hero(Type type,string name,Army *army,bool live,int gold) {
-    if ( name.length() > 31 || gold < 0 || gold > 2500 || name.length() < 0 )
+    if ( name.length() < 31 && gold > 0 && gold < 2500 ) {
+        setName(name);
+        mkdir();
+        name = getName() + "/Details.txt";
+        ofstream file;
+        file.open(name);
+        this->army = new(nothrow) Army();
+        if ( nullptr == this->army ) cout << "Error: memory could not be allocated" << endl;
+        setType(type);
+        setGold(gold);
+        this->isAlive = live;
+
+        //SAVE
+        file << "live|B:W:A:V:Z|type|gold;";
+        file << endl << inLife() << " " << showArmy() << " " << type << " " << gold;
+        file.close();
+    }
+    else
         throw std::invalid_argument("received invalid user arguments! try again.");
-
-    setName(name);
-    mkdir();
-    name = getName() + "/Details.txt";
-    ofstream file;
-    file.open(name);
-    army = new(nothrow) Army();
-    setType(type);
-    setGold(gold);
-    this->army = army;
-    if ( nullptr == this->army ) cout << "Error: memory could not be allocated" << endl;
-    this->isAlive = live;
-
-    //SAVE
-    file << "live|B:W:A:V:Z|type|gold;";
-    file << endl << inLife() << " " << showArmy() << " " << type << " " << gold;
-    file.close();
 }
 
 Hero::Hero() : name("NoNameHero"),type(UnknownType),gold(750),isAlive(1) {
-    this->army = new(nothrow) Army();
+    this->army = new (nothrow) Army();
     if ( nullptr == this->army ) cout << "Error: memory could not be allocated" << endl;
 }
 
 //^^^^^^^^^^^^^^^^^^ GAME LOGIC ^^^^^^^^^^^^^^^^^^//
 bool Hero::buyCreature(int budget,int creatureType,int quantity,int unitPrice) {
     Creature c;
-    if ( quantity <= 0 || budget <= 0 || creatureType < 0 )
-        return false;
-    army->addUnit(creatureType,quantity);
-    this->gold -= unitPrice * quantity;
-    c.~Creature();
-    return true;
+    if ( quantity > 0 && budget > 0 && creatureType >= 0 ) {
+        army->addUnit(creatureType,quantity);
+        this->gold -= unitPrice * quantity;
+        c.~Creature();
+        return true;
+    } else return false;
 }
 
 string Hero::showArmy() {
@@ -72,7 +72,7 @@ void Hero::showHero() {
 void Hero::showHeroFight() {
     cout << getName() << " ";
     cout << displayType() << ":" << endl;
-    if ( showArmy() != "" )
+    if ( showArmy() != "." )
         cout << showArmy() << endl;
 }
 
@@ -91,8 +91,7 @@ bool Hero::attackEnemy(Hero &enemy) {
         /* -~=[  Gets creature to attack and creature to defend  ]=~- */
         do {
             try {
-                cin.ignore();
-                getline(cin,line);
+                getline(cin , line);
                 stringstream ss(line);
                 ss >> attack >> toAttack;
                 if ( enemy.army->armyList[c.creaTypeByName(toAttack)] < 1
@@ -145,18 +144,14 @@ bool Hero::attackEnemy(Hero &enemy) {
 }
 
 bool Hero::addGold(int amount) {
-    if ( isAlive ) {
-        if ( gold + amount < 2500 )
-            this->gold += amount;
-        else
-            gold = 2500;
-        return true;
-    }
-    return false;
+    if ( ! isAlive ) return false;
+    gold + amount < 2500 ? (this->gold += amount) : (gold = 2500);
+    return true;
 }
 
 //^^^^^^^^^^^^^^^^ LOAD and SAVE ^^^^^^^^^^^^^^^^^//
 bool Hero::load(string newName) {
+    setName(newName);
     string path = newName + "/Details.txt";
     ifstream in;
     in.open(path);
@@ -230,8 +225,7 @@ bool Hero::setName(const string nName) {
 }
 
 void Hero::setGold(int newBudget) {
-    if ( newBudget > 0 && newBudget < 2500 )
-        this->gold = newBudget;
+    this->gold = 0 > newBudget ? 0 : 2500 < newBudget ? 2500 : newBudget;
 }
 
 void Hero::setType(int type) {

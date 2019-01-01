@@ -4,7 +4,7 @@
  *  Created on: Dec 24, 2018
  *      Author: serfati
  */
-
+#pragma once
 #ifndef THIEF_H_
 #define THIEF_H_
 

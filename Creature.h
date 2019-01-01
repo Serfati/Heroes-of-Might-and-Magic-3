@@ -4,6 +4,7 @@
  *  Created on: Dec 24, 2018
  *      Author: serfati
  */
+#pragma once
 #ifndef CREATURE_H_
 #define CREATURE_H_
 

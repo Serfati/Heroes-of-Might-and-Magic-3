@@ -4,6 +4,7 @@
  *  Created on: Dec 25, 2018
  *      Author: serfati
  */
+#pragma once
 #ifndef ARMY_H_
 #define ARMY_H_
 

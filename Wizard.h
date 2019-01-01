@@ -4,7 +4,7 @@
  *  Created on: Dec 24, 2018
  *      Author: serfati
  */
-
+#pragma once
 #ifndef WIZARD_H_
 #define WIZARD_H_
 

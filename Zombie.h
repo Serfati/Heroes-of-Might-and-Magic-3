@@ -4,7 +4,7 @@
  *  Created on: Dec 24, 2018
  *      Author: serfati
  */
-
+#pragma once
 #ifndef ZOMBIE_H_
 #define ZOMBIE_H_
 

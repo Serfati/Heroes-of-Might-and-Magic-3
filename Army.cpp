@@ -53,7 +53,8 @@ string Army::showArmy() {
 }
 
 Army::~Army() {
-    realArmy.clear();
+    for(Creature* i : realArmy)
+        delete i;
     armyList.clear();
 }
 
@@ -75,11 +76,12 @@ void Army::buildArmy(int BD,int WZ,int ARC,int VMP,int ZMB) {
     armyList[2] = ARC;
     armyList[1] = VMP;
     armyList[0] = ZMB;
-    realArmy = {new Zombie(),new Vampire(),new Archer(),
-                new Wizard(),new BlackDragon()};
 }
 
 void Army::reBuild() {
-    for (Creature *i :realArmy)
-        i->reset();
+    for(Creature* i : realArmy)
+        delete i;
+    realArmy = {new Zombie(),new Vampire(),new Archer(),
+                new Wizard(),new BlackDragon()};
+
 }

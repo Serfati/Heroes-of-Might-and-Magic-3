@@ -21,7 +21,7 @@ GameUnit::GameUnit() {
     string cleanHeader;
     getline(in,cleanHeader,';');
     in >> GameUnit::currentTurn >> ::roundNumber >> ::numberOfPlayers;
-    in.close();
+   in.close();
 
     // Second Level
     path = "game/Real_Order.txt";
@@ -31,9 +31,11 @@ GameUnit::GameUnit() {
     if ( ! ina )
         cout << "RO: Error reading from file..." << endl;
     getline(ina,cleanHeader,';');
+
     string word;
-    while ( ina >> word )
+    while (ina >> word)
         HeroesNames.push_back(word);
+
     ina.close();
     load(HeroesNames);
     turnOrder = realOrder;
@@ -42,28 +44,52 @@ GameUnit::GameUnit() {
 }
 
 GameUnit::GameUnit(const int w,const int t,const int n) {
-    std::cout << "/*^& 	welcome to  Heroes of Might and Magic® 3  &^*/" << endl;
     rmdir();
     string _name;
     try {
-        for (int i = 0; i < w; ++ i) {
-            std::cout << "Please insert warrior number " << i + 1 << " name:" << endl;
-            getline(cin,_name);
-            realOrder.push_back(new Warrior(_name));
-        }
-        for (int i = 0; i < t; ++ i) {
-            std::cout << "Please insert thief name number " << i + 1 << " name:" << endl;
-            getline(cin,_name);
-            realOrder.push_back(new Thief(_name));
-        }
-        for (int i = 0; i < n; ++ i) {
-            std::cout << "Please insert necromancer number " << i + 1 << " name:" << endl;
-            getline(cin,_name);
-            realOrder.push_back(new Necromancer(_name));
-        }
-    }
-    catch( std::bad_alloc &exc ) {
+        /*      warriors     */
+        do {
+            for (int i = 0; i < w; ++ i) {
+                try {
+                    std::cout << "Please insert warrior number " << i + 1 << " name:" << endl;
+                    getline(cin,_name);
+                    realOrder.push_back(new Warrior(_name));
+                } catch( std::invalid_argument &exc ) {
+                    cout << exc.what() << endl;
+                    i --;
+                }
+            }
+        } while ( _name.length() > 31 );
+        /*      thieves     */
+        do {
+            for (int i = 0; i < t; ++ i) {
+                try {
+                    std::cout << "Please insert thief name number " << i + 1 << " name:" << endl;
+                    getline(cin,_name);
+                    realOrder.push_back(new Thief(_name));
+                } catch( std::invalid_argument &exc ) {
+                    cout << exc.what() << endl;
+                    i --;
+                }
+            }
+        } while ( _name.length() > 31 );
+        /*      necromancers     */
+        do {
+            for (int i = 0; i < n; ++ i) {
+                try {
+                    std::cout << "Please insert necromancer number " << i + 1 << " name:" << endl;
+                    getline(cin,_name);
+                    realOrder.push_back(new Necromancer(_name));
+                } catch( std::invalid_argument &exc ) {
+                    cout << exc.what() << endl;
+                    i --;
+                }
+            }
+        } while ( _name.length() > 31 );
+
+    } catch( std::bad_alloc &exc ) {
         cout << exc.what() << endl;
+        ::numberOfPlayers--;
     }
     catch( std::invalid_argument &exc ) {
         cout << exc.what() << endl;
@@ -79,17 +105,17 @@ GameUnit::GameUnit(const int w,const int t,const int n) {
 }
 
 GameUnit::~GameUnit() {
-    realOrder.clear();
+    for (Hero *i :realOrder)
+        delete i;
     turnOrder.clear();
 }
 
 //   ******** Game Main Menu *******    //
 GameUnit GameUnit::mainMenu(Hero *turn) {
     if ( turn->inLife()) {
-        bool isTurnRun = 1,got = 0,special = 0;
+        bool isTurnRun = 1, got = 0, special = 0;
         string index;
         string toRob;
-        int choosenType,count;;
         Creature c;
         Hero *ptr = nullptr;
         while ( isTurnRun ) {
@@ -106,7 +132,7 @@ GameUnit GameUnit::mainMenu(Hero *turn) {
             int choice = atoi(index.c_str());
             switch ( choice ) {
                 case 1:    /*	Attack‬‬	*/
-                    if ( ::roundNumber > - 1 )
+                    if ( ::roundNumber > 1 )
                         attackMenu(turn);
                     else cout << "Can'nt attack before round 4, You're still on round " << ::roundNumber << endl;
                     save();
@@ -126,8 +152,7 @@ GameUnit GameUnit::mainMenu(Hero *turn) {
                 case 3: /*	Buy creatures	*/
                     try {
                         storeMenu(turn);
-                    }
-                    catch( std::invalid_argument &e ) { cout << e.what() << endl; }
+                    } catch( std::invalid_argument &e ) { cout << e.what() << endl; }
                     break;
 
                 case 4:    /*	Show details	*/
@@ -147,8 +172,7 @@ GameUnit GameUnit::mainMenu(Hero *turn) {
                                 special = 1;
                                 break;
                             }
-                        }
-                        catch( std::invalid_argument &e ) { cout << e.what() << endl; }
+                        } catch( std::invalid_argument &e ) { cout << e.what() << endl; }
                         turn->specialAbility(*ptr);
                         special = 1;
                     } else cout << "You already used your special ability! wait for next round." << endl;
@@ -162,7 +186,7 @@ GameUnit GameUnit::mainMenu(Hero *turn) {
 
                 case 7: /* 	‫‪Exit‬‬‬‬  */
                     save();
-                    (*this).~GameUnit();
+                   (*this).~GameUnit();
                     exit(1);
 
                 default:
@@ -178,7 +202,6 @@ bool GameUnit::attackMenu(Hero *me) {
     Hero *ptr = nullptr;
     string heroToAttack = "",index;
     while ( true ) {
-
         cout << "‫‪1. Show me my opponents" << endl;
         cout << "2. Attack Hero" << endl;
         std::cin.ignore();
@@ -194,12 +217,13 @@ bool GameUnit::attackMenu(Hero *me) {
             case 2:    /*  Attack Hero by name	   */
                 try {
                     cout << "Please insert your opponent name:" << endl;
-                    cin >> heroToAttack;
+                    std::cin.ignore();
+                    if ( std::cin.peek() != '\n' )
+                        cin >> heroToAttack;
                     ptr = getHeroByName(heroToAttack);
                     if ( NULL == ptr )
                         throw std::invalid_argument("Hero not found!");
-                }
-                catch( std::invalid_argument &e ) {
+                } catch( std::invalid_argument &e ) {
                     cout << e.what() << endl;
                     return 0;
                 }
@@ -286,7 +310,6 @@ void GameUnit::nextTurn() {
 
 void GameUnit::eraseKilled() {
     unsigned long size = realOrder.size();
-
     for (int i = 0; i < size; i ++) {
         if ( realOrder[i]->inLife() == 0 || realOrder[i]->showArmy() == "" ) {
             realOrder[i]->rmdir();
@@ -319,28 +342,33 @@ void GameUnit::save() {
     out.close();
 }
 
-void GameUnit::load(vector<std::string> _heroes) {
+void GameUnit::load(vector<string> _heroes) {
     for (std::string i : _heroes) {
-        Warrior *s1 = new Warrior();
-        Necromancer *s2 = new Necromancer();
-        Thief *s3 = new Thief();
+        Warrior *s1;
+        Thief *s2;
+        Necromancer *s3;
         int _type = 0;
-
-        switch ( _type ) {
+        switch ( _type ) {  //TODO by type
             case 0:
+                s1 = new(nothrow) Warrior();
+                if ( nullptr == s1 ) cout << "Error: memory could not be allocated" << endl;
                 s1->load(i);
                 realOrder.push_back(s1);
                 break;
             case 1:
-                s3->load(i);
-                realOrder.push_back(s3);
-                break;
-            case 2:
+                s2 = new(nothrow) Thief();
+                if ( nullptr == s2 ) cout << "Error: memory could not be allocated" << endl;
                 s2->load(i);
                 realOrder.push_back(s2);
                 break;
+            case 2:
+                s3 = new(nothrow) Necromancer();
+                if ( nullptr == s3 ) cout << "Error: memory could not be allocated" << endl;
+                s3->load(i);
+                realOrder.push_back(s3);
+                break;
             default:
-                cout << "retry";
+                cout << "Load failed!";
         }
     }
 }
@@ -350,8 +378,7 @@ bool GameUnit::mkdir() {
         string comand = "mkdir game";
         const char *runComand = comand.c_str();
         system(runComand);
-    }
-    catch( std::exception &e ) {
+    } catch( std::exception &e ) {
         cout << "Error creating directory!n" << endl;
         return 0;
     }
@@ -367,8 +394,7 @@ void GameUnit::rmdir() {
         string comand = "find * -type d | grep -v \"^CMakeFiles\" | xargs rm -rf";
         const char *runComand = comand.c_str();
         system(runComand);
-    }
-    catch( std::exception &e ) {
+    } catch( std::exception &e ) {
         cout << "Error deleting directory!n" << endl;
     }
 }

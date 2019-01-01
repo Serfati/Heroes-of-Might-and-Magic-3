@@ -4,7 +4,7 @@
  *  Created on: Dec 24, 2018
  *      Author: serfati
  */
-
+#pragma once
 #ifndef ARCHER_H_
 #define ARCHER_H_
 

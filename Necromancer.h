@@ -4,7 +4,7 @@
  *  Created on: Dec 24, 2018
  *      Author: serfati
  */
-
+#pragma once
 #ifndef NECOMANCER_H_
 #define NECOMANCER_H_
 

@@ -4,6 +4,7 @@
  *  Created on: Dec 24, 2018
  *      Author: serfati
  */
+#pragma once
 #ifndef SOURCE_HERO_H_
 #define SOURCE_HERO_H_
 
@@ -34,9 +35,9 @@ public:
 
     Hero(Type,string,Army *a = NULL,bool live = true,int gold = 750);
 
-    virtual ~Hero() { army->~Army(); }
+    ~Hero() { delete army; }
 
-    //Load and Save
+    //^^^^^^^^^^^^^^^^ LOAD and SAVE ^^^^^^^^^^^^^^^^^//
     bool load(string name);
 
     void save();
@@ -67,7 +68,7 @@ public:
     virtual bool specialAbility(Hero &);
 
 
-    //Getters and Setters
+    //^^^^^^^^^^^^^^Getters and Setters^^^^^^^^^^^^^^//
     void setType(int);
 
     void setGold(int);

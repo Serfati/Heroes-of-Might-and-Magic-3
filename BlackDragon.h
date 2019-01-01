@@ -4,7 +4,7 @@
  *  Created on: Dec 24, 2018
  *      Author: serfati
  */
-
+#pragma once
 #ifndef BLACKDRAGON_H_
 #define BLACKDRAGON_H_
 
