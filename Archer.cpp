@@ -10,15 +10,19 @@ Archer::Archer() : Creature(5,4,90,archer){}
 
 //ONLY ON DEFENCE vs BlackDragon
 void Archer::specialAbility(Creature &c){
-	if(4 == c.getType())
-		this->attackPoints += attackPoints*0.2;}
+    if ( c.getType() == blackDragon )
+        this->attackPoints += attackPoints * 0.2;
+}
 
 double Archer::attackAnother(Creature &c) {
-	cout << "Archer go for attack" << endl;
-    double ratio;
     this->specialAbility(c);
-    ratio = getAttackPoints() / c.getDefendPoints();
+    double ratio = ((double) getAttackPoints() / c.getDefendPoints());
     return ratio;
+}
+
+void Archer::reset() {
+    this->defendPoints = 4;
+    this->attackPoints = 5;
 }
 CreatureType Archer::getType(){return archer;}
 Archer::~Archer(){}

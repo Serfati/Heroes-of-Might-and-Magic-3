@@ -22,7 +22,13 @@ public:
 	void specialAbility(Creature &c);
 	int getCost(){return 80;}
 	string displayType(){return "Archer";}
+
+    void reset();
 	CreatureType getType();
+
+    int getAttackPoints() const override { return attackPoints; }
+
+    int getDefendPoints() const override { return defendPoints; }
 };
 
 #endif /* ARCHER_H_ */

@@ -25,6 +25,7 @@ enum CreatureType {
 class Creature {
 
 public:
+
     //^^^^^^^^^^ Constructors and Destructor ^^^^^^^^^^//
     Creature ();
 
@@ -41,6 +42,8 @@ public:
 
     void showCreature ();
 
+    virtual void reset();
+
     //^^^^^^^^^^^^^^Getters and Setters^^^^^^^^^^^^^^//
     virtual CreatureType getType () { return cType; }
 
@@ -52,13 +55,13 @@ public:
 
     int creaTypeByName (string vtype);
 
-    int getPrice (int type);
+    int getPrice();
 
-    int getAttackPoints () const { return attackPoints; }
+    virtual int getAttackPoints() const { return attackPoints; }
 
     void setAttackPoints (int attackPoints) { Creature::attackPoints = attackPoints; }
 
-    int getDefendPoints () const { return defendPoints; }
+    virtual int getDefendPoints() const { return defendPoints; }
 
     void setDefendPoints (int defendPoints) { Creature::defendPoints = defendPoints; }
 

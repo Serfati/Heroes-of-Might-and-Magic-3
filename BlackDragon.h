@@ -23,7 +23,12 @@ public:
 	void specialAbility(Creature &c);
 	int getCost(){return 200;}
 	string displayType(){return "Black_Dragon";}
+
+    void reset();
 	CreatureType getType();
 
+    int getAttackPoints() const override { return attackPoints; }
+
+    int getDefendPoints() const override { return defendPoints; }
 };
 #endif /* BLACKDRAGON_H_ */

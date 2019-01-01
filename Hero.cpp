@@ -28,10 +28,10 @@ Hero::Hero(Type type,string name,Army *army,bool live,int gold) {
     name = getName() + "/Details.txt";
     ofstream file;
     file.open(name);
-
+    army = new(nothrow) Army();
     setType(type);
     setGold(gold);
-    this->army = new(nothrow) Army();
+    this->army = army;
     if ( nullptr == this->army ) cout << "Error: memory could not be allocated" << endl;
     this->isAlive = live;
 
@@ -47,12 +47,12 @@ Hero::Hero() : name("NoNameHero"),type(UnknownType),gold(750),isAlive(1) {
 }
 
 //^^^^^^^^^^^^^^^^^^ GAME LOGIC ^^^^^^^^^^^^^^^^^^//
-bool Hero::buyCreature(int budget,int creatureType,int quantity) {
+bool Hero::buyCreature(int budget,int creatureType,int quantity,int unitPrice) {
     Creature c;
     if ( quantity <= 0 || budget <= 0 || creatureType < 0 )
         return false;
     army->addUnit(creatureType,quantity);
-    this->gold -= c.getPrice(creatureType) * quantity;
+    this->gold -= unitPrice * quantity;
     c.~Creature();
     return true;
 }
@@ -85,51 +85,54 @@ bool Hero::attackEnemy(Hero &enemy) {
     int attackCount, defendCount;
     double  ratio ,howMuchToDelete;
     string attack,toAttack,line;
+    Creature c;
     if ( ! enemy.army->isDestroyed() && ! army->isDestroyed()) {
         cout << this->getName() << "'s turn:" << endl;
-        Creature c;
         /* -~=[  Gets creature to attack and creature to defend  ]=~- */
-        try {
-            getline(cin,line);
-            stringstream ss(line);
-            ss >> attack >> toAttack;
-            if ( enemy.army->armyList[c.creaTypeByName(toAttack)] < 1
-                 || this->army->armyList[c.creaTypeByName(attack)] < 1 )
-                throw std::invalid_argument("Creature to attack not found!");
-        }
-        catch( std::invalid_argument &e ) {
-            cout << e.what() << endl;
-            return this->attackEnemy(enemy);
-        }
+        do {
+            try {
+                cin.ignore();
+                getline(cin,line);
+                stringstream ss(line);
+                ss >> attack >> toAttack;
+                if ( enemy.army->armyList[c.creaTypeByName(toAttack)] < 1
+                     || this->army->armyList[c.creaTypeByName(attack)] < 1 )
+                    throw std::invalid_argument("Creature to attack not found!");
+            }
+            catch( std::invalid_argument &e ) {
+                cout << e.what() << endl;
+            }
+        } while ( enemy.army->armyList[c.creaTypeByName(toAttack)] < 1
+                  || this->army->armyList[c.creaTypeByName(attack)] < 1 );
 
         /* -~=[  Battle | Update | Save | Show and Return   ]=~- */
 
         //attack!
-        ratio = army->realArmy[c.creaTypeByName(attack)]->attackAnother(*(enemy.army->realArmy[c.creaTypeByName(toAttack)]));
+        ratio = (army->realArmy[c.creaTypeByName(attack)]->attackAnother(
+                *enemy.army->realArmy[c.creaTypeByName(toAttack)]));
         attackCount =  army->armyList[c.creaTypeByName(attack)];
         defendCount =  enemy.army->armyList[c.creaTypeByName(toAttack)];
         howMuchToDelete = floor (ratio*attackCount) ;
 
         //delete destroyed and update
         enemy.army->armyList[c.creaTypeByName(toAttack)] =
-                static_cast<int>(howMuchToDelete >= defendCount ? 0 : (defendCount - howMuchToDelete));
+                int(howMuchToDelete >= defendCount ? 0 : (defendCount - howMuchToDelete));
         //reset creatures details
         army->reBuild(); enemy.army->reBuild();
         //saves
         save(); enemy.save();
         //SHOW
         enemy.showHeroFight(); this->showHeroFight();
-        //return enemy.attackEnemy(*this);
-        return 1;
+        return enemy.attackEnemy(*this);
     }
     /* -~=[  Check if Eliminated  ]=~- */
-    if ( enemy.army->isDestroyed()) {
+    if ( army->isDestroyed()) {
         cout << "victorious" << endl;
         this->addGold(enemy.getGold());
         enemy.rmdir();
         return 1;
     }
-    if ( army->isDestroyed()) {
+    if ( enemy.army->isDestroyed()) {
         cout << "You have been perished" << endl;
         enemy.addGold(this->getGold());
         this->rmdir();

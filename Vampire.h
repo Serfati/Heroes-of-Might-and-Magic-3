@@ -24,5 +24,11 @@ public:
 	int getCost(){return 90;}
 	string displayType(){return "Vampire";}
 	CreatureType getType();
+
+    void reset();
+
+    int getAttackPoints() const override { return attackPoints; }
+
+    int getDefendPoints() const override { return defendPoints; }
 };
 #endif /* VAMPIRE_H_ */

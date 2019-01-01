@@ -82,17 +82,8 @@ void Army::buildArmy(int BD, int WZ, int ARC, int VMP, int ZMB)
     realArmy = {new Zombie(), new Vampire(), new Archer(),
                 new Wizard(), new BlackDragon()};
 }
-void Army::reBuild(){
-	for(Creature* i : realArmy)
-		i->~Creature();
 
-	try {
-		realArmy.clear();
-		realArmy = {new Zombie(), new Vampire(), new Archer(),
-					new Wizard(), new BlackDragon()};
-	}
-	catch(std::bad_alloc& exc)
-	{
-		cout << exc.what() << endl;
-	}
+void Army::reBuild() {
+    for (Creature *i :realArmy)
+        i->reset();
 }

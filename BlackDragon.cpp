@@ -12,14 +12,16 @@ BlackDragon::BlackDragon():Creature(9,10,200,blackDragon){}
 void BlackDragon::specialAbility(Creature &c){return;}
 
 double BlackDragon::attackAnother(Creature &c){
-    cout << "BlackDragon go for attack" << endl;
-    double ratio;
-    if (c.getType() == 3) c.specialAbility(*this);
-    ratio = getAttackPoints() / c.getDefendPoints();
+    if ( c.getType() == wizard ) c.specialAbility(*this);
+    double ratio = ((double) getAttackPoints() / c.getDefendPoints());
     return ratio;
-
 }
 
 CreatureType BlackDragon::getType(){return blackDragon;}
+
+void BlackDragon::reset() {
+    this->defendPoints = 10;
+    this->attackPoints = 9;
+}
 
 BlackDragon::~BlackDragon(){}

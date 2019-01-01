@@ -12,15 +12,23 @@ Wizard::Wizard() : Creature(8,2,150,wizard){}
 //ONLY ON Attack vs BlackDragon
 void Wizard::specialAbility(Creature &c){
 	if(4 == c.getType())
-		this->defendPoints+=defendPoints;}
+        this->defendPoints += defendPoints;
+}
 
 double Wizard::attackAnother(Creature &c) {
-	cout << "Wizard go for attack" << endl;
-	double ratio;
-	ratio = getAttackPoints() / c.getDefendPoints();
+    double ratio = ((double) getAttackPoints() / c.getDefendPoints());
 	return ratio;
 }
 
 CreatureType Wizard::getType(){return wizard;}
+
+void Wizard::reset() {
+    this->defendPoints = 2;
+    this->attackPoints = 8;
+}
+
+int Wizard::getAttackPoints() const { return attackPoints; }
+
+int Wizard::getDefendPoints() const { return defendPoints; }
 
 Wizard::~Wizard(){}

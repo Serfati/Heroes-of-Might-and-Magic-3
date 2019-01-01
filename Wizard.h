@@ -22,5 +22,12 @@ public:
 	int getCost(){return 150;}
 	string displayType(){return "Wizard";}
 	CreatureType getType();
+
+    void reset();
+
+    int getAttackPoints() const override;
+
+    int getDefendPoints() const override;
 };
 #endif /* WIZARD_H_ */
+

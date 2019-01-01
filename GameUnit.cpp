@@ -35,12 +35,7 @@ GameUnit::GameUnit() {
     while ( ina >> word )
         HeroesNames.push_back(word);
     ina.close();
-
-    for (std::string i : HeroesNames) {
-        Hero *s = nullptr;
-        s->load(i); //TODO load hero type
-        realOrder.push_back(s);
-    }
+    load(HeroesNames);
     turnOrder = realOrder;
     shuffle();
     mainMenu(turnOrder[currentTurn]);
@@ -107,10 +102,11 @@ GameUnit GameUnit::mainMenu(Hero *turn) {
             cout << "6. End of my turn" << endl;
             cout << "7.‬ Exit‬‬‬‬" << endl;
             cin >> index;
+
             int choice = atoi(index.c_str());
             switch ( choice ) {
                 case 1:    /*	Attack‬‬	*/
-                    if ( ::roundNumber > 1 )
+                    if ( ::roundNumber > - 1 )
                         attackMenu(turn);
                     else cout << "Can'nt attack before round 4, You're still on round " << ::roundNumber << endl;
                     save();
@@ -129,16 +125,9 @@ GameUnit GameUnit::mainMenu(Hero *turn) {
 
                 case 3: /*	Buy creatures	*/
                     try {
-                        choosenType = storeMenu();
-                        //TODO showCreature()
-                        cin >> count;
-                        if ( c.getPrice(choosenType) * count > turn->getGold())
-                            throw std::invalid_argument("Not enough gold!");
-                        turn->buyCreature(turn->getGold(),choosenType,count);
+                        storeMenu(turn);
                     }
-                    catch ( std::invalid_argument &e ) {
-                        cout << e.what() << endl;
-                    }
+                    catch( std::invalid_argument &e ) { cout << e.what() << endl; }
                     break;
 
                 case 4:    /*	Show details	*/
@@ -146,7 +135,6 @@ GameUnit GameUnit::mainMenu(Hero *turn) {
                     break;
 
                 case 5:    /*	Special skill‬‬‬‬	*/
-
                     if ( ! special ) {
                         try {
                             if ( turn->getType() == thief ) {
@@ -159,11 +147,8 @@ GameUnit GameUnit::mainMenu(Hero *turn) {
                                 special = 1;
                                 break;
                             }
-
                         }
-                        catch( std::invalid_argument &e ) {
-                            cout << e.what() << endl;
-                        }
+                        catch( std::invalid_argument &e ) { cout << e.what() << endl; }
                         turn->specialAbility(*ptr);
                         special = 1;
                     } else cout << "You already used your special ability! wait for next round." << endl;
@@ -177,7 +162,6 @@ GameUnit GameUnit::mainMenu(Hero *turn) {
 
                 case 7: /* 	‫‪Exit‬‬‬‬  */
                     save();
-                    close(); //TODO remove before ass!
                     return *this;
 
                 default:
@@ -192,22 +176,27 @@ GameUnit GameUnit::mainMenu(Hero *turn) {
 bool GameUnit::attackMenu(Hero *me) {
     Hero *ptr = nullptr;
     string heroToAttack = "", index;
-
     while ( true ) {
+
         cout << "‫‪1. Show me my opponents" << endl;
         cout << "2. Attack Hero" << endl;
-        cin >> index;
+        std::cin.ignore();
+        if ( std::cin.peek() != '\n' )
+            cin >> index;
+        else return 0;
+
         int choice = atoi(index.c_str());
         switch ( choice ) {
             case 1:    /*	Show me my opponents	*/
                 showHeroes();
                 break;
             case 2:    /*  Attack Hero by name	   */
+
                 try {
                     cout << "Please insert your opponent name:" << endl;
                     cin >> heroToAttack;
                     ptr = getHeroByName(heroToAttack);
-                    if ( ptr == NULL )
+                    if ( NULL == ptr )
                         throw std::invalid_argument("Hero not found! try again.");
                 }
                 catch ( std::invalid_argument &e ) {
@@ -227,31 +216,59 @@ bool GameUnit::attackMenu(Hero *me) {
     return 0;
 }
 
-int GameUnit::storeMenu() {
+int GameUnit::storeMenu(Hero *me) {
     Creature c;
     string index;
     while ( 1 > 0 ) {
+        int choosenType = 0,count = 0,unitPrice = 0;
         cout << "‫‪1. Buy Zombies." << endl;
-        cout << "2. Buy Archers." << endl;
-        cout << "‫‪3.‬‬ Buy Vampire." << endl;
+        cout << "2. Buy Vampire." << endl;
+        cout << "‫‪3.‬‬ Buy Archers." << endl;
         cout << "4. Buy Wizard." << endl;
         cout << "‫‪5‬‬.‬‬ Buy Black Dragon." << endl;
         cin >> index;
         int choice = atoi(index.c_str());
         switch ( choice ) {
             case 1:    /*	Buy Zombies 	*/
-                return 0;
+                choosenType = 0;
+                c = Zombie();
+                unitPrice = c.getPrice();
+                c.showCreature();
+                break;
             case 2:    /*  Buy	Archers	   */
-                return 1;
-            case 3: /*	Buy Vampire	   */
-                return 2;
+                choosenType = 1;
+                c = Archer();
+                unitPrice = c.getPrice();
+                c.showCreature();
+                break;
+            case 3:     /*	Buy Vampire	   */
+                choosenType = 2;
+                c = Vampire();
+                unitPrice = c.getPrice();
+                c.showCreature();
+                break;
             case 4:    /*	Buy Wizard	   */
-                return 3;
+                choosenType = 3;
+                c = Wizard();
+                unitPrice = c.getPrice();
+                c.showCreature();
+                break;
             case 5:    /*	Buy Black Dragon  */
-                return 4;
+                choosenType = 4;
+                c = BlackDragon();
+                unitPrice = c.getPrice();
+                c.showCreature();
+                break;
             default:
                 cout << "please choose a valid number" << endl;
         }
+        cin >> count;
+        if ( unitPrice * count > me->getGold()) {
+            throw std::invalid_argument("Not enough gold!");
+            return 0;
+        }
+        me->buyCreature(me->getGold(),choosenType,count,unitPrice);
+        return 1;
     }
 }
 
@@ -304,12 +321,29 @@ void GameUnit::save() {
 
 void GameUnit::load( vector<std::string> _heroes) {
     for (std::string i : _heroes) {
-        Hero *s = nullptr;
-        s->load(i); //TODO load hero type
-        realOrder.push_back(s);
+        Warrior *s1 = new Warrior();
+        Necromancer *s2 = new Necromancer();
+        Thief *s3 = new Thief();
+        int _type = 0;
+
+        switch ( _type ) {
+            case 0:
+                s1->load(i);
+                realOrder.push_back(s1);
+                break;
+            case 1:
+                s3->load(i);
+                realOrder.push_back(s3);
+                break;
+            case 2:
+                s2->load(i);
+                realOrder.push_back(s2);
+                break;
+            default:
+                cout << "retry";
+        }
     }
 }
-
 bool GameUnit::mkdir() {
     try {
         string comand = "mkdir game";

@@ -16,11 +16,24 @@ void Zombie::specialAbility(Creature &c){
 		this->attackPoints+=attackPoints;}
 
 double Zombie::attackAnother(Creature &c) {
-	cout<<"zombie go for attack"<<endl;
-	double ratio;
 	this->specialAbility(c);
-	ratio = getAttackPoints() / c.getDefendPoints();
-	return ratio;
+    double x = (double) getAttackPoints();
+    double y = (double) c.getDefendPoints();
+    return x / y;
 }
+
+void Zombie::reset() {
+    this->defendPoints = 5;
+    this->attackPoints = 2;
+}
+
 CreatureType Zombie::getType(){return zombie;}
 Zombie::~Zombie() {}
+
+int Zombie::getAttackPoints() const {
+    return this->attackPoints;
+}
+
+int Zombie::getDefendPoints() const {
+    return this->defendPoints;
+}

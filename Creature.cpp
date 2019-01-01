@@ -27,7 +27,7 @@ Creature::Creature (int _ap , int _dp , int _c , CreatureType ct) :
 }
 
 void Creature::showCreature () {
-    cout << "Attack level:" << attackPoints << ",Defense level:" << defendPoints << endl;
+    cout << "Attack level: " << attackPoints << ", Defense level: " << defendPoints << endl;
 }
 
 void Creature::specialAbility (Creature &c) {
@@ -57,30 +57,16 @@ string Creature::creaType (int vtype) {
 }
 
 int Creature::creaTypeByName (string creaName) {
-    if ( creaName == "Zombie" ) return 0;
-    if ( creaName == "Archer" ) return 1;
-    if ( creaName == "Vampire" ) return 2;
-    if ( creaName == "Wizard" ) return 3;
-    if ( creaName == "Black_Dragon" ) return 4;
-
-    return 5;
+    return creaName == "Zombie" ? 0 : creaName == "Archer" ? 1 :
+                                      creaName == "Vampire" ? 2 : creaName == "Wizard" ? 3 : creaName == "Black_Dragon"
+                                                                                             ? 4 : 5;
 }
 
-int Creature::getPrice (int vtype) {
-    switch ( vtype ) {
-        case 0:
-            return 50;
-        case 1:
-            return 80;
-        case 2:
-            return 90;
-        case 3:
-            return 150;
-        case 4:
-            return 200;
-        default:
-            return - 1;
-    }
-}
+int Creature::getPrice() { return this->cost; }
 
 Creature::~Creature () {}
+
+void Creature::reset() {
+    cout << "Just inherit me already" << endl;
+    return;
+}

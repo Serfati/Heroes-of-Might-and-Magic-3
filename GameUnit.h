@@ -32,6 +32,7 @@ class GameUnit {
 public:
     //^^^^^^^^^^ Constructors and Destructor ^^^^^^^^^^//
     GameUnit (); // Load Last Game
+
     GameUnit (const int , const int , const int);
 
     virtual ~GameUnit ();
@@ -41,7 +42,7 @@ public:
 
     bool attackMenu (Hero *);
 
-    int storeMenu ();
+    int storeMenu(Hero *me);
 
     void nextTurn ();
 

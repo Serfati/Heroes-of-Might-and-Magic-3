@@ -50,7 +50,7 @@ public:
     //^^^^^^^^^^^^^^^^^^ GAME LOGIC ^^^^^^^^^^^^^^^^^^//
     bool attackEnemy (Hero &enemy);
 
-    bool buyCreature (int budget , int creatureType , int quantity);
+    bool buyCreature(int budget,int creatureType,int quantity,int unitPrice);
 
     void showHero ();
 

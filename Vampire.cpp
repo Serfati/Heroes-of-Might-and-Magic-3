@@ -13,10 +13,13 @@ Vampire::Vampire() : Creature(4,4,80,vampire){}
 void Vampire::specialAbility(Creature &c){return;}
 
 double Vampire::attackAnother(Creature &c) {
-    cout << "Vampire go for attack" << endl;
-    double ratio;
-    ratio = getAttackPoints() / c.getDefendPoints();
+    double ratio = ((double) getAttackPoints() / c.getDefendPoints());
     return ratio;
 }
 CreatureType Vampire::getType(){return vampire;}
 Vampire::~Vampire(){}
+
+void Vampire::reset() {
+    this->defendPoints = 4;
+    this->attackPoints = 4;
+}
