@@ -9,26 +9,25 @@
 
 using namespace std;
 
-Thief::Thief( string name ) : Hero(thief, name){}
+Thief::Thief(string name) : Hero(thief,name) {}
 
-Thief::Thief(Thief &another) :Hero(another){}
+Thief::Thief(Thief &another) : Hero(another) {}
 
 //TODO need to thief from another user/
-bool Thief::specialAbility(Hero &toRob)
-{
-	if(isAlive){
-		if(toRob.getGold() > 70) {
-			this->addGold(70);
-			toRob.setGold(toRob.getGold() - 70);
-			return 1;
-		}
-		else {
-			addGold(toRob.getGold());
-			toRob.setGold(0);
-			return 1;
-		}
-	 }
-	std::cout<<"You died!"<<endl;
-	 return 0;
- }
+bool Thief::specialAbility(Hero &toRob) {
+    if ( isAlive ) {
+        if ( toRob.getGold() > 70 ) {
+            this->addGold(70);
+            toRob.setGold(toRob.getGold() - 70);
+            return 1;
+        } else {
+            addGold(toRob.getGold());
+            toRob.setGold(0);
+            return 1;
+        }
+    }
+    std::cout << "You died!" << endl;
+    return 0;
+}
+
 Thief::~Thief() {}

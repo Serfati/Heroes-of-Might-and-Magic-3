@@ -14,14 +14,20 @@
 
 using namespace std;
 
-class Necromancer: public Hero {
-public:
-	Necromancer(){ setType(necromancer);}
-	Necromancer( string );
-	Necromancer(Necromancer& );
-	virtual bool specialAbility(Hero &);
-	~Necromancer();
-};
+class Necromancer : public Hero {
 
+public:
+
+    Necromancer() { setType(necromancer); }
+
+    Necromancer(string);
+
+    Necromancer(Necromancer &);
+
+    virtual bool specialAbility(Hero &);
+
+    ~Necromancer();
+
+};
 
 #endif /* NECOMANCER_H_ */

@@ -8,21 +8,20 @@
 #include "Necromancer.h"
 
 
-Necromancer::Necromancer(string name) : Hero( necromancer, name ){}
+Necromancer::Necromancer(string name) : Hero(necromancer,name) {}
 
-Necromancer::Necromancer(Necromancer &another) :Hero(another){}
+Necromancer::Necromancer(Necromancer &another) : Hero(another) {}
 
-bool Necromancer::specialAbility(Hero &s){
-	if (isAlive){
-		 army->addUnit(0 , 1);
-		 cout<< "Zombie added ‫‪successfully‬‬"<<endl;
-		 return 1;
-	}
-	return 0;
+bool Necromancer::specialAbility(Hero &s) {
+    if ( isAlive ) {
+        army->addUnit(0,1);
+        cout << "Zombie added ‫‪successfully‬‬" << endl;
+        return 1;
+    }
+    return 0;
 
- }
+}
 
-Necromancer::~Necromancer()
-{}
+Necromancer::~Necromancer() {}
 
 

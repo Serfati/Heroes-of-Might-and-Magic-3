@@ -42,7 +42,7 @@ Hero::Hero(Type type,string name,Army *army,bool live,int gold) {
 }
 
 Hero::Hero() : name("NoNameHero"),type(UnknownType),gold(750),isAlive(1) {
-    this->army = new (nothrow) Army();
+    this->army = new(nothrow) Army();
     if ( nullptr == this->army ) cout << "Error: memory could not be allocated" << endl;
 }
 
@@ -82,8 +82,8 @@ bool Hero::specialAbility(Hero &s) {
 };
 
 bool Hero::attackEnemy(Hero &enemy) {
-    int attackCount, defendCount;
-    double  ratio ,howMuchToDelete;
+    int attackCount,defendCount;
+    double ratio,howMuchToDelete;
     string attack,toAttack,line;
     Creature c;
     if ( ! enemy.army->isDestroyed() && ! army->isDestroyed()) {
@@ -97,7 +97,7 @@ bool Hero::attackEnemy(Hero &enemy) {
                 ss >> attack >> toAttack;
                 if ( enemy.army->armyList[c.creaTypeByName(toAttack)] < 1
                      || this->army->armyList[c.creaTypeByName(attack)] < 1 )
-                    throw std::invalid_argument("Creature to attack not found!");
+                    throw std::invalid_argument("Creature to attack not found! try again.");
             }
             catch( std::invalid_argument &e ) {
                 cout << e.what() << endl;
@@ -110,19 +110,22 @@ bool Hero::attackEnemy(Hero &enemy) {
         //attack!
         ratio = (army->realArmy[c.creaTypeByName(attack)]->attackAnother(
                 *enemy.army->realArmy[c.creaTypeByName(toAttack)]));
-        attackCount =  army->armyList[c.creaTypeByName(attack)];
-        defendCount =  enemy.army->armyList[c.creaTypeByName(toAttack)];
-        howMuchToDelete = floor (ratio*attackCount) ;
+        attackCount = army->armyList[c.creaTypeByName(attack)];
+        defendCount = enemy.army->armyList[c.creaTypeByName(toAttack)];
+        howMuchToDelete = floor(ratio * attackCount);
 
         //delete destroyed and update
         enemy.army->armyList[c.creaTypeByName(toAttack)] =
                 int(howMuchToDelete >= defendCount ? 0 : (defendCount - howMuchToDelete));
         //reset creatures details
-        army->reBuild(); enemy.army->reBuild();
+        army->reBuild();
+        enemy.army->reBuild();
         //saves
-        save(); enemy.save();
+        save();
+        enemy.save();
         //SHOW
-        enemy.showHeroFight(); this->showHeroFight();
+        enemy.showHeroFight();
+        this->showHeroFight();
         return enemy.attackEnemy(*this);
     }
     /* -~=[  Check if Eliminated  ]=~- */

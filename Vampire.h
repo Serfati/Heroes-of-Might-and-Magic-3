@@ -12,18 +12,18 @@
 
 using namespace std;
 
-class Vampire: public Creature {
+class Vampire : public Creature {
 
 public:
-	Vampire();
+    Vampire();
 
-	virtual ~Vampire();
+    virtual ~Vampire();
 
     double attackAnother(Creature &c);
-	void specialAbility(Creature &c);
-	int getCost(){return 90;}
-	string displayType(){return "Vampire";}
-	CreatureType getType();
+
+    void specialAbility(Creature &c);
+
+    CreatureType getType();
 
     void reset();
 
@@ -31,4 +31,5 @@ public:
 
     int getDefendPoints() const override { return defendPoints; }
 };
+
 #endif /* VAMPIRE_H_ */

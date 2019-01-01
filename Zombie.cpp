@@ -8,15 +8,16 @@
 #include "Zombie.h"
 
 
-Zombie::Zombie() : Creature(2,5,50,zombie){}
+Zombie::Zombie() : Creature(2,5,50,zombie) {}
 
 //ONLY ON ATTACK ARCHER
-void Zombie::specialAbility(Creature &c){
-	if(1 == c.getType())
-		this->attackPoints+=attackPoints;}
+void Zombie::specialAbility(Creature &c) {
+    if ( 1 == c.getType())
+        this->attackPoints += attackPoints;
+}
 
 double Zombie::attackAnother(Creature &c) {
-	this->specialAbility(c);
+    this->specialAbility(c);
     double x = (double) getAttackPoints();
     double y = (double) c.getDefendPoints();
     return x / y;
@@ -27,13 +28,10 @@ void Zombie::reset() {
     this->attackPoints = 2;
 }
 
-CreatureType Zombie::getType(){return zombie;}
+CreatureType Zombie::getType() { return zombie; }
+
 Zombie::~Zombie() {}
 
-int Zombie::getAttackPoints() const {
-    return this->attackPoints;
-}
 
-int Zombie::getDefendPoints() const {
-    return this->defendPoints;
-}
+
+

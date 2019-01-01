@@ -27,43 +27,35 @@ class Creature {
 public:
 
     //^^^^^^^^^^ Constructors and Destructor ^^^^^^^^^^//
-    Creature ();
+    Creature();
 
-    Creature (Creature &another);
+    Creature(Creature &another);
 
-    Creature (int, int, int, CreatureType);
+    Creature(int,int,int,CreatureType);
 
-    virtual ~Creature ();
+    virtual ~Creature();
 
     //^^^^^^^^^^^^^^^^^^ GAME LOGIC ^^^^^^^^^^^^^^^^^^//
     virtual double attackAnother(Creature &c);
 
-    virtual void specialAbility (Creature &c);
+    virtual void specialAbility(Creature &c);
 
-    void showCreature ();
+    void showCreature();
 
     virtual void reset();
 
     //^^^^^^^^^^^^^^Getters and Setters^^^^^^^^^^^^^^//
-    virtual CreatureType getType () { return cType; }
+    virtual CreatureType getType() { return cType; }
 
-    virtual int getCost () { return - 1; }
+    string creaType(int type);
 
-    virtual string displayType () { return "Unknown"; }
-
-    string creaType (int type);
-
-    int creaTypeByName (string vtype);
+    int creaTypeByName(string vtype);
 
     int getPrice();
 
     virtual int getAttackPoints() const { return attackPoints; }
 
-    void setAttackPoints (int attackPoints) { Creature::attackPoints = attackPoints; }
-
     virtual int getDefendPoints() const { return defendPoints; }
-
-    void setDefendPoints (int defendPoints) { Creature::defendPoints = defendPoints; }
 
 protected:
     int attackPoints;

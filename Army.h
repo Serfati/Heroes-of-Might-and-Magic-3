@@ -21,19 +21,27 @@ using namespace std;
 
 class Army {
 public:
-	Army();
-	bool isDestroyed();
-	bool addUnit(int , int );
-	int getArmySize();
-	string showArmy();
-	string saveArmy();
-	void buildArmy(int,int,int,int,int);
-	void reBuild();
-	~Army();
+    Army();
+
+    bool isDestroyed();
+
+    bool addUnit(int,int);
+
+    int getArmySize();
+
+    string showArmy();
+
+    string saveArmy();
+
+    void buildArmy(int,int,int,int,int);
+
+    void reBuild();
+
+    ~Army();
 
 public:
-	vector <int> armyList;
-	vector <Creature*> realArmy;
+    vector<int> armyList;
+    vector<Creature *> realArmy;
 };
 
 #endif /* ARMY_H_ */

@@ -12,23 +12,24 @@
 
 using namespace std;
 
-class Zombie: public Creature {
+class Zombie : public Creature {
 
 public:
-	Zombie();
+    Zombie();
 
-	virtual ~Zombie();
+    virtual ~Zombie();
 
-	double attackAnother(Creature &c);
-	void specialAbility(Creature &c);
-	int getCost(){return 50;}
-	string displayType(){return "Zombie";}
+    double attackAnother(Creature &c);
+
+    void specialAbility(Creature &c);
 
     void reset();
-	CreatureType getType();
 
-    int getAttackPoints() const override;
+    CreatureType getType();
 
-    int getDefendPoints() const override;
+    int getAttackPoints() const { return this->attackPoints; };
+
+    int getDefendPoints() const { return this->defendPoints; };
 };
+
 #endif /* ZOMBIE_H_ */

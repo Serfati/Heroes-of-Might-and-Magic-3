@@ -12,12 +12,19 @@
 
 using namespace std;
 
-class Thief: public Hero {
+class Thief : public Hero {
 public:
-	Thief(){setType(thief);}
-	Thief( string name );
-	Thief(Thief& another);
-	virtual bool specialAbility(Hero&);
-	virtual ~Thief();
+
+    Thief() { setType(thief); }
+
+    Thief(string name);
+
+    Thief(Thief &another);
+
+    virtual bool specialAbility(Hero &);
+
+    virtual ~Thief();
+
 };
+
 #endif /* THIEF_H_ */

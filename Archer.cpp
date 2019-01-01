@@ -6,10 +6,12 @@
  */
 #include "Archer.h"
 
-Archer::Archer() : Creature(5,4,90,archer){}
+Archer::Archer() : Creature(5,4,90,archer) {}
+
+Archer::~Archer() {}
 
 //ONLY ON DEFENCE vs BlackDragon
-void Archer::specialAbility(Creature &c){
+void Archer::specialAbility(Creature &c) {
     if ( c.getType() == blackDragon )
         this->attackPoints += attackPoints * 0.2;
 }
@@ -24,5 +26,7 @@ void Archer::reset() {
     this->defendPoints = 4;
     this->attackPoints = 5;
 }
-CreatureType Archer::getType(){return archer;}
-Archer::~Archer(){}
+
+CreatureType Archer::getType() {
+    return archer;
+}

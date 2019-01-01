@@ -12,13 +12,17 @@
 
 using namespace std;
 
-class Warrior: public Hero
-{
+class Warrior : public Hero {
 public:
-	Warrior();
-	Warrior( string name );
-	Warrior( Warrior& another );
-	virtual bool specialAbility( Hero& );
-	virtual ~Warrior();
+    Warrior();
+
+    Warrior(string name);
+
+    Warrior(Warrior &another);
+
+    virtual bool specialAbility(Hero &);
+
+    virtual ~Warrior();
 };
+
 #endif /* WARRIOR_H_ */

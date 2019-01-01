@@ -12,22 +12,24 @@
 
 using namespace std;
 
-class Wizard: public Creature {
+class Wizard : public Creature {
 public:
-	Wizard();
-	virtual ~Wizard();
+    Wizard();
+
+    virtual ~Wizard();
 
     double attackAnother(Creature &c);
-	void specialAbility(Creature &c);
-	int getCost(){return 150;}
-	string displayType(){return "Wizard";}
-	CreatureType getType();
+
+    void specialAbility(Creature &c);
+
+    CreatureType getType();
 
     void reset();
 
-    int getAttackPoints() const override;
+    int getAttackPoints() const { return attackPoints; }
 
-    int getDefendPoints() const override;
+    int getDefendPoints() const { return defendPoints; }
 };
+
 #endif /* WIZARD_H_ */
 

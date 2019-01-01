@@ -12,23 +12,25 @@
 
 using namespace std;
 
-class Archer: public Creature{
+class Archer : public Creature {
 
 public:
-	Archer();
-	virtual ~Archer();
+    Archer();
 
-	double attackAnother(Creature &c);
-	void specialAbility(Creature &c);
-	int getCost(){return 80;}
-	string displayType(){return "Archer";}
+    virtual ~Archer();
+
+    double attackAnother(Creature &c);
+
+    void specialAbility(Creature &c);
 
     void reset();
-	CreatureType getType();
+
+    CreatureType getType();
 
     int getAttackPoints() const override { return attackPoints; }
 
     int getDefendPoints() const override { return defendPoints; }
+
 };
 
 #endif /* ARCHER_H_ */

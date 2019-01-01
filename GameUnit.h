@@ -8,7 +8,6 @@
 #define HEROS_GAMEUNIT_H_
 
 #include <iostream>
-#include <vector>
 #include <algorithm>
 
 #include "Army.h"
@@ -19,6 +18,7 @@
 #include "BlackDragon.h"
 #include "Zombie.h"
 #include "Wizard.h"
+#include <vector>
 
 #include "Hero.h"
 #include "Thief.h"
@@ -31,42 +31,42 @@ class GameUnit {
 
 public:
     //^^^^^^^^^^ Constructors and Destructor ^^^^^^^^^^//
-    GameUnit (); // Load Last Game
+    GameUnit(); // Load Last Game
 
-    GameUnit (const int , const int , const int);
+    GameUnit(const int,const int,const int);
 
-    virtual ~GameUnit ();
+    virtual ~GameUnit();
 
     //^^^^^^^^^^^^^^^^^^ GAME LOGIC ^^^^^^^^^^^^^^^^^^//
-    GameUnit mainMenu (Hero *);
+    GameUnit mainMenu(Hero *);
 
-    bool attackMenu (Hero *);
+    bool attackMenu(Hero *);
 
     int storeMenu(Hero *me);
 
-    void nextTurn ();
+    void nextTurn();
 
-    void eraseKilled ();
+    void eraseKilled();
 
     //^^^^^^^^^^^^^^^^ MAINTENACE ^^^^^^^^^^^^^^^^^/
-    void save ();
+    void save();
 
-    void load (  vector<std::string> );
+    void load(vector<std::string>);
 
-    bool mkdir ();
+    bool mkdir();
 
-    void shuffle ();
+    void shuffle();
 
-    void rmdir ();
+    void rmdir();
 
-    void close ();
+    void close();
 
     //^^^^^^^^^^^^^^ Getters and Setters ^^^^^^^^^^^^^^//
-    Hero *getHeroByName (string);
+    Hero *getHeroByName(string);
 
-    string getTurnOrder ();
+    string getTurnOrder();
 
-    void showHeroes ();
+    void showHeroes();
 
 private:
     vector<Hero *> realOrder;

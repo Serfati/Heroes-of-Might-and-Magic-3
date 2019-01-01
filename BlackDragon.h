@@ -12,23 +12,24 @@
 
 using namespace std;
 
-class BlackDragon: public Creature {
+class BlackDragon : public Creature {
 
 public:
-	BlackDragon();
+    BlackDragon();
 
-	virtual ~BlackDragon();
+    virtual ~BlackDragon();
 
     double attackAnother(Creature &c);
-	void specialAbility(Creature &c);
-	int getCost(){return 200;}
-	string displayType(){return "Black_Dragon";}
+
+    void specialAbility(Creature &c);
 
     void reset();
-	CreatureType getType();
+
+    CreatureType getType();
 
     int getAttackPoints() const override { return attackPoints; }
 
     int getDefendPoints() const override { return defendPoints; }
 };
+
 #endif /* BLACKDRAGON_H_ */

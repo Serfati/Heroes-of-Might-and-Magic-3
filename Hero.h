@@ -18,9 +18,9 @@
 using namespace std;
 
 enum Type {
-    warrior ,       // 0
-    thief ,        // 1
-    necromancer , // 2
+    warrior,       // 0
+    thief,        // 1
+    necromancer, // 2
     UnknownType  // 3
 };
 
@@ -28,61 +28,61 @@ class Hero {
 
 public:
     //^^^^^^^^^^ Constructors and Destructor ^^^^^^^^^^//
-    Hero ();
+    Hero();
 
-    Hero (Hero &);
+    Hero(Hero &);
 
-    Hero (Type , string , Army *a = NULL , bool live = true , int gold = 750);
+    Hero(Type,string,Army *a = NULL,bool live = true,int gold = 750);
 
-    virtual ~Hero () { army->~Army (); }
+    virtual ~Hero() { army->~Army(); }
 
     //Load and Save
-    bool load (string name);
+    bool load(string name);
 
-    void save ();
+    void save();
 
-    string saveArmy ();
+    string saveArmy();
 
-    bool mkdir ();
+    bool mkdir();
 
-    void rmdir ();
+    void rmdir();
 
     //^^^^^^^^^^^^^^^^^^ GAME LOGIC ^^^^^^^^^^^^^^^^^^//
-    bool attackEnemy (Hero &enemy);
+    bool attackEnemy(Hero &enemy);
 
     bool buyCreature(int budget,int creatureType,int quantity,int unitPrice);
 
-    void showHero ();
+    void showHero();
 
-    void showHeroFight ();
+    void showHeroFight();
 
-    string showArmy ();
+    string showArmy();
 
-    bool addGold (int);
+    bool addGold(int);
 
 
     //Virtuals
-    void getDailyGold () { addGold (100); }
+    void getDailyGold() { addGold(100); }
 
-    virtual bool specialAbility (Hero &);
+    virtual bool specialAbility(Hero &);
 
 
     //Getters and Setters
-    void setType (int);
+    void setType(int);
 
-    void setGold (int);
+    void setGold(int);
 
-    bool setName (const string);
+    bool setName(const string);
 
-    int getGold () const;
+    int getGold() const;
 
-    Type getType ();
+    Type getType();
 
-    string displayType ();
+    string displayType();
 
-    string getName ();
+    string getName();
 
-    bool inLife () const { return isAlive; };
+    bool inLife() const { return isAlive; };
 
 protected:
     string name;

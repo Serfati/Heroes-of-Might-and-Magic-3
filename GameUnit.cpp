@@ -62,10 +62,10 @@ GameUnit::GameUnit(const int w,const int t,const int n) {
             realOrder.push_back(new Necromancer(_name));
         }
     }
-    catch ( std::bad_alloc &exc ) {
+    catch( std::bad_alloc &exc ) {
         cout << exc.what() << endl;
     }
-    catch ( std::invalid_argument &exc ) {
+    catch( std::invalid_argument &exc ) {
         cout << exc.what() << endl;
     }
     ::numberOfPlayers = w + t + n;
@@ -86,10 +86,10 @@ GameUnit::~GameUnit() {
 //   ******** Game Main Menu *******    //
 GameUnit GameUnit::mainMenu(Hero *turn) {
     if ( turn->inLife()) {
-        bool isTurnRun = 1, got = 0, special = 0;
+        bool isTurnRun = 1,got = 0,special = 0;
         string index;
         string toRob;
-        int choosenType, count;;
+        int choosenType,count;;
         Creature c;
         Hero *ptr = nullptr;
         while ( isTurnRun ) {
@@ -142,7 +142,7 @@ GameUnit GameUnit::mainMenu(Hero *turn) {
                                 cin >> toRob;
                                 ptr = getHeroByName(toRob);
                                 if ( NULL == ptr )
-                                    throw std::invalid_argument("Hero to rob not found! try again.");
+                                    throw std::invalid_argument("Hero to rob not found!");
                                 turn->specialAbility(*ptr);
                                 special = 1;
                                 break;
@@ -162,7 +162,8 @@ GameUnit GameUnit::mainMenu(Hero *turn) {
 
                 case 7: /* 	‫‪Exit‬‬‬‬  */
                     save();
-                    return *this;
+                    (*this).~GameUnit();
+                    exit(1);
 
                 default:
                     cout << "please choose a valid number" << endl;
@@ -175,7 +176,7 @@ GameUnit GameUnit::mainMenu(Hero *turn) {
 
 bool GameUnit::attackMenu(Hero *me) {
     Hero *ptr = nullptr;
-    string heroToAttack = "", index;
+    string heroToAttack = "",index;
     while ( true ) {
 
         cout << "‫‪1. Show me my opponents" << endl;
@@ -191,15 +192,14 @@ bool GameUnit::attackMenu(Hero *me) {
                 showHeroes();
                 break;
             case 2:    /*  Attack Hero by name	   */
-
                 try {
                     cout << "Please insert your opponent name:" << endl;
                     cin >> heroToAttack;
                     ptr = getHeroByName(heroToAttack);
                     if ( NULL == ptr )
-                        throw std::invalid_argument("Hero not found! try again.");
+                        throw std::invalid_argument("Hero not found!");
                 }
-                catch ( std::invalid_argument &e ) {
+                catch( std::invalid_argument &e ) {
                     cout << e.what() << endl;
                     return 0;
                 }
@@ -319,7 +319,7 @@ void GameUnit::save() {
     out.close();
 }
 
-void GameUnit::load( vector<std::string> _heroes) {
+void GameUnit::load(vector<std::string> _heroes) {
     for (std::string i : _heroes) {
         Warrior *s1 = new Warrior();
         Necromancer *s2 = new Necromancer();
@@ -344,13 +344,14 @@ void GameUnit::load( vector<std::string> _heroes) {
         }
     }
 }
+
 bool GameUnit::mkdir() {
     try {
         string comand = "mkdir game";
         const char *runComand = comand.c_str();
         system(runComand);
     }
-    catch ( std::exception &e ) {
+    catch( std::exception &e ) {
         cout << "Error creating directory!n" << endl;
         return 0;
     }
@@ -363,12 +364,11 @@ void GameUnit::shuffle() {
 
 void GameUnit::rmdir() {
     try {
-        //string comand = "rm -rf game";
         string comand = "find * -type d | grep -v \"^CMakeFiles\" | xargs rm -rf";
         const char *runComand = comand.c_str();
         system(runComand);
     }
-    catch ( std::exception &e ) {
+    catch( std::exception &e ) {
         cout << "Error deleting directory!n" << endl;
     }
 }

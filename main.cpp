@@ -13,15 +13,15 @@
 
 using namespace std;
 
-int main (int argc , char *argv[]) {
+int main(int argc,char *argv[]) {
 
     if ( argv[2] ) { /*    New Game   */
         /* - [ Arguments ] -    argv[0] is the name of the program; Heroes  */
         const string playOrLoad = argv[1];
-        const int warriors = atoi (argv[2]);
-        const int thieves = atoi (argv[3]);
-        const int Necromancers = atoi (argv[4]);
-        GameUnit gamePlay = GameUnit (warriors , thieves , Necromancers);
+        const int warriors = atoi(argv[2]);
+        const int thieves = atoi(argv[3]);
+        const int Necromancers = atoi(argv[4]);
+        GameUnit gamePlay = GameUnit(warriors,thieves,Necromancers);
     } else     /*  Load last Game  */
         GameUnit gamePlay;
 
