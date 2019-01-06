@@ -1,6 +1,6 @@
 
  ============================================================================
- Name        : /*Heroes of Might and Magic® 3 */
+ Name        : Heroes of Might and Magic® 3 
  Author      : Avihai Serfati (204520803)
  Version     : 2.0
  Copyright   : Read Only
