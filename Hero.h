@@ -8,7 +8,6 @@
 #ifndef SOURCE_HERO_H_
 #define SOURCE_HERO_H_
 
-#include <iostream>
 #include<fstream>
 #include <sstream>
 #include <math.h>
@@ -33,9 +32,9 @@ public:
 
     Hero(Hero &);
 
-    Hero(Type,string,Army *a = NULL,bool live = true,int gold = 750);
+    Hero(Type , string , bool live = 1, int gold = 750);
 
-    ~Hero() { delete army; }
+    ~Hero() { delete army; name.clear();}
 
     //^^^^^^^^^^^^^^^^ LOAD and SAVE ^^^^^^^^^^^^^^^^^//
     bool load(string name);
@@ -47,6 +46,8 @@ public:
     bool mkdir();
 
     void rmdir();
+
+    int typeFromFile(string heroName);
 
     //^^^^^^^^^^^^^^^^^^ GAME LOGIC ^^^^^^^^^^^^^^^^^^//
     bool attackEnemy(Hero &enemy);
@@ -91,7 +92,6 @@ protected:
     int gold;
     bool isAlive;
     Army *army;
-
 };
 
 #endif /* SOURCE_HERO_H_ */

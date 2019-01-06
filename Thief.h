@@ -19,8 +19,6 @@ public:
 
     Thief(string name);
 
-    Thief(Thief &another);
-
     virtual bool specialAbility(Hero &);
 
     virtual ~Thief();

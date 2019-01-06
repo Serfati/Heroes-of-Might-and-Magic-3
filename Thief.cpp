@@ -9,11 +9,8 @@
 
 using namespace std;
 
-Thief::Thief(string name) : Hero(thief,name) {}
+Thief::Thief(string name) : Hero(thief,name,1,750) {}
 
-Thief::Thief(Thief &another) : Hero(another) {}
-
-//TODO need to thief from another user/
 bool Thief::specialAbility(Hero &toRob) {
     if ( isAlive ) {
         if ( toRob.getGold() > 70 ) {

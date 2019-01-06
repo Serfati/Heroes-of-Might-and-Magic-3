@@ -8,9 +8,6 @@
 #ifndef ARMY_H_
 #define ARMY_H_
 
-#include<string>
-#include<vector>
-#include <ostream>
 #include "Creature.h"
 #include "Vampire.h"
 #include "Archer.h"

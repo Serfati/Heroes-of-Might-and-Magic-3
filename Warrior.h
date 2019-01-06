@@ -18,8 +18,6 @@ public:
 
     Warrior(string name);
 
-    Warrior(Warrior &another);
-
     virtual bool specialAbility(Hero &);
 
     virtual ~Warrior();

@@ -8,7 +8,6 @@
 #ifndef HEROS_GAMEUNIT_H_
 #define HEROS_GAMEUNIT_H_
 
-#include <iostream>
 #include <algorithm>
 
 #include "Army.h"
@@ -19,7 +18,6 @@
 #include "BlackDragon.h"
 #include "Zombie.h"
 #include "Wizard.h"
-#include <vector>
 
 #include "Hero.h"
 #include "Thief.h"
@@ -36,7 +34,7 @@ public:
 
     GameUnit(const int,const int,const int);
 
-    virtual ~GameUnit();
+    ~GameUnit();
 
     //^^^^^^^^^^^^^^^^^^ GAME LOGIC ^^^^^^^^^^^^^^^^^^//
     GameUnit mainMenu(Hero *);

@@ -8,9 +8,7 @@
 #include "Necromancer.h"
 
 
-Necromancer::Necromancer(string name) : Hero(necromancer,name) {}
-
-Necromancer::Necromancer(Necromancer &another) : Hero(another) {}
+Necromancer::Necromancer(string name) : Hero(necromancer,name,1,750) {}
 
 bool Necromancer::specialAbility(Hero &s) {
     if ( isAlive ) {

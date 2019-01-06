@@ -34,7 +34,7 @@ public:
 
     Creature(int,int,int,CreatureType);
 
-    virtual ~Creature();
+    virtual ~Creature() {}
 
     //^^^^^^^^^^^^^^^^^^ GAME LOGIC ^^^^^^^^^^^^^^^^^^//
     virtual double attackAnother(Creature &c);
@@ -43,7 +43,7 @@ public:
 
     void showCreature();
 
-    virtual void reset();
+    virtual void reset() {};
 
     //^^^^^^^^^^^^^^Getters and Setters^^^^^^^^^^^^^^//
     virtual CreatureType getType() { return cType; }

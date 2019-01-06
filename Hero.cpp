@@ -19,8 +19,8 @@ Hero::Hero(Hero &another) {
     isAlive = another.isAlive;;
 }
 
-Hero::Hero(Type type,string name,Army *army,bool live,int gold) {
-    if ( name.length() < 31 && gold > 0 && gold < 2500 ) {
+Hero::Hero(Type type,string name, bool live,int gold) {
+    if ( name.length() < 31 && gold < 2500) {
         setName(name);
         mkdir();
         name = getName() + "/Details.txt";
@@ -65,7 +65,7 @@ void Hero::showHero() {
     cout << getName() << " ";
     cout << displayType() << ":" << endl;
     cout << getGold() << endl;
-    if ( showArmy() != "" )
+    if ( showArmy() != "." )
         cout << showArmy() << endl;
 }
 
@@ -88,9 +88,11 @@ bool Hero::attackEnemy(Hero &enemy) {
     Creature c;
     if ( ! enemy.army->isDestroyed() && ! army->isDestroyed()) {
         cout << this->getName() << "'s turn:" << endl;
-        /* -~=[  Gets creature to attack and creature to defend  ]=~- */
+        /* -~=[  Gets creature to attack and creature to defend  ]~=- */
         do {
             try {
+                if ( std::cin.peek() == '\n' )
+                    std::cin.ignore();
                 getline(cin , line);
                 stringstream ss(line);
                 ss >> attack >> toAttack;
@@ -123,21 +125,26 @@ bool Hero::attackEnemy(Hero &enemy) {
         save();
         enemy.save();
         //SHOW
-        enemy.showHeroFight();
-        this->showHeroFight();
+        if ( !enemy.army->isDestroyed() && !army->isDestroyed()) {
+            enemy.showHeroFight();
+            this->showHeroFight();
+        }
         return enemy.attackEnemy(*this);
     }
     /* -~=[  Check if Eliminated  ]=~- */
     if ( army->isDestroyed()) {
+
         cout << "victorious" << endl;
-        this->addGold(enemy.getGold());
-        enemy.rmdir();
+        enemy.addGold(this->getGold());
+        isAlive = false;
+        this->rmdir();
         return 1;
     }
     if ( enemy.army->isDestroyed()) {
         cout << "You have been perished" << endl;
-        enemy.addGold(this->getGold());
-        this->rmdir();
+        this->addGold(enemy.getGold());
+        enemy.isAlive = false;
+        enemy.rmdir();
         return 0;
     }
     return 0;
@@ -167,13 +174,13 @@ bool Hero::load(string newName) {
     bool _is;
     in >> _is >> bd >> wz >> arc >> vmp >> zmb >> _type >> _gold;
 
-    //TODO - Hero Type!
     army->buildArmy(bd,wz,arc,vmp,zmb);
     this->isAlive = _is;
+    this->gold = 0;
     setGold(_gold);
     setType(_type);
     in.close();
-    cout << "Hero loaded successfully!" << endl;
+    cout << "Hero loaded successfully!" << endl; //TODO remove
     return 1;
 }
 
@@ -214,6 +221,26 @@ void Hero::rmdir() {
     catch( std::exception &e ) {
         cout << "Error deleting directory!n" << endl;
     }
+}
+
+int Hero::typeFromFile(string heroName) {
+    string path = heroName + "/Details.txt";
+    ifstream in;
+    in.open(path);
+    if ( ! in ) {
+        cout << "HERO: Error reading from file..." << endl;
+        return -1;
+    }
+    string cleanHeader;
+    getline(in,cleanHeader,';');
+    int  type;
+    //Hero @param
+    int bd,wz,arc,vmp,zmb,_gold;
+    bool _is;
+    in >> _is >> bd >> wz >> arc >> vmp >> zmb >> type >> _gold;
+    in.close();
+
+    return type;
 }
 
 //^^^^^^^^^^^^^^Getters and Setters^^^^^^^^^^^^^^//

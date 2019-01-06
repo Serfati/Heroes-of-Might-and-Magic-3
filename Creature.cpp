@@ -64,11 +64,5 @@ int Creature::creaTypeByName(string creaName) {
 
 int Creature::getPrice() { return this->cost; }
 
-Creature::~Creature() {
-}
-
-void Creature::reset() {
-    return;
-}
 
 

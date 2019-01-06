@@ -22,8 +22,6 @@ public:
 
     Necromancer(string);
 
-    Necromancer(Necromancer &);
-
     virtual bool specialAbility(Hero &);
 
     ~Necromancer();
