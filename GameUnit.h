@@ -37,7 +37,7 @@ public:
     ~GameUnit();
 
     //^^^^^^^^^^^^^^^^^^ GAME LOGIC ^^^^^^^^^^^^^^^^^^//
-    GameUnit mainMenu(Hero *);
+    bool mainMenu(Hero *);
 
     bool attackMenu(Hero *);
 
@@ -58,7 +58,7 @@ public:
 
     void rmdir();
 
-    void close();
+    bool close();
 
     //^^^^^^^^^^^^^^ Getters and Setters ^^^^^^^^^^^^^^//
     Hero *getHeroByName(string);

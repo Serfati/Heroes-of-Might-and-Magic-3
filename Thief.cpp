@@ -15,11 +15,11 @@ bool Thief::specialAbility(Hero &toRob) {
     if ( isAlive ) {
         if ( toRob.getGold() > 70 ) {
             this->addGold(70);
-            toRob.setGold(toRob.getGold() - 70);
+            toRob.setGold(toRob.getGold() - 70.0);
             return 1;
         } else {
             addGold(toRob.getGold());
-            toRob.setGold(0);
+            toRob.setGold(0.0);
             return 1;
         }
     }

@@ -23,7 +23,7 @@ Hero::Hero(Type type,string name, bool live,int gold) {
     if ( name.length() < 31 && gold < 2500) {
         setName(name);
         mkdir();
-        name = getName() + "/Details.txt";
+        name = "Heroes/" + getName() + "/Details.txt";
         ofstream file;
         file.open(name);
         this->army = new(nothrow) Army();
@@ -47,7 +47,7 @@ Hero::Hero() : name("NoNameHero"),type(UnknownType),gold(750),isAlive(1) {
 }
 
 //^^^^^^^^^^^^^^^^^^ GAME LOGIC ^^^^^^^^^^^^^^^^^^//
-bool Hero::buyCreature(int budget,int creatureType,int quantity,int unitPrice) {
+bool Hero::buyCreature(double budget,int creatureType,int quantity,int unitPrice) {
     Creature c;
     if ( quantity > 0 && budget > 0 && creatureType >= 0 ) {
         army->addUnit(creatureType,quantity);
@@ -96,28 +96,29 @@ bool Hero::attackEnemy(Hero &enemy) {
                 getline(cin , line);
                 stringstream ss(line);
                 ss >> attack >> toAttack;
-                if ( enemy.army->armyList[c.creaTypeByName(toAttack)] < 1
-                     || this->army->armyList[c.creaTypeByName(attack)] < 1 )
+                if ( enemy.army->getArmyList()[c.creaTypeByName(toAttack)] < 1 ||
+                     this->army->getArmyList()[c.creaTypeByName(attack)] < 1 )
                     throw std::invalid_argument("Creature to attack not found! try again.");
             }
             catch( std::invalid_argument &e ) {
                 cout << e.what() << endl;
             }
-        } while ( enemy.army->armyList[c.creaTypeByName(toAttack)] < 1
-                  || this->army->armyList[c.creaTypeByName(attack)] < 1 );
+        } while ( enemy.army->getArmyList()[c.creaTypeByName(toAttack)] < 1 ||
+                  this->army->getArmyList()[c.creaTypeByName(attack)] < 1 );
 
         /* -~=[  Battle | Update | Save | Show and Return   ]=~- */
 
         //attack!
-        ratio = (army->realArmy[c.creaTypeByName(attack)]->attackAnother(
-                *enemy.army->realArmy[c.creaTypeByName(toAttack)]));
-        attackCount = army->armyList[c.creaTypeByName(attack)];
-        defendCount = enemy.army->armyList[c.creaTypeByName(toAttack)];
+        ratio = (army->getRealArmy()[c.creaTypeByName(attack)]->attackAnother(
+                *enemy.army->getRealArmy()[c.creaTypeByName(toAttack)]));
+        attackCount = army->getArmyList()[c.creaTypeByName(attack)];
+        defendCount = enemy.army->getArmyList()[c.creaTypeByName(toAttack)];
         howMuchToDelete = floor(ratio * attackCount);
 
         //delete destroyed and update
-        enemy.army->armyList[c.creaTypeByName(toAttack)] =
-                int(howMuchToDelete >= defendCount ? 0 : (defendCount - howMuchToDelete));
+        int x = int(howMuchToDelete >= defendCount ? 0 : (defendCount - howMuchToDelete));
+        enemy.army->setAtArmyList(c.creaTypeByName(toAttack),x);
+
         //reset creatures details
         army->reBuild();
         enemy.army->reBuild();
@@ -150,7 +151,7 @@ bool Hero::attackEnemy(Hero &enemy) {
     return 0;
 }
 
-bool Hero::addGold(int amount) {
+bool Hero::addGold(double amount) {
     if ( ! isAlive ) return false;
     gold + amount < 2500 ? (this->gold += amount) : (gold = 2500);
     return true;
@@ -159,7 +160,7 @@ bool Hero::addGold(int amount) {
 //^^^^^^^^^^^^^^^^ LOAD and SAVE ^^^^^^^^^^^^^^^^^//
 bool Hero::load(string newName) {
     setName(newName);
-    string path = newName + "/Details.txt";
+    string path = "Heroes/" + newName + "/Details.txt";
     ifstream in;
     in.open(path);
     if ( ! in ) {
@@ -170,7 +171,8 @@ bool Hero::load(string newName) {
     getline(in,cleanHeader,';');
 
     //Hero @param
-    int bd,wz,arc,vmp,zmb,_type,_gold;
+    int bd,wz,arc,vmp,zmb,_type;
+    double _gold;
     bool _is;
     in >> _is >> bd >> wz >> arc >> vmp >> zmb >> _type >> _gold;
 
@@ -180,13 +182,12 @@ bool Hero::load(string newName) {
     setGold(_gold);
     setType(_type);
     in.close();
-    cout << "Hero loaded successfully!" << endl; //TODO remove
     return 1;
 }
 
 void Hero::save() {
     ofstream out;
-    out.open(getName() + "/Details.txt");
+    out.open("Heroes/" + getName() + "/Details.txt");
     out << "live|B:W:A:V:Z|type|gold;" << endl;
     out << isAlive << " " << saveArmy() << " " << getType() << " " << gold;
 }
@@ -198,9 +199,9 @@ string Hero::saveArmy() {
 bool Hero::mkdir() {
     errno = 0;
     try {
-        string comand = "mkdir " + getName();
-        const char *runComand = comand.c_str();
-        int dir_result = system(runComand);
+        string command = "mkdir -p Heroes/" + getName();
+        auto runCommand = command.c_str();
+        int dir_result = system(runCommand);
         if ( dir_result != 0 && errno != EEXIST )
             return 0;
     }
@@ -214,9 +215,9 @@ bool Hero::mkdir() {
 void Hero::rmdir() {
     isAlive = false;
     try {
-        string comand = "rm -rf " + getName();
-        const char *runComand = comand.c_str();
-        system(runComand);
+        string command = "rm -rf Heroes/" + getName();
+        const char *runCommand = command.c_str();
+        system(runCommand);
     }
     catch( std::exception &e ) {
         cout << "Error deleting directory!n" << endl;
@@ -224,7 +225,7 @@ void Hero::rmdir() {
 }
 
 int Hero::typeFromFile(string heroName) {
-    string path = heroName + "/Details.txt";
+    string path = "Heroes/" + heroName + "/Details.txt";
     ifstream in;
     in.open(path);
     if ( ! in ) {
@@ -235,7 +236,8 @@ int Hero::typeFromFile(string heroName) {
     getline(in,cleanHeader,';');
     int  type;
     //Hero @param
-    int bd,wz,arc,vmp,zmb,_gold;
+    int bd,wz,arc,vmp,zmb;
+    double _gold;
     bool _is;
     in >> _is >> bd >> wz >> arc >> vmp >> zmb >> type >> _gold;
     in.close();
@@ -251,7 +253,7 @@ bool Hero::setName(const string nName) {
     return 1;
 }
 
-void Hero::setGold(int newBudget) {
+void Hero::setGold(double newBudget) {
     this->gold = 0 > newBudget ? 0 : 2500 < newBudget ? 2500 : newBudget;
 }
 
@@ -279,7 +281,7 @@ string Hero::getName() {
     return this->name;
 }
 
-int Hero::getGold() const {
+double Hero::getGold() const {
     return gold;
 }
 

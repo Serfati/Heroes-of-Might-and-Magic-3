@@ -52,7 +52,7 @@ public:
     //^^^^^^^^^^^^^^^^^^ GAME LOGIC ^^^^^^^^^^^^^^^^^^//
     bool attackEnemy(Hero &enemy);
 
-    bool buyCreature(int budget,int creatureType,int quantity,int unitPrice);
+    bool buyCreature(double budget,int creatureType,int quantity,int unitPrice);
 
     void showHero();
 
@@ -60,7 +60,7 @@ public:
 
     string showArmy();
 
-    bool addGold(int);
+    bool addGold(double);
 
 
     //Virtuals
@@ -72,11 +72,11 @@ public:
     //^^^^^^^^^^^^^^Getters and Setters^^^^^^^^^^^^^^//
     void setType(int);
 
-    void setGold(int);
+    void setGold(double);
 
     bool setName(const string);
 
-    int getGold() const;
+    double getGold() const;
 
     Type getType();
 
@@ -89,7 +89,7 @@ public:
 protected:
     string name;
     Type type;
-    int gold;
+    double gold;
     bool isAlive;
     Army *army;
 };

@@ -37,7 +37,13 @@ public:
 
     ~Army();
 
-public:
+    const vector<int> &getArmyList() const { return armyList; }
+
+    void setAtArmyList(int i,int x) { Army::armyList[i] = x; }
+
+    const vector<Creature *> &getRealArmy() const { return realArmy; }
+
+private:
     vector<int> armyList;
     vector<Creature *> realArmy;
 };

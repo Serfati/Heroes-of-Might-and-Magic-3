@@ -2,7 +2,7 @@
  ============================================================================
  Name        : Heroes of Might and Magic® 3
  Author      : Avihai Serfati (204520803)
- Version     : 2.0
+ Version     : 2.5
  Copyright   : Read Only
  Dialect     : C++
  Description : implements Heroes of Might and Magic 3 a turn-based
@@ -23,10 +23,12 @@ int main(int argc,char *argv[]) {
         const int warriors = atoi(argv[2]);
         const int thieves = atoi(argv[3]);
         const int Necromancers = atoi(argv[4]);
-        GameUnit gamePlay = GameUnit(warriors,thieves,Necromancers);
-
-        } else  /*  Load last Game  */
-        GameUnit gamePlay;
+        GameUnit *gamePlay = new GameUnit(warriors,thieves,Necromancers);
+        delete gamePlay;
+    } else  /*  Load last Game  */{
+        GameUnit *gamePlay = new GameUnit();
+        delete gamePlay;
+    }
 
     cout << "\t...main.cpp END...‬‬" << endl;
 }

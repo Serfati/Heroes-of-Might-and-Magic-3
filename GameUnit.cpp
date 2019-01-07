@@ -11,9 +11,8 @@ static int roundNumber = 0;
 
 //^^^^^^^^^^ Constructors and Destructor ^^^^^^^^^^//
 GameUnit::GameUnit() {
-    cout << "Loading...‬‬" << endl;
     // First Level
-    const char* path = "game/Game_Details.txt";
+    const char *path = "game/Game_Details.txt";
     ifstream in;
     in.open(path);
     if ( ! in )
@@ -42,6 +41,15 @@ GameUnit::GameUnit() {
 }
 
 GameUnit::GameUnit(const int w,const int t,const int n) {
+    try {
+        if ( w < 0 || w > 3 || t < 0 || t > 3 || n < 0 || n > 3 )
+            throw (std::invalid_argument("Error: invalid number of heroes!"));
+
+    } catch( std::invalid_argument &exc ) {
+        cout << exc.what() << endl;
+        return;
+    }
+
     rmdir();
     string _name;
     try {
@@ -105,17 +113,17 @@ GameUnit::~GameUnit() {
     for (Hero *i :realOrder)
         delete i;
     turnOrder.clear();
-    realOrder.clear();
 }
 
 //   ******** Game Main Menu *******    //
-GameUnit GameUnit::mainMenu(Hero *turn) {
+bool GameUnit::mainMenu(Hero *turn) {
     if ( turn->inLife()) {
         bool isTurnRun = 1,got = 0,special = 0;
         string index;
         string toRob;
         Creature c;
         Hero *ptr = nullptr;
+        cout << "Welcome " << turn->getName() << endl;
         while ( isTurnRun ) {
             cout << "What is your next step in the path to victory?" << endl;
             cout << "‫‪1. Attack‬‬" << endl;
@@ -134,9 +142,10 @@ GameUnit GameUnit::mainMenu(Hero *turn) {
                         attackMenu(turn);
                     else cout << "Can'nt attack before round 4, You're still on round " << ::roundNumber << endl;
                     save();
-                    if ( ::numberOfPlayers < 2 ) { // last player
+                    if ( ::numberOfPlayers <= 1 ) { // last player
                         cout << realOrder[0]->getName() + " is the winner!" << endl;
-                        close();
+                        rmdir();
+                        return 1;
                     }
                     break;
 
@@ -184,8 +193,7 @@ GameUnit GameUnit::mainMenu(Hero *turn) {
 
                 case 7: /* 	‫‪Exit‬‬‬‬  */
                     save();
-                    (*this).~GameUnit();
-                    exit(EXIT_SUCCESS);
+                    return 1;
 
                 default:
                     cout << "please choose a valid number" << endl;
@@ -193,7 +201,7 @@ GameUnit GameUnit::mainMenu(Hero *turn) {
             }
         }
     }
-    return *this;
+    return false;
 }
 
 bool GameUnit::attackMenu(Hero *me) {
@@ -205,13 +213,16 @@ bool GameUnit::attackMenu(Hero *me) {
         std::cin.ignore();
         if ( std::cin.peek() != '\n' )
             cin >> index;
-        else return 0;
+        else {
+            std::cin.ignore();
+            return 0;
+        }
 
         int choice = atoi(index.c_str());
         switch ( choice ) {
             case 1:    /*	Show me my opponents	*/
                 showHeroes();
-                break;
+                return 1;
             case 2:    /*  Attack Hero by name	   */
                 try {
                     cout << "Please insert your opponent name:" << endl;
@@ -224,7 +235,7 @@ bool GameUnit::attackMenu(Hero *me) {
 
                 } catch( std::invalid_argument &e ) {
                     cout << e.what() << endl;
-                    return 0;
+                    return 1;
                 }
                 me->showHeroFight();
                 ptr->showHeroFight();
@@ -313,7 +324,7 @@ void GameUnit::eraseKilled() {
             realOrder[i]->rmdir();
             realOrder[i]->~Hero();
             realOrder.erase(realOrder.begin() + i);
-            ::numberOfPlayers--;
+            ::numberOfPlayers --;
         }
     }
     realOrder.shrink_to_fit();
@@ -348,7 +359,7 @@ void GameUnit::load(vector<string> _heroes) {
         Warrior *s1;
         Thief *s2;
         Necromancer *s3;
-        switch ( s.typeFromFile(i) ) {
+        switch ( s.typeFromFile(i)) {
             case 0:
                 s1 = new(nothrow) Warrior();
                 if ( nullptr == s1 ) cout << "Error: memory could not be allocated" << endl;
@@ -371,7 +382,6 @@ void GameUnit::load(vector<string> _heroes) {
                 cout << "Load failed!";
         }
     }
-    _heroes.clear();
 }
 
 bool GameUnit::mkdir() {
@@ -398,12 +408,6 @@ void GameUnit::rmdir() {
     } catch( std::exception &e ) {
         cout << "Error deleting directory!n" << endl;
     }
-}
-
-void GameUnit::close() {
-    rmdir();
-    (*this).~GameUnit();
-    exit(1);
 }
 
 //^^^^^^^^^^^^^^ Getters and Setters ^^^^^^^^^^^^^^//
