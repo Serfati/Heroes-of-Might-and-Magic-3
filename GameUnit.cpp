@@ -44,7 +44,6 @@ GameUnit::GameUnit(const int w,const int t,const int n) {
     try {
         if ( w < 0 || w > 3 || t < 0 || t > 3 || n < 0 || n > 3 )
             throw (std::invalid_argument("Error: invalid number of heroes!"));
-
     } catch( std::invalid_argument &exc ) {
         cout << exc.what() << endl;
         return;
@@ -138,14 +137,14 @@ bool GameUnit::mainMenu(Hero *turn) {
             int choice = atoi(index.c_str());
             switch ( choice ) {
                 case 1:    /*	Attack‬‬	*/
-                    if ( ::roundNumber > -1 )
+                    if ( ::roundNumber > 3 )
                         attackMenu(turn);
                     else cout << "Can'nt attack before round 4, You're still on round " << ::roundNumber << endl;
                     save();
                     if ( ::numberOfPlayers <= 1 ) { // last player
                         cout << realOrder[0]->getName() + " is the winner!" << endl;
                         rmdir();
-                        return 1;
+                        return (EXIT_SUCCESS);
                     }
                     break;
 
@@ -209,7 +208,7 @@ bool GameUnit::attackMenu(Hero *me) {
     string heroToAttack = "",index;
     while ( true ) {
         cout << "‫‪1. Show me my opponents" << endl;
-        cout << "2. Attack Hero" << endl;
+        cout << "2. Attack Hero";
         std::cin.ignore();
         if ( std::cin.peek() != '\n' )
             cin >> index;
@@ -390,7 +389,7 @@ bool GameUnit::mkdir() {
         const char *runComand = comand.c_str();
         system(runComand);
     } catch( std::exception &e ) {
-        cout << "Error creating directory!n" << endl;
+        cout << "Error creating directory!" << endl;
         return 0;
     }
     return 1;

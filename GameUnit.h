@@ -58,8 +58,6 @@ public:
 
     void rmdir();
 
-    bool close();
-
     //^^^^^^^^^^^^^^ Getters and Setters ^^^^^^^^^^^^^^//
     Hero *getHeroByName(string);
 
