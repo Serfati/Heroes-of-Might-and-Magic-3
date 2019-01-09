@@ -9,7 +9,7 @@
 
 using namespace std;
 
-Thief::Thief(string name) : Hero(thief,name,1,750) {}
+Thief::Thief(string name) : Hero(thief,name,1,750,false,false) {}
 
 bool Thief::specialAbility(Hero &toRob) {
     if ( isAlive ) {

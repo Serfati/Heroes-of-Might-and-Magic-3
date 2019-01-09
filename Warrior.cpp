@@ -9,7 +9,7 @@
 
 Warrior::Warrior() { setType(warrior); }
 
-Warrior::Warrior(string name) : Hero(warrior,name,1,750) {}
+Warrior::Warrior(string name) : Hero(warrior,name,1,750,false,false) {}
 
 bool Warrior::specialAbility(Hero &s) {
     if ( isAlive ) {

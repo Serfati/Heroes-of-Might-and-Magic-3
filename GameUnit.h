@@ -36,7 +36,9 @@ public:
 
     ~GameUnit();
 
+
     //^^^^^^^^^^^^^^^^^^ GAME LOGIC ^^^^^^^^^^^^^^^^^^//
+private:
     bool mainMenu(Hero *);
 
     bool attackMenu(Hero *);
@@ -65,7 +67,6 @@ public:
 
     void showHeroes();
 
-private:
     vector<Hero *> realOrder;
     vector<Hero *> turnOrder; //just a pointer to a shuffled realOrder
     int currentTurn; // index in turnOrder

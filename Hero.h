@@ -32,7 +32,7 @@ public:
 
     Hero(Hero &);
 
-    Hero(Type , string , bool live = 1, int gold = 750);
+    Hero(Type type,string name,bool live,int gold,bool gotDG,bool usedSA);
 
     ~Hero() { delete army; name.clear();}
 
@@ -86,10 +86,20 @@ public:
 
     bool inLife() const { return isAlive; };
 
+    bool isGotDG() const { return gotDG; }
+
+    void setGotDG(bool gotDG) { Hero::gotDG = gotDG; }
+
+    bool isUsedSA() const { return usedSA; }
+
+    void setUsedSA(bool usedSA) { Hero::usedSA = usedSA; }
+
 protected:
     string name;
     Type type;
     double gold;
+    bool gotDG;
+    bool usedSA;
     bool isAlive;
     Army *army;
 };

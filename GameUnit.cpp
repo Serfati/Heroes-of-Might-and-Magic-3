@@ -117,7 +117,7 @@ GameUnit::~GameUnit() {
 //   ******** Game Main Menu *******    //
 bool GameUnit::mainMenu(Hero *turn) {
     if ( turn->inLife()) {
-        bool isTurnRun = 1,got = 0,special = 0;
+        bool isTurnRun = 1;
         string index;
         string toRob;
         Creature c;
@@ -137,7 +137,7 @@ bool GameUnit::mainMenu(Hero *turn) {
             int choice = atoi(index.c_str());
             switch ( choice ) {
                 case 1:    /*	Attack‬‬	*/
-                    if ( ::roundNumber > 3 )
+                    if ( ::roundNumber > - 1 )
                         attackMenu(turn);
                     else cout << "Can'nt attack before round 4, You're still on round " << ::roundNumber << endl;
                     save();
@@ -149,9 +149,9 @@ bool GameUnit::mainMenu(Hero *turn) {
                     break;
 
                 case 2:    /*	Get daily gold	*/
-                    if ( ! got ) {
+                    if ( ! turn->isGotDG()) {
                         turn->getDailyGold();
-                        got = 1;
+                        turn->setGotDG(true);
                     } else cout << "You already got your daily gold!" << endl;
                     break;
 
@@ -166,7 +166,7 @@ bool GameUnit::mainMenu(Hero *turn) {
                     break;
 
                 case 5:    /*	Special skill‬‬‬‬	*/
-                    if ( ! special ) {
+                    if ( ! turn->isUsedSA()) {
                         try {
                             if ( turn->getType() == thief ) {
                                 std::cout << "Please insert hero name:" << endl;
@@ -175,16 +175,18 @@ bool GameUnit::mainMenu(Hero *turn) {
                                 if ( NULL == ptr )
                                     throw std::invalid_argument("Hero to rob not found!");
                                 turn->specialAbility(*ptr);
-                                special = 1;
+                                turn->setUsedSA(true);
                                 break;
                             }
                         } catch( std::invalid_argument &e ) { cout << e.what() << endl; }
                         turn->specialAbility(*ptr);
-                        special = 1;
+                        turn->setUsedSA(true);
                     } else cout << "You already used your special ability! wait for next round." << endl;
                     break;
 
                 case 6:    /*	End of my turn	*/
+                    turn->setUsedSA(false);
+                    turn->setGotDG(false);
                     save();
                     isTurnRun = false;
                     nextTurn();

@@ -19,11 +19,11 @@ Hero::Hero(Hero &another) {
     isAlive = another.isAlive;;
 }
 
-Hero::Hero(Type type,string name, bool live,int gold) {
+Hero::Hero(Type type,string name,bool live,int gold,bool gotDG,bool usedSA) {
     if ( name.length() < 31 && gold < 2500) {
         setName(name);
         mkdir();
-        name = "Heroes/" + getName() + "/Details.txt";
+        name = "Heros/" + getName() + "/Details.txt";
         ofstream file;
         file.open(name);
         this->army = new(nothrow) Army();
@@ -31,10 +31,12 @@ Hero::Hero(Type type,string name, bool live,int gold) {
         setType(type);
         setGold(gold);
         this->isAlive = live;
+        this->gotDG = false;
+        this->usedSA = false;
 
         //SAVE
-        file << "live|B:W:A:V:Z|type|gold;";
-        file << endl << inLife() << " " << showArmy() << " " << type << " " << gold;
+        file << "live|B:W:A:V:Z|type|gold|DG|SA;";
+        file << endl << inLife() << " " << showArmy() << " " << type << " " << gold << " " << gotDG << " " << usedSA;
         file.close();
     }
     else
@@ -160,7 +162,7 @@ bool Hero::addGold(double amount) {
 //^^^^^^^^^^^^^^^^ LOAD and SAVE ^^^^^^^^^^^^^^^^^//
 bool Hero::load(string newName) {
     setName(newName);
-    string path = "Heroes/" + newName + "/Details.txt";
+    string path = "Heros/" + newName + "/Details.txt";
     ifstream in;
     in.open(path);
     if ( ! in ) {
@@ -173,12 +175,13 @@ bool Hero::load(string newName) {
     //Hero @param
     int bd,wz,arc,vmp,zmb,_type;
     double _gold;
-    bool _is;
-    in >> _is >> bd >> wz >> arc >> vmp >> zmb >> _type >> _gold;
+    bool _is,_DG,_SA;
+    in >> _is >> bd >> wz >> arc >> vmp >> zmb >> _type >> _gold >> _DG >> _SA;
 
     army->buildArmy(bd,wz,arc,vmp,zmb);
     this->isAlive = _is;
-    this->gold = 0;
+    this->gotDG = _DG;
+    this->usedSA = _SA;
     setGold(_gold);
     setType(_type);
     in.close();
@@ -187,9 +190,9 @@ bool Hero::load(string newName) {
 
 void Hero::save() {
     ofstream out;
-    out.open("Heroes/" + getName() + "/Details.txt");
-    out << "live|B:W:A:V:Z|type|gold;" << endl;
-    out << isAlive << " " << saveArmy() << " " << getType() << " " << gold;
+    out.open("Heros/" + getName() + "/Details.txt");
+    out << "live|B:W:A:V:Z|type|gold|DG|SA;" << endl;
+    out << isAlive << " " << saveArmy() << " " << getType() << " " << gold << " " << gotDG << " " << usedSA;
 }
 
 string Hero::saveArmy() {
@@ -199,7 +202,7 @@ string Hero::saveArmy() {
 bool Hero::mkdir() {
     errno = 0;
     try {
-        string command = "mkdir -p Heroes/" + getName();
+        string command = "mkdir -p Heros/" + getName();
         auto runCommand = command.c_str();
         int dir_result = system(runCommand);
         if ( dir_result != 0 && errno != EEXIST )
@@ -215,7 +218,7 @@ bool Hero::mkdir() {
 void Hero::rmdir() {
     isAlive = false;
     try {
-        string command = "rm -rf Heroes/" + getName();
+        string command = "rm -rf Heros/" + getName();
         const char *runCommand = command.c_str();
         system(runCommand);
     }
@@ -225,7 +228,7 @@ void Hero::rmdir() {
 }
 
 int Hero::typeFromFile(string heroName) {
-    string path = "Heroes/" + heroName + "/Details.txt";
+    string path = "Heros/" + heroName + "/Details.txt";
     ifstream in;
     in.open(path);
     if ( ! in ) {
