@@ -1,0 +1,2 @@
+live|B:W:A:V:Z|type|gold|DG|SA;
+1 0 0 0 0 0 0 750 0 0
